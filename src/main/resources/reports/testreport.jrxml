@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-01-24T17:58:35 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="testreport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8eaa6176-ea36-42da-a816-aef112d96874">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="broker_db"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="parentStyle" isDefault="true" forecolor="#FF0000" fontName="Times" fontSize="13" isBold="true">
+		<box>
+			<pen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="childStyle" backcolor="#FFFF00" hTextAlign="Justified" fontSize="9"/>
+	<style name="backgroundStyle" style="parentStyle" forecolor="#C0C0C0" fontName="Helvetica" fontSize="90" pdfFontName="Helvetica-Bold"/>
+	<queryString>
+		<![CDATA[SELECT * FROM public.sys_brk_main_transactions
+ORDER BY trans_no
+ASC]]>
+	</queryString>
+	<field name="trans_no" class="java.lang.Long"/>
+	<field name="trans_amount" class="java.math.BigDecimal"/>
+	<field name="trans_auth_date" class="java.sql.Timestamp"/>
+	<field name="trans_authorised" class="java.lang.String"/>
+	<field name="trans_balance" class="java.math.BigDecimal"/>
+	<field name="trans_clnt_type" class="java.lang.String"/>
+	<field name="trans_comm" class="java.math.BigDecimal"/>
+	<field name="trans_control_acc" class="java.lang.String"/>
+	<field name="trans_curr_rate" class="java.math.BigDecimal"/>
+	<field name="trans_narrations" class="java.lang.String"/>
+	<field name="trans_net_amt" class="java.math.BigDecimal"/>
+	<field name="trans_origin" class="java.lang.String"/>
+	<field name="trans_other_ref" class="java.lang.String"/>
+	<field name="trans_phfund" class="java.math.BigDecimal"/>
+	<field name="trans_ref_no" class="java.lang.String"/>
+	<field name="trans_sd" class="java.math.BigDecimal"/>
+	<field name="trans_settle_amt" class="java.math.BigDecimal"/>
+	<field name="trans_tl" class="java.math.BigDecimal"/>
+	<field name="trans_date" class="java.sql.Timestamp"/>
+	<field name="trans_type" class="java.lang.String"/>
+	<field name="trans_dc" class="java.lang.String"/>
+	<field name="trans_user_auth" class="java.lang.String"/>
+	<field name="trans_whtx" class="java.math.BigDecimal"/>
+	<field name="trans_brn_id" class="java.lang.Long"/>
+	<field name="trans_curr_id" class="java.lang.Long"/>
+	<field name="trans_pol_id" class="java.lang.Long"/>
+	<field name="trans_tran_no" class="java.lang.Long"/>
+	<field name="trans_extras" class="java.math.BigDecimal"/>
+	<field name="trans_agent_code" class="java.lang.Long"/>
+	<field name="trans_clnt_code" class="java.lang.Long"/>
+	<background>
+		<band height="802" splitType="Stretch">
+			<staticText>
+				<reportElement style="backgroundStyle" mode="Transparent" x="7" y="-33" width="530" height="651" uuid="7a486e4f-55dc-438e-87ca-0f690cba47b3"/>
+				<text><![CDATA[SAMPLE]]></text>
+			</staticText>
+		</band>
+	</background>
+	<detail>
+		<band height="240" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="530" height="35" uuid="d1d17af4-f03e-4706-b038-6b7acb1b4d14"/>
+				<text><![CDATA[This text uses the default report style, in this report it is called "parentStyle".]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="childStyle" x="0" y="35" width="555" height="25" uuid="d1d17af4-f03e-4706-b038-6b7acb1b4d14"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[This <style isBold="true" isStrikeThrough = "true" isItalic ="true" fontSize="20"> text </style> uses the style called "childStyle", this style inhertits all the qualities of the "parentStyle" overidding only the font
+				]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="61" width="30" height="119" uuid="f5c26207-b30f-4465-a683-d85375171718"/>
+				<textElement textAlignment="Justified" rotation="Left"/>
+				<textFieldExpression><![CDATA[$F{trans_ref_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-4" x="0" y="180" width="535" height="48" uuid="b82232a2-dcba-4ba1-9fb6-e9820f028787"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement markup="styled"/>
+				<text><![CDATA[This is one sentance. <style isBold="true">This is a bold sentance.</style> This is another normal sentance.]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

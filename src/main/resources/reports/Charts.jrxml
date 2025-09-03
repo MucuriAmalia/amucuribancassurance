@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-01-25T10:33:16 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Charts" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f5f8968f-14bc-4e23-9626-17874130cc68">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="broker_db"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString>
+		<![CDATA[SELECT pol_trans_type,pol_ref_no,acct_name
+FROM public.sys_brk_policies
+inner join sys_brk_accounts on pol_agent_id = acct_id]]>
+	</queryString>
+	<field name="pol_trans_type" class="java.lang.String"/>
+	<field name="pol_ref_no" class="java.lang.String"/>
+	<field name="acct_name" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="329" splitType="Stretch"/>
+	</detail>
+</jasperReport>

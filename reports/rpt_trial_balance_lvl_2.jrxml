@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_trial_balance_lvl_2" pageWidth="1142" pageHeight="1042" whenNoDataType="AllSectionsNoDetail" columnWidth="1102" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="d977049f-60f5-4b8d-9095-ba3ff06a87cc">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Broker_db"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="731"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="255"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="dateTo" class="java.util.Date">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT   main_acc_id, main_acc_order, co_accounts_order, SUM (debits) debits,
+         SUM (credits) credits, main_acc_code, main_acc_name, co_code,
+         co_name, org_address, org_mobile, org_phone, add_email_addr,
+         org_website, org_name
+    FROM (SELECT DISTINCT s2.co_id main_acc_id,
+                          s2.co_accounts_order main_acc_order,
+                          s1.co_accounts_order,
+                          CASE
+                             WHEN s.gl_dc = 'D'
+                                THEN SUM (s.gl_amount)
+                                else 0
+                          END AS debits,
+                          CASE
+                             WHEN s.gl_dc = 'C'
+                                THEN SUM (s.gl_amount)
+                                else 0
+                          END AS credits,
+                          s2.co_code main_acc_code, s2.co_name main_acc_name,
+                          s1.co_code, s1.co_name, org_address, org_mobile,
+                          org_phone, add_email_addr, org_website, org_name
+                     FROM sys_brk_organization, sys_brk_gl_trans s INNER JOIN sys_brk_coa_sub s1
+                          ON s.gl_account = s1.co_id
+                          INNER JOIN sys_brk_coa_main s2
+                          ON s2.co_id = s1.co_main_acc_id 
+                          WHERE  date_trunc('day', gl_auth_date) <=  $P{dateTo} 
+                 GROUP BY s2.co_id,
+                          s2.co_accounts_order,
+                          s1.co_accounts_order,
+                          s.gl_dc,
+                          s2.co_code,
+                          s2.co_name,
+                          s1.co_code,
+                          s1.co_name,
+                          org_address,
+                          org_mobile,
+                          org_phone,
+                          add_email_addr,
+                          org_website,
+                          org_name) s3
+GROUP BY main_acc_id,
+         main_acc_order,
+         co_accounts_order,
+         main_acc_code,
+         main_acc_name,
+         co_code,
+         co_name,
+         org_address,
+         org_mobile,
+         org_phone,
+         add_email_addr,
+         org_website,
+         org_name
+ORDER BY main_acc_order, co_accounts_order ASC]]>
+	</queryString>
+	<field name="MAIN_ACC_ID" class="java.math.BigDecimal"/>
+	<field name="MAIN_ACC_ORDER" class="java.lang.String"/>
+	<field name="CO_ACCOUNTS_ORDER" class="java.lang.String"/>
+	<field name="DEBITS" class="java.math.BigDecimal"/>
+	<field name="CREDITS" class="java.math.BigDecimal"/>
+	<field name="MAIN_ACC_CODE" class="java.lang.String"/>
+	<field name="MAIN_ACC_NAME" class="java.lang.String"/>
+	<field name="CO_CODE" class="java.lang.String"/>
+	<field name="CO_NAME" class="java.lang.String"/>
+	<field name="ORG_ADDRESS" class="java.lang.String"/>
+	<field name="ORG_MOBILE" class="java.lang.String"/>
+	<field name="ORG_PHONE" class="java.lang.String"/>
+	<field name="ADD_EMAIL_ADDR" class="java.lang.String"/>
+	<field name="ORG_WEBSITE" class="java.lang.String"/>
+	<field name="ORG_NAME" class="java.lang.String"/>
+	<variable name="debits" class="java.math.BigDecimal" resetType="Group" resetGroup="main_acc" calculation="Sum">
+		<variableExpression><![CDATA[$F{DEBITS}]]></variableExpression>
+	</variable>
+	<variable name="credits" class="java.math.BigDecimal" resetType="Group" resetGroup="main_acc" calculation="Sum">
+		<variableExpression><![CDATA[$F{CREDITS}]]></variableExpression>
+	</variable>
+	<variable name="activity" class="java.math.BigDecimal" resetType="Group" resetGroup="main_acc" calculation="Sum">
+		<variableExpression><![CDATA[SUM($F{DEBITS}.doubleValue(),$F{CREDITS}.doubleValue()*-1)]]></variableExpression>
+	</variable>
+	<variable name="closing_bal" class="java.math.BigDecimal" resetType="Group" resetGroup="main_acc" calculation="Sum">
+		<variableExpression><![CDATA[SUM($F{DEBITS}.doubleValue(),$F{CREDITS}.doubleValue()*-1)]]></variableExpression>
+	</variable>
+	<variable name="debits_totals" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{DEBITS}]]></variableExpression>
+	</variable>
+	<variable name="credits_totals" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{CREDITS}]]></variableExpression>
+	</variable>
+	<variable name="activity_totals" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[SUM($F{DEBITS}.doubleValue(),$F{CREDITS}.doubleValue()*-1 )]]></variableExpression>
+	</variable>
+	<variable name="closing_bal_totals" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[SUM($F{DEBITS}.doubleValue(),$F{CREDITS}.doubleValue()*-1 )]]></variableExpression>
+	</variable>
+	<variable name="opening_bal" class="java.math.BigDecimal" resetType="Group" resetGroup="main_acc" calculation="Sum">
+		<variableExpression><![CDATA[0.00]]></variableExpression>
+	</variable>
+	<variable name="opening_bal_totals" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[0]]></variableExpression>
+	</variable>
+	<group name="main_acc">
+		<groupExpression><![CDATA[$F{MAIN_ACC_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<rectangle>
+					<reportElement x="1" y="0" width="1099" height="20" uuid="bf322ed7-d11e-47cd-99db-514eb16413ce"/>
+				</rectangle>
+				<textField>
+					<reportElement x="1" y="0" width="145" height="20" uuid="2eb3e367-790c-4a7c-8d5c-7cb15b644f1a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MAIN_ACC_NAME}.toUpperCase()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<rectangle>
+					<reportElement x="1" y="0" width="1099" height="20" backcolor="#FFFFFF" uuid="a0d4bdea-f2f9-4357-9682-384d8914b017"/>
+				</rectangle>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="146" y="0" width="220" height="20" uuid="fde121dd-41ce-4c5d-92fd-5f1ad0e8f345"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MAIN_ACC_NAME}.toUpperCase()+" TOTALS"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+					<reportElement x="366" y="0" width="145" height="20" uuid="1d2f515a-5d3c-429c-b319-a3184f44a521"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[0]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+					<reportElement x="511" y="0" width="149" height="20" uuid="7fcdb36c-f07e-4dfe-a7da-412767a93827"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{debits}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+					<reportElement x="660" y="0" width="145" height="20" uuid="f6234318-7e4e-4df8-8653-671707ef60a5"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{credits}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+					<reportElement x="805" y="0" width="149" height="20" uuid="4cd29c9a-1575-4672-be78-9232b423731b"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{activity}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+					<reportElement x="954" y="0" width="146" height="20" uuid="0b0238ce-f990-4e0b-9333-2ef31e071c46"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{closing_bal}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="107" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="1100" height="107" forecolor="#000000" backcolor="#FFFFFF" uuid="c46b6a6c-aa58-42a5-b75e-0cc2420c05cb"/>
+				<graphicElement>
+					<pen lineColor="#C4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="1" y="2" width="145" height="90" uuid="2f040d42-04ec-4ed1-9d58-e0e55f16bdc2"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="835" y="4" width="265" height="18" uuid="6d45821a-0511-4fff-b302-705f6c81a9ae">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ORG_NAME}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="835" y="22" width="265" height="17" uuid="62b1fc98-4631-4d0e-97f1-3d800d8fb6cd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ORG_ADDRESS}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="835" y="39" width="265" height="15" uuid="21962d36-7253-4137-8563-8282a97794bb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TEL: " + $F{ORG_MOBILE} +"," +$F{ORG_PHONE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="834" y="69" width="265" height="15" uuid="5f82c7c6-9502-427e-a725-6a987d0cf40b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["EMAIL: "+$F{ADD_EMAIL_ADDR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="834" y="54" width="265" height="15" uuid="5a0901c7-e1d8-45ba-8e53-064f65e5cd2f"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA["WEBSITE: " + $F{ORG_WEBSITE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="85" width="1099" height="22" uuid="dc52f565-d02f-4927-aecb-c53f75af8e74"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TRIAL BALANCE FOR "+$F{ORG_NAME}.toUpperCase()+" FOR THE PERIOD ENDING  "+DATEFORMAT($P{dateTo},"dd-MMM-yyyy")]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20">
+			<rectangle>
+				<reportElement x="1" y="0" width="1099" height="20" backcolor="#FFFFFF" uuid="134c4ff3-0419-4732-a350-7787eb34397b"/>
+			</rectangle>
+			<textField>
+				<reportElement x="1" y="0" width="145" height="20" uuid="bfa243f7-95d1-4f71-80ae-9f6c931526d5"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ACCOUNT CODE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="146" y="0" width="220" height="20" uuid="33ca4727-f5ed-4f46-b27c-e6c4844a96a3"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ACCOUNT DESCRIPTION"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="366" y="0" width="145" height="20" uuid="88981c59-a767-4387-9dcf-9f8eaf507e2d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["OPENING BALANCE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="511" y="0" width="149" height="20" uuid="89d599d7-8bed-4535-a521-62ac90d392cd"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DEBIT"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="660" y="0" width="145" height="20" uuid="3c6ce6f8-b34f-4150-b475-fbe1e5d5f278"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CREDIT"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="805" y="0" width="149" height="20" uuid="b0638514-0a38-4d08-b13d-53d263e31cb8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ACTIVITY"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="954" y="0" width="146" height="20" uuid="f9652b89-aa8d-46f7-81dd-50f8a4ff3391"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CLOSING BALANCE"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<rectangle>
+				<reportElement x="1" y="0" width="1099" height="20" backcolor="#FFFFFF" uuid="b0b91bde-ed3c-4401-a65f-084b267c86c6"/>
+			</rectangle>
+			<textField>
+				<reportElement x="1" y="0" width="145" height="20" uuid="b352abbd-0dca-4d0a-badb-33dd95c5790a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CO_CODE}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="146" y="0" width="220" height="20" uuid="9b44b6e2-21b3-48f0-8b89-554f14993f1d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CO_NAME}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="366" y="0" width="145" height="20" uuid="6ca58edc-3eea-42d6-b3b1-69ca6297f135"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[0]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="511" y="0" width="149" height="20" uuid="9e0114d1-2495-4283-8320-4344112431d2"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{DEBITS}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="660" y="0" width="145" height="20" uuid="c4a54aa9-9613-4b6b-8497-7c38f8ba1af2"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CREDITS}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="805" y="0" width="149" height="20" uuid="b0c8ea51-3cc8-4560-897a-d15d38612f67"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[SUM($F{DEBITS}.doubleValue(),$F{CREDITS}.doubleValue()*-1 )]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="954" y="0" width="146" height="20" uuid="aadae141-93f2-4f14-892a-fbaf851a05e2"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[SUM($F{DEBITS}.doubleValue(),$F{CREDITS}.doubleValue()*-1)]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="20">
+			<rectangle>
+				<reportElement x="366" y="0" width="734" height="20" backcolor="#FFFFFF" uuid="8f93fa64-beb4-41f8-8978-ee5de85be184"/>
+			</rectangle>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="366" y="0" width="145" height="20" uuid="f2231c0a-5599-4527-aacb-465a5f54176b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[0]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="511" y="0" width="149" height="20" uuid="e765ced3-f5ec-444b-b976-8beb1a7459b1"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{debits_totals}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="660" y="0" width="145" height="20" uuid="9e008cb9-e8d6-45f2-bd22-be3cf700905a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{credits_totals}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="805" y="0" width="149" height="20" uuid="ce035304-340c-4c1f-9c08-2fc8f8e753c0"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{activity_totals}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="954" y="0" width="146" height="20" uuid="20e2381b-0f3c-41b9-92e6-ab6c9ca4874c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{closing_bal_totals}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

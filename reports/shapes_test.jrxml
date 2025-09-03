@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-01-25T10:32:58 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="shapes_test" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f76c2cc7-02a4-43ec-afe0-904b2a249f5c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="broker_db"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<subDataset name="transactions" uuid="bda255d2-4169-4739-96ea-b5f754e9f41c">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="broker_db"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT * FROM public.sys_brk_main_transactions
+ORDER BY trans_no
+DESC]]>
+		</queryString>
+		<field name="trans_no" class="java.lang.Long"/>
+		<field name="trans_amount" class="java.math.BigDecimal"/>
+		<field name="trans_control_acc" class="java.lang.String"/>
+		<group name="trans_control_acc">
+			<groupExpression><![CDATA[$F{trans_control_acc}]]></groupExpression>
+		</group>
+	</subDataset>
+	<queryString>
+		<![CDATA[SELECT pol_trans_type,pol_ref_no,acct_name
+FROM public.sys_brk_policies
+inner join sys_brk_accounts on pol_agent_id = acct_id]]>
+	</queryString>
+	<field name="pol_trans_type" class="java.lang.String"/>
+	<field name="pol_ref_no" class="java.lang.String"/>
+	<field name="acct_name" class="java.lang.String"/>
+	<detail>
+		<band height="316" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="25" uuid="e00e50d4-5c13-44e5-a592-170fd95f0e8f"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="0" y="26" width="555" height="25" uuid="e00e50d4-5c13-44e5-a592-170fd95f0e8f"/>
+			</line>
+			<line>
+				<reportElement x="0" y="50" width="1" height="25" uuid="e00e50d4-5c13-44e5-a592-170fd95f0e8f"/>
+			</line>
+			<line>
+				<reportElement x="0" y="75" width="555" height="1" uuid="e00e50d4-5c13-44e5-a592-170fd95f0e8f"/>
+			</line>
+			<rectangle>
+				<reportElement x="0" y="89" width="555" height="30" uuid="0c3825c7-d15e-48a0-ae20-28a223824216"/>
+			</rectangle>
+			<rectangle radius="5">
+				<reportElement x="0" y="132" width="555" height="50" forecolor="#C0C0C0" uuid="fe0bf713-646b-405a-9bb8-e6683434768e"/>
+				<graphicElement>
+					<pen lineWidth="4.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<ellipse>
+				<reportElement x="280" y="190" width="20" height="20" uuid="979491e5-b448-496c-9b7f-d7a7ce100e99"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="280" y="210" width="20" height="50" uuid="4b037ad4-2b6f-4c9d-8b83-327d5db97e33"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="275" y="250" width="10" height="40" uuid="0e9649b2-3acc-4fc5-b09d-e4ca05a2b6c2"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="295" y="250" width="10" height="40" uuid="c21c5b12-2079-40e6-a562-676aaf5466f6"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="297" y="215" width="30" height="10" uuid="5e67ec43-8271-45c1-ab88-5dfbdbae21d8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="253" y="215" width="30" height="10" uuid="6f494b50-2fa1-44dd-adc4-ac6e52318270"/>
+			</ellipse>
+		</band>
+	</detail>
+	<summary>
+		<band height="240"/>
+	</summary>
+</jasperReport>

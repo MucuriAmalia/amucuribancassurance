@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_sub_mot_rskd" pageWidth="765" pageHeight="500" whenNoDataType="AllSectionsNoDetail" columnWidth="765" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="baa44456-5706-47a0-8851-b1c0b6c94e5e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="absa2_absa2"/>
+	<parameter name="polId" class="java.lang.Long"/>
+	<queryString language="SQL">
+		<![CDATA[select "CHASIS NUMBER" , "REG.MARK", "ESTIMATED VALUE","TONNAGE", "YEAR OF MANUFACTURE"as YOM, "MAKE/MODEL","ENGINE NUMBER", "LOGBOOK NO"
+from "MOTOR PRIVATE SCHEDULE" mps 
+inner join sys_brk_risks sbr on sbr.risk_id = mps.s_brk_risks_id
+where sbr.risk_pol_id =  $P{polId}]]>
+	</queryString>
+	<field name="CHASIS NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CHASIS NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="CHASIS NUMBER"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="MOTOR PRIVATE SCHEDULE"/>
+	</field>
+	<field name="REG.MARK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="REG.MARK"/>
+		<property name="com.jaspersoft.studio.field.label" value="REG.MARK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="MOTOR PRIVATE SCHEDULE"/>
+	</field>
+	<field name="ESTIMATED VALUE" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ESTIMATED VALUE"/>
+		<property name="com.jaspersoft.studio.field.label" value="ESTIMATED VALUE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="MOTOR PRIVATE SCHEDULE"/>
+	</field>
+	<field name="TONNAGE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TONNAGE"/>
+		<property name="com.jaspersoft.studio.field.label" value="TONNAGE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="MOTOR PRIVATE SCHEDULE"/>
+	</field>
+	<field name="yom" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="yom"/>
+		<property name="com.jaspersoft.studio.field.label" value="yom"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="MOTOR PRIVATE SCHEDULE"/>
+	</field>
+	<field name="MAKE/MODEL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MAKE/MODEL"/>
+		<property name="com.jaspersoft.studio.field.label" value="MAKE/MODEL"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="MOTOR PRIVATE SCHEDULE"/>
+	</field>
+	<field name="ENGINE NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ENGINE NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="ENGINE NUMBER"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="MOTOR PRIVATE SCHEDULE"/>
+	</field>
+	<field name="LOGBOOK NO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="LOGBOOK NO"/>
+		<property name="com.jaspersoft.studio.field.label" value="LOGBOOK NO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="MOTOR PRIVATE SCHEDULE"/>
+	</field>
+	<group name="Surrender Values"/>
+	<group name="Risk">
+		<groupHeader>
+			<band height="22">
+				<staticText>
+					<reportElement mode="Transparent" x="0" y="0" width="120" height="22" backcolor="#BEBEBE" uuid="0187f2aa-d82d-4d73-83f7-95e690670b86">
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Chasis Number]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="120" y="0" width="100" height="22" backcolor="#BEBEBE" uuid="db69cb2a-ddb2-4c13-b595-3dfbe776c121">
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Engine number]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="700" y="-1" width="65" height="23" backcolor="#BEBEBE" uuid="cb3c2ffb-8579-4276-a9ad-bc07d899759b">
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Tonnage]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="220" y="0" width="80" height="22" backcolor="#BEBEBE" uuid="a9fe7262-2a62-41c2-8d50-19a254c67429">
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[YOM]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="300" y="0" width="100" height="22" backcolor="#BEBEBE" uuid="30bea682-e2bd-4fa9-b081-7400a8756b44">
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Logbook No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="400" y="0" width="100" height="22" backcolor="#BEBEBE" uuid="86c439c9-22ee-4fb3-89e2-3f942ff4c43c">
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Reg. Mark]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="500" y="0" width="100" height="22" backcolor="#BEBEBE" uuid="518c1fdd-d0fd-4b8e-a039-7a0d19567c1f">
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Make/Model]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="600" y="0" width="100" height="22" backcolor="#BEBEBE" uuid="df68208a-7096-46fa-9bac-c8a02e7dd5c3">
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+						<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Estimated Value]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="23" splitType="Prevent">
+			<textField pattern="#,##0.###;(#,##0.###)">
+				<reportElement positionType="Float" x="0" y="1" width="120" height="20" uuid="2fe201ab-3fa8-49dc-9004-e9d5bb722400">
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CHASIS NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="KES #,##0.###;(KES #,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="120" y="0" width="100" height="21" uuid="e75572fe-7b39-485c-9139-1d9e729c3f46">
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ENGINE NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="KES #,##0.###;(KES #,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="700" y="0" width="65" height="21" uuid="982bd7de-c4de-4af8-8a97-5826f28abd81">
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TONNAGE}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="KES #,##0.###;(KES #,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="220" y="0" width="80" height="21" uuid="9059929e-167f-4836-b15e-a99e6b38c586">
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{yom}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="KES #,##0.###;(KES #,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="300" y="2" width="100" height="19" uuid="d4844732-a81d-4e37-89b9-01f90cc15571">
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{LOGBOOK NO}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="KES #,##0.###;(KES #,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="400" y="1" width="100" height="20" uuid="04f0ce59-b114-45e5-9703-55922374916d">
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{REG.MARK}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="KES #,##0.###;(KES #,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="500" y="1" width="100" height="20" uuid="67ed580c-62b1-4199-9405-64f0a5f9d87c">
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{MAKE/MODEL}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="KES #,##0.###;(KES #,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="600" y="3" width="100" height="18" uuid="64467322-fc64-47a3-a2f5-d05195d999fd">
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+					<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ESTIMATED VALUE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

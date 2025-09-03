@@ -1,0 +1,27 @@
+#Microsoft MSSQL Configurations
+jdbc.databaseurl             = jdbc:sqlserver://45.33.4.27:1433;Instance=;DatabaseName=agency_db;sendStringParametersAsUnicode=false
+jdbc.password                = stima@2018#
+jdbc.username                = sa
+jdbc.dialect                 = org.hibernate.dialect.SQLServerDialect
+jdbc.driverClassName         = com.microsoft.sqlserver.jdbc.SQLServerDriver
+max.poolsize                 = 20
+database_type                = mssql
+hibernate.autodetection      = class
+hibernate.show_sql           = true
+hibernate.format_sql         = true
+hibernate.hbm2ddl.auto       = update
+hibernate.naming_strategy    = org.hibernate.cfg.ImprovedNamingStrategy
+hikari.implicitCachingEnabled= true
+dataSource.maxStatements     = 250
+connection.autocommit        = true
+hibernate.generate_statistics = false
+hibernate.cache.use_second_level_cache=true
+hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory
+ldap.domain = rensoft.co.ke
+ldap.url = ldap://45.33.4.27/
+auth.type = normal
+#auth.type =ldap
+
+
+
+

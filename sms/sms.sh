@@ -1,0 +1,1 @@
+mv *.csv  /home/peter/dump

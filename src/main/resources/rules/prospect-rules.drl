@@ -1,0 +1,121 @@
+package prospectRules
+import com.brokersystems.brokerapp.setup.model.ProspectDef;
+import com.brokersystems.brokerapp.server.utils.ClientUtils;
+import com.brokersystems.brokerapp.server.utils.ErrorUtils;
+import com.brokersystems.brokerapp.server.utils.DateUtilities;
+import org.apache.commons.lang3.StringUtils
+import java.util.Date;
+import java.text.SimpleDateFormat;
+global ErrorUtils errorUtils;
+
+rule "validate_type"
+        when
+        ProspectDef(tenantType==null )
+        then
+        errorUtils.addError("Prospect Type is Mandatory....");
+end
+
+//rule "validate_email_address"
+//     when
+//        ProspectDef(StringUtils.isBlank(emailAddress))
+//     then
+//       errorUtils.addError("Prospect Email Address is Mandatory....");
+// end
+//
+// rule "validate_id"
+//         when
+//         ProspectDef(tenantType!=null && StringUtils.isBlank(idNo) && tenantType.clientType.equalsIgnoreCase("I"))
+//         then
+//         errorUtils.addError("For Adult Prospects, the ID Number is mandatory!!!");
+// end
+
+// rule "validate_id_exist"
+//         when
+//         ProspectDef(tenId==null && (!StringUtils.isBlank(idNo)  && ClientUtils.checkProspectIdNew(idNo)))
+//         then
+//         errorUtils.addError("Prospect ID number already exists...");
+// end
+
+// rule "validate_id_exist2"
+//         when
+//         ProspectDef(tenId!=null && (!StringUtils.isBlank(idNo) && ClientUtils.checkProspectIdExists(idNo)))
+//         then
+//         errorUtils.addError("Prospect ID number already exists...");
+//  end
+
+//  rule "check_reg_no"
+//         when
+//         ProspectDef(tenantType!=null && StringUtils.isBlank(idNo) && tenantType.clientType=="C")
+//         then
+//         errorUtils.addError("The Registration Number is mandatory!!!");
+// end
+//
+// rule "check_individual_pin_no"
+//         when
+//         ProspectDef(tenantType!=null && tenantType.clientType=="I" && StringUtils.isBlank(pinNo))
+//         then
+//         errorUtils.addError("PIN Number is mandatory for Prospects..");
+// end
+//
+// rule "check_corporate_pin_no"
+//         when
+//         ProspectDef(tenantType!=null && tenantType.clientType=="C" && StringUtils.isBlank(pinNo))
+//         then
+//         errorUtils.addError("PIN Number is mandatory for Corporate Prospects");
+// end
+
+// rule "check_prefix"
+//        when
+//        ProspectDef(smsPrefix==null)
+//        then
+//        errorUtils.addError("Phone Prefix Number is mandatory");
+// end
+
+//  rule "check_phone"
+//         when
+//         ProspectDef( StringUtils.isBlank(phoneNo))
+//         then
+//         errorUtils.addError("Phone Number is mandatory");
+//  end
+
+rule "check_gender"
+       when
+       ProspectDef(tenantType!=null && tenantType.clientType=="I" && StringUtils.isBlank(gender))
+       then
+       errorUtils.addError("Gender field is mandatory");
+end
+
+rule "validate_pin_format"
+        when
+        ProspectDef(!StringUtils.isBlank(pinNo) && !ClientUtils.validatePin(pinNo))
+        then
+        errorUtils.addError("Prospect PIN number Format Is Wrong ...");
+end
+
+rule "validate_pin_exist"
+        when
+        ProspectDef(tenId!=null && (!StringUtils.isBlank(pinNo) && ClientUtils.checkProspectPinExists(pinNo)))
+        then
+        errorUtils.addError("Prospect PIN number already exists...");
+end
+
+rule "validate_pin_exist2"
+        when
+        ProspectDef(tenId==null && (!StringUtils.isBlank(pinNo) && ClientUtils.checkProspectPinNew(pinNo)))
+        then
+        errorUtils.addError("Prospect PIN number already exists...");
+end
+
+//rule "validate_id_format"
+//        when
+//        ProspectDef(!StringUtils.isBlank(idNo) && !ClientUtils.validateId(idNo))
+//        then
+//        errorUtils.addError("Prospect ID number Format Is Wrong ...");
+//end
+
+//rule "validate_phone_format"
+//        when
+ //       ProspectDef(!StringUtils.isBlank(phoneNo) && !ClientUtils.validatePhone(phoneNo))
+ //       then
+  //      errorUtils.addError("Phone number Format Is Wrong, Phone numbers should be exactly 6 digits ...");
+//end

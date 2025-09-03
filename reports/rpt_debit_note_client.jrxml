@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2018-02-27T16:04:12 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_debit_note_client" pageWidth="595" pageHeight="742" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="116ba2e3-f64b-47ad-a401-c58172b6c593">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="318"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="670"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MSSQL Stima"/>
+	<import value="org.apache.commons.codec.binary.Base64"/>
+	<parameter name="polId" class="java.lang.Long"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<queryString language="SQL">
+		<![CDATA[select  pol_id,org_name,org_mobile ,org_phone,org_address,org_website,phy_address,
+add_email_addr,client_fname,client_onames,client_address,client_sht_desc,acct_name,acct_address,pol_no,pol_wef_date,pol_wet_date,
+pr_desc,client_phone,client_email,client_sms_number,client_pin,cur_iso_code,client_idno,pol_calc_premium_amt,pol_stamp_duty,
+pol_training_levy,pol_phcf,pol_net_premium_amt,pol_sum_insur_amt,pol_auth_date,pol_date ,b.user_name pol_created_user,a.user_name pol_auth_user,
+pol_client_pol_no,pol_ref_no,bin_name,ob_name,pm_desc,pol_auth_status,pol_basic_premium_amt,pol_comm_amt, pol_whtx,pol_trans_type
+ from sys_brk_organization,sys_brk_policies
+ inner join sys_brk_clients on pol_client_id = client_id
+ inner join  sys_brk_accounts on pol_agent_id = acct_id
+ inner join  sys_brk_products on pol_prod_id = pr_code
+ inner join sys_brk_currencies on pol_curr_id=cur_code
+ inner join sys_brk_binders on pol_binder_id = bin_id
+ inner join sys_brk_branches on  pol_branch_id=ob_id
+ inner join sys_brk_payment_modes on pol_pmode_id = pm_id
+ inner join sys_brk_users b on pol_created_user =b.user_id
+ left outer join sys_brk_users a on pol_auth_user = a.user_id
+  where pol_id=  $P{polId}]]>
+	</queryString>
+	<field name="pol_id" class="java.lang.Long"/>
+	<field name="org_name" class="java.lang.String"/>
+	<field name="org_mobile" class="java.lang.String"/>
+	<field name="org_phone" class="java.lang.String"/>
+	<field name="org_address" class="java.lang.String"/>
+	<field name="org_website" class="java.lang.String"/>
+	<field name="phy_address" class="java.lang.String"/>
+	<field name="add_email_addr" class="java.lang.String"/>
+	<field name="client_fname" class="java.lang.String"/>
+	<field name="client_onames" class="java.lang.String"/>
+	<field name="client_address" class="java.lang.String"/>
+	<field name="client_sht_desc" class="java.lang.String"/>
+	<field name="acct_name" class="java.lang.String"/>
+	<field name="acct_address" class="java.lang.String"/>
+	<field name="pol_no" class="java.lang.String"/>
+	<field name="pol_wef_date" class="java.sql.Date"/>
+	<field name="pol_wet_date" class="java.sql.Date"/>
+	<field name="pr_desc" class="java.lang.String"/>
+	<field name="client_phone" class="java.lang.String"/>
+	<field name="client_email" class="java.lang.String"/>
+	<field name="client_sms_number" class="java.lang.String"/>
+	<field name="client_pin" class="java.lang.String"/>
+	<field name="cur_iso_code" class="java.lang.String"/>
+	<field name="client_idno" class="java.lang.String"/>
+	<field name="pol_calc_premium_amt" class="java.math.BigDecimal"/>
+	<field name="pol_stamp_duty" class="java.math.BigDecimal"/>
+	<field name="pol_training_levy" class="java.math.BigDecimal"/>
+	<field name="pol_phcf" class="java.math.BigDecimal"/>
+	<field name="pol_net_premium_amt" class="java.math.BigDecimal"/>
+	<field name="pol_sum_insur_amt" class="java.math.BigDecimal"/>
+	<field name="pol_auth_date" class="java.sql.Timestamp"/>
+	<field name="pol_date" class="java.sql.Date"/>
+	<field name="pol_created_user" class="java.lang.String"/>
+	<field name="pol_auth_user" class="java.lang.String"/>
+	<field name="pol_client_pol_no" class="java.lang.String"/>
+	<field name="pol_ref_no" class="java.lang.String"/>
+	<field name="bin_name" class="java.lang.String"/>
+	<field name="ob_name" class="java.lang.String"/>
+	<field name="pm_desc" class="java.lang.String"/>
+	<field name="pol_auth_status" class="java.lang.String"/>
+	<field name="pol_basic_premium_amt" class="java.math.BigDecimal"/>
+	<field name="pol_comm_amt" class="java.math.BigDecimal"/>
+	<field name="pol_whtx" class="java.math.BigDecimal"/>
+	<field name="pol_trans_type" class="java.lang.String"/>
+	<background>
+		<band height="333" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<printWhenExpression><![CDATA[$F{pol_auth_user}==null]]></printWhenExpression>
+			<image>
+				<reportElement positionType="FixRelativeToBottom" x="80" y="23" width="385" height="310" uuid="5c8ee059-dbdb-4434-a1a1-7e945e5382f4"/>
+				<imageExpression><![CDATA["reports/draft_watermark.png"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<pageHeader>
+		<band height="122">
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="5" y="0" width="145" height="90" uuid="fa40561d-92e4-4381-9552-3de8c6499977"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="280" y="3" width="265" height="15" uuid="9b5f1bd8-26a5-4e47-8e4c-2505b9b70e3d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="20" width="265" height="15" uuid="91f0fe77-4f94-4355-8be1-890baa89d9e4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_address}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="35" width="265" height="15" uuid="6dad3ecf-0615-436e-a60c-8d3db951a98e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TEL: " + $F{org_mobile} +"," +$F{org_phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="65" width="265" height="15" uuid="866e8cf5-94b2-46c0-934a-5380c0e5e7df">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["EMAIL: "+$F{add_email_addr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="50" width="265" height="15" uuid="0e00fb9c-1ee2-44e0-9ca2-88fa7cd69c90"/>
+				<textFieldExpression><![CDATA["WEBSITE: " + $F{org_website}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="96" width="495" height="21" uuid="0ee999b7-2d18-4d36-b04d-016170548d3d"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pr_desc}.toUpperCase()+" " +$F{pol_trans_type}+" DEBIT NOTE"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="530">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement positionType="Float" x="130" y="20" width="224" height="14" uuid="43a9e754-cc74-4e7d-b9a1-1f9715c69d2d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{client_fname}.toUpperCase()+" "+$F{client_onames}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="130" y="34" width="224" height="16" uuid="211db7f9-b7a9-48ab-b36c-7d16e1c2a5eb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{client_address}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="201" width="92" height="15" uuid="428ad950-25aa-47e6-abaf-b7a06fb78433">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy Number: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="110" y="201" width="171" height="15" uuid="0c427edf-02d3-4a18-9e06-125cbdb2a2ba">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{pol_client_pol_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="155" width="91" height="15" uuid="be37ccf1-a938-4410-835f-077a6dbe59f3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy Cover From:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="170" width="91" height="15" uuid="934c56f7-0de8-4eac-b255-7b66d627b7bf">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy Cover To]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement positionType="Float" x="110" y="155" width="171" height="15" uuid="90dfcd85-cf9f-4ae8-a416-1891aa74e17e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{pol_wef_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement positionType="Float" x="110" y="170" width="171" height="15" uuid="350a16e4-a4cd-4931-9c8e-bcfd191a4021">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{pol_wet_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="20" width="120" height="14" uuid="79bb0952-a77a-490c-b730-a2e51fb572c1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Policy Holder: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="34" width="120" height="16" uuid="64b7939a-5563-489b-9947-5ee30555c280"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Postal Address: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="185" width="92" height="15" uuid="43a725d8-9451-4265-9f6f-3c1c4d58837d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Client Account No. "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="110" y="185" width="172" height="16" uuid="81d40fe2-a565-4b2b-9b17-8db9decaf1b7"/>
+				<textFieldExpression><![CDATA[$F{client_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="50" width="120" height="15" uuid="6a85b3dc-32fe-4abd-b675-de71376ee08c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Tel: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="130" y="50" width="224" height="15" uuid="63207333-3033-4a73-b5b8-2e9361502a1d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{client_phone}+","+$F{client_sms_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="65" width="120" height="15" uuid="373dbcf9-f71f-4ab5-8ee0-51008a821ef3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Email: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="130" y="66" width="224" height="14" uuid="102a432d-486c-449b-9eb6-051b68ed81f6"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{client_email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="123" width="92" height="16" uuid="88a81d91-4dd2-4057-9814-87fef7418ef5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Insurer Name: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="123" width="172" height="15" uuid="402827c9-f6a9-48e6-865e-9567696c32ee"/>
+				<textFieldExpression><![CDATA[$F{acct_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="216" width="92" height="14" uuid="761774a2-61df-4040-a0ef-b034fbb319c4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Binder: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="110" y="216" width="171" height="14" uuid="6bce6e78-e8e2-4c9e-bb0c-1b4597600dd2"/>
+				<textFieldExpression><![CDATA[$F{bin_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="482" y="90" width="75" height="15" uuid="ef765e34-b5ff-45ea-b579-bcf2f4212622"/>
+				<textFieldExpression><![CDATA[$F{pol_ref_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="89" width="120" height="17" uuid="2e19af86-55f4-4511-bb76-da8f85cda27f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Reference No: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="130" y="89" width="152" height="17" uuid="48875293-5d53-401f-82d9-039f0d7c7afd"/>
+				<textFieldExpression><![CDATA[$F{pol_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="313" y="256" width="87" height="15" uuid="6b5077b7-ac70-49fe-a760-5bdb6a08997b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Basic Premium: ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="460" y="258" width="91" height="13" uuid="e316afbb-58d9-410a-b3bc-810ba994845d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_calc_premium_amt}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="313" y="271" width="87" height="15" uuid="533aefbd-1ea8-46f0-a9fc-57d89904ce40">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Stamp Duty: ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="455" y="271" width="96" height="15" uuid="35f13975-b19f-4cb6-bbda-55dba9c4a146">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_stamp_duty}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="313" y="286" width="87" height="15" uuid="a06c738a-d820-4616-9192-cc342347f552">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Training Levy: ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="455" y="286" width="96" height="15" uuid="4f3701df-5226-44d0-8c89-7dccf666bf34">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_training_levy}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="290" y="301" width="110" height="15" uuid="20226ba3-5524-4912-9038-199b3c70f446">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy Charge: ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="455" y="301" width="96" height="15" uuid="8ce2cbec-12d8-4fb1-817e-589189b45330">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_phcf}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="313" y="321" width="87" height="15" uuid="77c0d124-087d-4838-b9b9-184f9889e5e8">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gross Premium: ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="457" y="321" width="94" height="15" uuid="59a72497-ed07-44f0-b047-2b593ca1a105">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_basic_premium_amt}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="314" y="336" width="243" height="1" uuid="8b351657-22b5-460e-94f3-1c306522ed55">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement positionType="Float" x="2" y="350" width="554" height="20" uuid="9013ca48-4877-4462-8d44-3a51fd5e3da7"/>
+				<textFieldExpression><![CDATA["For and on behalf of " +$F{org_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="110" y="230" width="172" height="14" uuid="c16eb1b9-eafd-4c7c-a3e2-ba393eeb7b7a"/>
+				<textFieldExpression><![CDATA[$F{pol_ref_no}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="20" width="1" height="223" uuid="d85518ac-f134-45c5-9506-4a54903b62f2">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="102" y="123" width="1" height="193" uuid="9412d857-e51b-400b-85ca-93d7697df12c">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="2" y="243" width="555" height="1" uuid="e4935674-4a98-46bb-b0da-a54657734cf8">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="3" y="20" width="553" height="1" uuid="6a4c3694-4837-4753-acb4-9d4a24cab62f">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="3" y="80" width="553" height="1" uuid="bbfedbf6-137b-46b8-afd0-d18bc1b483dd">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="3" y="123" width="553" height="1" uuid="3c1b09c1-9a8a-4f2b-9238-6b84820171f1">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="556" y="20" width="1" height="317" uuid="9a4bc820-8c0a-4a9a-a730-b460ec9caf5c">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<textField pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="460" y="244" width="91" height="14" uuid="32411afa-2434-40aa-95b8-df86caf1054f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cur_iso_code}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="102" y="316" width="455" height="1" uuid="582f23d4-b316-423e-b1f2-10afc9594482">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="400" y="244" width="1" height="93" uuid="1d2aa7b7-ae33-411c-b2a4-2660ad5a0c29">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="313" y="316" width="1" height="21" uuid="691a2a78-e3bb-41b5-a3d0-1b73b3c837d5">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="435" y="0" width="120" height="20" uuid="47f76414-6fee-4cde-844d-f6516074ccdb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Bottom">
+					<font size="11" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[CLIENT COPY]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="354" y="90" width="126" height="15" uuid="50ee8402-1acf-4094-9bf6-7c21dd01887d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_trans_type}+" INVOICE NUMBER: "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="" positionType="FixRelativeToBottom" x="385" y="517" width="40" height="13" uuid="7cc36600-b4e2-475c-a89a-433383f3d65b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATE: ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="105" y="515" width="110" height="13" uuid="2a6ffa54-d5a9-4a61-b9da-0425cdac03c2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_auth_user}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="5" y="515" width="100" height="13" uuid="a0104043-e6fd-4db4-a2b1-0d7bbb75ade7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VERIFIED BY: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="3" y="380" width="552" height="80" uuid="80a2f91a-efca-497d-a97f-7c03ccc15133">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPORTANT:
+The insurance Act Cap 487, section 156 requires premiums to be paid upfront in full.
+Any material change in the insured risk must be reported to avoid possible repudiation of liability by insurers
+All terms and conditions as per policy issued or to be issued
+]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="MMMM d, yyyy" isBlankWhenNull="true">
+				<reportElement key="" positionType="FixRelativeToBottom" x="425" y="517" width="100" height="13" uuid="9a746b06-d0ba-4f1a-90e5-7b88a1256517"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_auth_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="" positionType="FixRelativeToBottom" x="385" y="500" width="40" height="13" uuid="2b0a6bf5-abc8-4d6f-bd7e-cd15692f0431"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="5" y="500" width="100" height="13" uuid="5fb78662-1cd2-4651-a881-ff3dde641b97"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ISSUING OFFICER:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="105" y="500" width="110" height="13" uuid="0947b7bb-1f4c-415e-b5b4-2a4078580e9b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_created_user}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMMM d, yyyy" isBlankWhenNull="true">
+				<reportElement key="" positionType="FixRelativeToBottom" x="425" y="500" width="100" height="13" uuid="466fced5-a4e9-40c6-a77e-f03448d9a1eb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

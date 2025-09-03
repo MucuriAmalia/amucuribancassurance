@@ -1,0 +1,6 @@
+/target/
+/.idea/
+/.settings/
+/bin/
+/src/main/resources/config.properties
+/C:/

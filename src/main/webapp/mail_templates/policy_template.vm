@@ -1,0 +1,20 @@
+<html>
+<body>
+<h4>Hi $client, </H4>
+<p>
+<h4> Attached is your Policy information for Policy no $polno </h4>
+</p>
+<p>
+    <table class="table table-hover">
+   <tr><td> Intermediary</td><td>$agent</td></tr>
+    <tr><td> Payable premium:</td><td>   $premium</td></tr>
+    <tr><td>effective from</td><td>     $wef </td></tr>
+    <tr><td>effective to</td><td>       $wet</td></tr>
+    <tr><td>Ref No</td><td>           $refno</td></tr>
+    <tr><td>Renewal Date </td><td>      $rendate</td></tr>
+</table>
+</p>
+<p>Thank you for doing business with $orgname</p>
+</body>
+
+</html>

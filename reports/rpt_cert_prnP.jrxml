@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2018-05-07T14:08:40 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_cert_prnP" pageWidth="820" pageHeight="300" whenNoDataType="AllSectionsNoDetail" columnWidth="680" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e680202f-902d-45da-b00b-0b94838f954c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Local AGENCY"/>
+	<parameter name="user_code" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT cer_sub_id,cq_client_name client_fname, cert_prefix,cq_cert_no,
+    pol_client_pol_no, upper(cov_sht_desc) cov_sht_desc,
+	 cq_date_time,pc_wef,cast (pc_wet as date) pc_wet,
+    risk_sht_desc, SUBSTRING(acct_name, 1, 31) "ISSUED BY" , 
+   sched_col_4 "PASSENGERS",sched_col_5 "tons"
+    From sys_brk_cert_queue
+    inner join sys_brk_policy_certs on pc_id = cq_pc_id
+	 inner join sys_brk_brn_certs on bc_id = cq_bc_id
+	 inner join sys_brk_certs on cer_id = bc_cer_id
+	 inner join sys_brk_cert_types on cert_id = cer_cert_code
+	 inner join sys_brk_risks on cq_rsk_id= risk_id
+	 inner join sys_brk_policies on risk_pol_id = pol_id
+	 inner join sys_brk_covertypes on cov_id = risk_cover_id
+	 inner join sys_brk_clients on client_id = risk_insured_id
+	 inner join sys_brk_accounts on acct_id = cer_acct_code
+	 left outer join sys_brk_risk_scheds sbrs on sbrs.sched_rsk_id= risk_id
+  where cq_id IN (SELECT cerp_cq_id from sys_brk_certificate_print where cerp_user_code =  $P{user_code} )]]>
+	</queryString>
+	<field name="cer_sub_id" class="java.lang.Long"/>
+	<field name="client_fname" class="java.lang.String"/>
+	<field name="cert_prefix" class="java.lang.String"/>
+	<field name="cq_cert_no" class="java.lang.Long"/>
+	<field name="pol_client_pol_no" class="java.lang.String"/>
+	<field name="cov_sht_desc" class="java.lang.String"/>
+	<field name="cq_date_time" class="java.sql.Timestamp"/>
+	<field name="pc_wef" class="java.sql.Timestamp"/>
+	<field name="pc_wet" class="java.sql.Timestamp"/>
+	<field name="risk_sht_desc" class="java.lang.String"/>
+	<field name="ISSUED BY" class="java.lang.String"/>
+	<field name="PASSENGERS" class="java.lang.Integer"/>
+	<field name="tons" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="210" splitType="Stretch">
+			<rectangle>
+				<reportElement x="10" y="0" width="246" height="210" uuid="c8a30ee1-f46d-4bf9-b789-5fc2cd4fd554"/>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="53" y="52" width="203" height="18" uuid="e197d96e-743c-4858-8f96-f671fb44b8ce"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{client_fname}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="49" y="70" width="230" height="15" uuid="ce5ef771-ec84-41af-8ac4-f82f94f9f8f7"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_client_pol_no}+" - "+$F{cov_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MMM/yyyy" isBlankWhenNull="true">
+				<reportElement x="78" y="80" width="120" height="13" uuid="e95e4dd2-bc99-4ec8-8a2e-fd9c3045f4c8"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wef}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MMM/yyyy" isBlankWhenNull="true">
+				<reportElement x="98" y="95" width="120" height="20" uuid="c1afe643-fcb9-4cb6-b793-c15b49e25103"/>
+				<textElement verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wet}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="98" y="110" width="120" height="20" uuid="3aec047d-9705-4da2-b414-f3a72359634b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{risk_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="32" y="148" width="224" height="16" uuid="e128265b-0f6a-46b3-add1-38fd9b7b65de"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ISSUED BY}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="50" y="127" width="90" height="21" uuid="93e6ddc1-a3bf-4040-9dc2-f70685d9987d"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tons}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="HH:mm a" isBlankWhenNull="true">
+				<reportElement x="184" y="95" width="74" height="20" uuid="ca98907a-35b7-4992-920d-078da8ac557a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wet}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="HH:mm a" isBlankWhenNull="true">
+				<reportElement x="184" y="79" width="74" height="13" uuid="7a631b29-4e84-4809-84a6-4bd69b423ba8"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wef}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="256" y="0" width="251" height="210" uuid="aa7f0cd4-b054-42aa-bdc2-129f36d5efa7"/>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="507" y="0" width="271" height="210" uuid="a7c47bf8-1068-47c0-bbbc-746b56ae9c8d"/>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="300" y="51" width="207" height="18" uuid="b9a73aa7-7dad-4721-9361-a8e8e404edbd"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{client_fname}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="HH:mm a" isBlankWhenNull="true">
+				<reportElement x="430" y="79" width="70" height="13" uuid="3d9b0b02-479d-4c25-9ec6-2879c26405bb"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wef}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="275" y="147" width="231" height="17" uuid="089a8d76-8764-47e2-b525-654909587ede"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ISSUED BY}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="299" y="69" width="207" height="15" uuid="3e78f116-e25e-48b6-9c71-0f3071675b01"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_client_pol_no}+" - "+$F{cov_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MMM/yyyy" isBlankWhenNull="true">
+				<reportElement x="320" y="80" width="104" height="13" uuid="a79bd453-6061-4ee5-be94-62cb6531f223"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wef}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="HH:mm a" isBlankWhenNull="true">
+				<reportElement x="430" y="95" width="70" height="19" uuid="a7e84ea4-1a66-4878-96aa-4314335b10df"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wet}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="288" y="127" width="122" height="20" uuid="d93beac4-c490-461b-be62-843fcafc3978"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tons}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="324" y="110" width="120" height="20" uuid="d5a67c1e-200b-438c-a016-d32c8667df10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{risk_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MMM/yyyy" isBlankWhenNull="true">
+				<reportElement x="324" y="95" width="120" height="20" uuid="33641cf2-ed98-4735-84d9-da945f108bc6"/>
+				<textElement verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wet}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="HH:mm a" isBlankWhenNull="true">
+				<reportElement x="670" y="78" width="65" height="13" uuid="cc4706c1-0cbb-4c4f-a2ea-f53594a80024"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wef}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="517" y="147" width="261" height="17" uuid="969402f4-82d9-4b25-aa35-a1ebe8c6bfb9"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ISSUED BY}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="535" y="68" width="230" height="15" uuid="a9af346d-892d-4a61-b5c9-f70b23f870ca"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_client_pol_no}+" - "+$F{cov_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MMM/yyyy" isBlankWhenNull="true">
+				<reportElement x="562" y="79" width="108" height="14" uuid="c0b0f05f-f2e9-47e1-b6b3-086400cb5ee0"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wef}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="HH:mm a" isBlankWhenNull="true">
+				<reportElement x="670" y="95" width="64" height="19" uuid="5c6edc40-37f1-4ff1-a2df-bfbb75775308"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wet}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="533" y="127" width="90" height="20" uuid="67d4eaa4-6431-4a60-9687-4d5c6532f186"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tons}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="585" y="110" width="120" height="20" uuid="93a594a1-6ce4-4c9b-b7b6-8ed63f600f91"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{risk_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MMM/yyyy" isBlankWhenNull="true">
+				<reportElement x="585" y="95" width="120" height="20" uuid="b4c20c5c-57e7-46da-a67c-6567ef23b77c"/>
+				<textElement verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wet}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

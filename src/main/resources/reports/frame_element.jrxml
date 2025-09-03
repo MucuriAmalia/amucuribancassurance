@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-07-11T11:46:59 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="frame_element" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aea4a9a6-515d-44a5-9fe4-e32af092f44f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="60" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="60" backcolor="#C0C0C0" uuid="a73d1e34-f138-4ff3-b464-28d337efeccb"/>
+				<box padding="1">
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="0" width="150" height="24" uuid="008ec87f-211a-40e7-9ebe-df0c63517be6"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+				</textField>
+				<staticText>
+					<reportElement stretchType="RelativeToTallestObject" x="290" y="0" width="252" height="24" uuid="b49b492e-41e4-4eee-9461-c06f8da0be78"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<text><![CDATA[Static Text Element is  RelativeToTallestObject]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="0" y="25" width="250" height="24" uuid="b49b492e-41e4-4eee-9461-c06f8da0be78"/>
+					<box>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</box>
+					<text><![CDATA[this text is here to stretch the band abit more]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

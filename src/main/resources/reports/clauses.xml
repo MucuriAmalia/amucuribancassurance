@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataTemplate  name="clauses" defaultPackage="">
+<properties>
+<property name="xml_tag_case" value="upper"/>
+</properties>
+<parameters>
+    <parameter name="P_HEADING" dataType="character"/>
+</parameters>
+<lexicals>
+</lexicals>
+<dataQuery>
+<sqlStatement name="Q_1">
+
+select cls_heading, cl_sht_desc CLS_SHT_DESC,cls_wording,
+upper(DECODE(CLS_TYPE,'CL','Clause','WR','Warranty','SC','Special Conditions',
+'EX','Excess','PL','Peril','EC','Exclusion','ET','Extension','ME','Memo')) CLAUSE_TYPE
+from sys_brk_classes
+where cl_id = decode(NVL(:P_HEADING,'-2000'),'-2000',cl_id ,:P_HEADING)
+order by cl_sht_desc
+
+</sqlStatement>
+<sqlStatement name="Q_2">
+
+select ORG_PHY_ADDRS,
+ORG_ADDRS||' , '||ORG_ZIP||' - '||TWN_NAME||' , '||COU_NAME Organization, 
+'Telephone'||':'||ORG_TEL1||' /'||ORG_TEL2 Telephone, 
+'Fax'||':'||ORG_FAX Fax, 
+'E-mail'||':'||ORG_EMAIL_ADDRS email,ORG_LOGO_B64 logo
+from TQC_ORGANIZATIONS, TQC_COUNTRIES, TQC_TOWNS
+where ORG_TWN_CODE = TWN_CODE
+and ORG_COU_CODE = COU_CODE
+and ORG_CODE = 2
+
+</sqlStatement>
+</dataQuery>
+<dataStructure>
+<group name="G_CLAUSE_TYPE" dataType="varchar2" source="Q_1">
+    <element name="clause_type" dataType="varchar2" value="CLAUSE_TYPE"/>
+    <group name="G_1" dataType="varchar2" source="Q_1">
+        <element name="cls_heading" dataType="varchar2" value="CLS_HEADING"/>
+        <group name="G_cls_heading" dataType="varchar2" source="Q_1">
+            <element name="cls_wording" dataType="long" value="CLS_WORDING"/>
+        </group>
+    </group>
+</group>
+<group name="G_COM_NAME" dataType="varchar2" source="Q_2">
+    <element name="ORG_PHY_ADDRS" dataType="varchar2" value="ORG_PHY_ADDRS"/>
+    <element name="Organization" dataType="varchar2" value="ORGANIZATION"/>
+    <element name="Telephone" dataType="varchar2" value="TELEPHONE"/>
+    <element name="Fax" dataType="varchar2" value="FAX"/>
+    <element name="email" dataType="varchar2" value="EMAIL"/>
+    <element name="logo" dataType="longRaw" value="LOGO"/>
+</group>
+</dataStructure>
+</dataTemplate>

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-07-11T12:19:05 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_outp_undertaking_letter" pageWidth="595" pageHeight="742" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="116ba2e3-f64b-47ad-a401-c58172b6c593">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="318"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="670"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Broker_db"/>
+	<import value="org.apache.commons.codec.binary.Base64"/>
+	<parameter name="parId" class="java.lang.Long"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT org_name,
+       org_mobile,
+       org_phone,
+       org_address,
+       org_website,
+       phy_address,
+       add_email_addr,
+       s.par_id,
+       s.par_no,	     
+	   s.par_status,
+       s1.req_appr_amount req_calc_amount,
+	   s2.rs_date,	
+       s4.msp_name,
+       s4.msp_post_addr,
+       s4.msp_phy_address,
+       s4.msp_email,
+       s6.client_fname,
+       s6.client_onames,
+       s6.client_sht_desc,
+       s6.client_gender,
+       s7.client_fname schemename,
+       s7.client_onames schemeoname,
+       s8.ba_ail_id,
+       s8.ba_desc,
+	   s11.sc_desc,
+	   s12.user_name transuser,
+	   s13.user_name authuser
+ 	FROM sys_brk_organization,sys_brk_med_par_trans s
+  	   INNER JOIN sys_brk_med_clm_requests s1 on s1.req_par_id = s.par_id
+	   INNER JOIN sys_brk_med_clm_services s2 on s2.rs_req_id = s1.req_id
+	   INNER JOIN sys_brk_provd_contracts s3 ON s3.spc_id = s.par_spc_id
+	   INNER JOIN sys_brk_med_serv_prvds s4 on s4.msp_id = s3.spc_provider_id
+	   INNER JOIN sys_brk_policies s5 ON s5.pol_id = s.par_policy_id
+	   INNER JOIN sys_brk_clients s6 ON s6.client_id = s.par_client_id
+	   INNER JOIN sys_brk_clients s7 ON s7.client_id = s5.pol_client_id
+	   INNER JOIN sys_brk_ailments s8 ON s8.ba_id = s1.req_ail_id
+	   INNER JOIN sys_brk_cat_benefits s9 ON s9.cb_id = s2.rs_cat_ben_id
+	   INNER JOIN sys_brk_med_covers s10 ON s10.med_id = s9.cb_cov_id
+	   INNER JOIN sys_brk_sections s11 ON s11.sc_id = s10.med_sec_code	   
+	   INNER JOIN sys_brk_users s12 ON s12.user_id = s.par_trans_user
+	   LEFT OUTER JOIN sys_brk_users s13 ON s13.user_id = s.par_auth_user
+	    WHERE s.par_trans_type = 'P'
+	    AND s1.req_serv_place = 'OT'
+	    AND  s1.req_appr_amount > 0
+       AND s.par_id =  $P{parId}]]>
+	</queryString>
+	<field name="org_name" class="java.lang.String"/>
+	<field name="org_mobile" class="java.lang.String"/>
+	<field name="org_phone" class="java.lang.String"/>
+	<field name="org_address" class="java.lang.String"/>
+	<field name="org_website" class="java.lang.String"/>
+	<field name="phy_address" class="java.lang.String"/>
+	<field name="add_email_addr" class="java.lang.String"/>
+	<field name="par_id" class="java.lang.Long"/>
+	<field name="par_no" class="java.lang.String"/>
+	<field name="par_status" class="java.lang.String"/>
+	<field name="req_calc_amount" class="java.math.BigDecimal"/>
+	<field name="rs_date" class="java.sql.Timestamp"/>
+	<field name="msp_name" class="java.lang.String"/>
+	<field name="msp_post_addr" class="java.lang.String"/>
+	<field name="msp_phy_address" class="java.lang.String"/>
+	<field name="msp_email" class="java.lang.String"/>
+	<field name="client_fname" class="java.lang.String"/>
+	<field name="client_onames" class="java.lang.String"/>
+	<field name="client_sht_desc" class="java.lang.String"/>
+	<field name="client_gender" class="java.lang.String"/>
+	<field name="schemename" class="java.lang.String"/>
+	<field name="schemeoname" class="java.lang.String"/>
+	<field name="ba_ail_id" class="java.lang.Long"/>
+	<field name="ba_desc" class="java.lang.String"/>
+	<field name="sc_desc" class="java.lang.String"/>
+	<field name="transuser" class="java.lang.String"/>
+	<field name="authuser" class="java.lang.String"/>
+	<background>
+		<band height="411" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<printWhenExpression><![CDATA[$F{par_status}.equalsIgnoreCase( "Open" )]]></printWhenExpression>
+			<image>
+				<reportElement positionType="Float" x="80" y="78" width="385" height="310" uuid="5c8ee059-dbdb-4434-a1a1-7e945e5382f4"/>
+				<imageExpression><![CDATA["reports/draft_watermark.png"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<pageHeader>
+		<band height="129">
+			<rectangle>
+				<reportElement x="0" y="0" width="556" height="129" uuid="3c37c14a-7947-49ea-9cc8-6aba14462fd0"/>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="4" y="4" width="145" height="90" uuid="1e8b0fee-74bb-46e4-9713-0d5c13a0ba9a"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="280" y="3" width="265" height="15" uuid="c8576763-e2a2-43ed-bb20-5edcfced788b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="20" width="265" height="15" uuid="510d8fe0-3d85-474a-bda1-14f4addc54e7">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_address}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="35" width="265" height="15" uuid="b10aaa71-56e8-4675-aa30-8aa70e408b1a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TEL: " + $F{org_mobile} +"," +$F{org_phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="65" width="265" height="15" uuid="e8e3156b-ec02-4629-9c43-d2494eac118e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["EMAIL: "+$F{add_email_addr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="50" width="265" height="15" uuid="7742fcb5-f1e9-4390-8be5-7be9aa2a8ada"/>
+				<textFieldExpression><![CDATA["WEBSITE: " + $F{org_website}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="107" width="555" height="21" uuid="785c0fc3-05d6-4c5a-a803-ba364d638693"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sc_desc}.toUpperCase()+"  LETTER OF  UNDERTAKING"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="422">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<rectangle>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="0" width="556" height="410" backcolor="rgba(255, 255, 255, 0.0)" uuid="4eb0939f-f056-4f4f-9ad9-daefaa645ecb"/>
+			</rectangle>
+			<textField>
+				<reportElement positionType="Float" x="82" y="24" width="474" height="16" uuid="211db7f9-b7a9-48ab-b36c-7d16e1c2a5eb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{par_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="227" width="91" height="15" uuid="428ad950-25aa-47e6-abaf-b7a06fb78433">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[SCHEME NAME: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="101" y="227" width="454" height="15" uuid="0c427edf-02d3-4a18-9e06-125cbdb2a2ba">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{schemename}.toUpperCase()+" "+$F{schemeoname}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="150" width="110" height="20" uuid="be37ccf1-a938-4410-835f-077a6dbe59f3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dear Sir/Madam,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="180" width="90" height="15" uuid="934c56f7-0de8-4eac-b255-7b66d627b7bf">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[PATIENT NAME:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement positionType="Float" x="101" y="180" width="454" height="15" uuid="350a16e4-a4cd-4931-9c8e-bcfd191a4021">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{client_fname}.toUpperCase()+" "+$F{client_onames}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="10" width="72" height="14" uuid="79bb0952-a77a-490c-b730-a2e51fb572c1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["DATE: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="24" width="72" height="16" uuid="64b7939a-5563-489b-9947-5ee30555c280"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["REF NO:  "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="211" width="91" height="15" uuid="43a725d8-9451-4265-9f6f-3c1c4d58837d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SERVICE DATE:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd-MMMM-yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="101" y="211" width="455" height="16" uuid="81d40fe2-a565-4b2b-9b17-8db9decaf1b7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rs_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="50" width="547" height="15" uuid="63207333-3033-4a73-b5b8-2e9361502a1d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["THE CREDIT CONTROLLER"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="66" width="547" height="14" uuid="102a432d-486c-449b-9eb6-051b68ed81f6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{msp_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="242" width="91" height="14" uuid="761774a2-61df-4040-a0ef-b034fbb319c4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DIAGNOSIS: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="101" y="242" width="454" height="14" uuid="6bce6e78-e8e2-4c9e-bb0c-1b4597600dd2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ba_desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="80" width="547" height="17" uuid="48875293-5d53-401f-82d9-039f0d7c7afd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{msp_post_addr}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="10" y="270" width="545" height="70" uuid="32411afa-2434-40aa-95b8-df86caf1054f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["We refer to the above member who is our client and requires "+$F{sc_desc}.toLowerCase() +" services in your Hospital. Kindly offer "+($F{client_gender}.equals("F") ? "her " : ($F{client_gender}.equals("M") ? "him ":" "))+ "the necessary service."+"\n\nWe confirm that we shall pay the bills in full as soon as they are forwarded to us.\n\nKindly forward your invoice to "+$F{org_name}.toLowerCase()+", a copy of this letter together with a dully completed claim form to enable us settle your bill.\n\n "]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="0" y="260" width="557" height="1" uuid="582f23d4-b316-423e-b1f2-10afc9594482">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement positionType="Float" x="10" y="113" width="547" height="14" uuid="8f284450-8551-40a7-b057-34e002b7ac0a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{msp_email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="97" width="547" height="15" uuid="fbf997a2-f1b0-400d-a488-4a80cc599a23"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{msp_phy_address}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="82" y="10" width="474" height="14" uuid="5b23d4f4-25b2-49d2-89c7-fb855e43d3b3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="195" width="90" height="15" uuid="e308ab57-a472-47d8-ac00-fe8404935daa">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[MEMBER NO.:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement positionType="Float" x="101" y="195" width="454" height="15" uuid="fc13c2f5-373e-467b-9393-c1321143f464">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{client_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="340" width="545" height="20" uuid="64b44410-bc3e-4812-8471-59b3e47d5661"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Amount authorized  is KES. " +(new DecimalFormat("#,##0.###;(#,##0.###)").format( $F{req_calc_amount}))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="10" y="373" width="546" height="30" uuid="1cd690a6-56c9-4a0a-83e3-406e1adcf0d8"/>
+				<textElement textAlignment="Left" markup="styled">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<style isBold=\"true\">Yours Sincerely,\n"+(EQUALS($F{authuser},null)?$F{transuser}:$F{authuser})+ "\nMedical  Claims department \n"+ $F{org_name}+"</style>"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="454" y="0" width="100" height="16" uuid="3778ee06-b448-4970-8e4f-a0491125a26a"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="3" y="0" width="50" height="16" uuid="5a6ac211-3509-42cd-aaa3-2b18760f00c9"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Printed on]]></text>
+			</staticText>
+			<textField pattern="d/M/yy h:mm a">
+				<reportElement positionType="FixRelativeToBottom" x="53" y="0" width="100" height="16" uuid="f9254de1-5c27-4eac-95fb-50d47b2ee12b"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

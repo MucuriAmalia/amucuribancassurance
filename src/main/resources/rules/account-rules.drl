@@ -1,0 +1,14 @@
+package accountRules
+
+import com.brokersystems.brokerapp.setup.model.AccountDef;
+import com.brokersystems.brokerapp.server.utils.ErrorUtils;
+import com.brokersystems.brokerapp.enums.AccountTypeEnum;
+
+global ErrorUtils errorUtils;
+
+rule "validate_pin"
+     when
+        AccountDef( accountType.accountType==AccountTypeEnum.INS, pinNo not matches "^[A-Za-z]{1}[0-9]{9}[A-Za-z]{1}$" )
+     then
+       errorUtils.addError("Invalid Pin Number for Intermediary");
+ end

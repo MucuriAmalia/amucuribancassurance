@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+    <display-name>Brokerage App</display-name>
+
+    <!-- Session Configuration for Security -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <name>JSESSIONID</name>
+            <http-only>true</http-only>
+            <secure>true</secure> <!-- Set to true for HTTPS in production -->
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+    <!-- Security Header Filter -->
+    <filter>
+        <filter-name>SecurityHeaderFilter</filter-name>
+        <filter-class>com.brokersystems.brokerapp.filters.SecurityHeaderFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SecurityHeaderFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <error-page>
+        <location>/errors</location>
+    </error-page>
+</web-app>

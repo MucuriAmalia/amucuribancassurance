@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_receipt_allocations" pageWidth="1530" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="1455" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="1b49ce42-35ed-48c3-99c9-8e7331c9a53e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="teddy"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="clientid" class="java.lang.String"/>
+	<parameter name="dateFrom" class="java.util.Date"/>
+	<parameter name="dateTo" class="java.util.Date"/>
+	<parameter name="format" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT   
+    sbr.receipt_id, receipt_no,alloc_date,
+    alloc_amt,alloc_ref_no,
+    pol_no,trans_amount,
+    sbc.client_fname,
+    sbc.client_onames,
+    sbc.client_id, 
+    sbr.receipt_payment_ref,
+    sbrd.rect_amount,
+    sbr.receipt_doc_date::date,
+    sbmt.trans_balance,
+    sblr.lrct_balance,
+    alloc_paid_to_date,
+    sbr.receipt_date::date,
+    sbpm.pm_desc ,
+    sbmt.trans_ref_no
+FROM sys_brk_life_rct_allocs sblra
+INNER JOIN sys_brk_life_rcts sblr ON sblra.alloc_lrct_id = sblr.lrct_id
+INNER JOIN sys_brk_main_transactions sbmt ON sblr.lrct_trans_no = sbmt.trans_no
+left join sys_brk_receipts sbr on sblr.lrct_receipt_id = sbr.receipt_id
+LEFT JOIN sys_brk_receipt_dtls sbrd ON sbrd.rect_receipt_no =  sbr.receipt_id
+left join sys_brk_receipt_dtls sbrd1 on sbmt.trans_no  =sbrd1.rect_trans_no 
+left join sys_brk_life_rcts sblr1 on sblr1.lrct_trans_no= sbmt.trans_no
+LEFT JOIN sys_brk_users sbu ON sbr.receipt_user =  sbu.user_id     
+LEFT JOIN  sys_brk_policies sbp on sbrd.rect_pol_id  =  sbp.pol_id
+LEFT JOIN sys_brk_clients sbc ON sbc.client_id = sbp.pol_client_id
+left join sys_brk_trans sbt on sblra.alloc_tran_no = sbt.tran_no 
+left join sys_brk_payment_modes sbpm ON sbp.pol_pmode_id = pm_id 
+where   (client_id::varchar)  =  COALESCE($P{clientid} ,(client_id::varchar))
+ and CAST( alloc_date AS date) BETWEEN $P{dateFrom} and  $P{dateTo}]]>
+	</queryString>
+	<field name="receipt_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="receipt_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="receipt_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_receipts"/>
+	</field>
+	<field name="receipt_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="receipt_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="receipt_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_receipts"/>
+	</field>
+	<field name="alloc_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="alloc_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="alloc_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_life_rct_allocs"/>
+	</field>
+	<field name="alloc_amt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="alloc_amt"/>
+		<property name="com.jaspersoft.studio.field.label" value="alloc_amt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_life_rct_allocs"/>
+	</field>
+	<field name="alloc_ref_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="alloc_ref_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="alloc_ref_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_life_rct_allocs"/>
+	</field>
+	<field name="pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="trans_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="trans_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="trans_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="client_fname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_onames" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="client_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="receipt_payment_ref" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="receipt_payment_ref"/>
+		<property name="com.jaspersoft.studio.field.label" value="receipt_payment_ref"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_receipts"/>
+	</field>
+	<field name="rect_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="rect_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="rect_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_receipt_dtls"/>
+	</field>
+	<field name="receipt_doc_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="receipt_doc_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="receipt_doc_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_receipts"/>
+	</field>
+	<field name="trans_balance" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="trans_balance"/>
+		<property name="com.jaspersoft.studio.field.label" value="trans_balance"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="lrct_balance" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="lrct_balance"/>
+		<property name="com.jaspersoft.studio.field.label" value="lrct_balance"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_life_rcts"/>
+	</field>
+	<field name="alloc_paid_to_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="alloc_paid_to_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="alloc_paid_to_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_life_rct_allocs"/>
+	</field>
+	<field name="receipt_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="receipt_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="receipt_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_receipts"/>
+	</field>
+	<field name="pm_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pm_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="pm_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_payment_modes"/>
+	</field>
+	<field name="trans_ref_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="trans_ref_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="trans_ref_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="130" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+			<rectangle>
+				<reportElement x="0" y="0" width="1490" height="130" backcolor="#FFFFFF" uuid="3526a12c-e862-42bf-9c74-8f92a19268cb">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="5" y="2" width="105" height="105" uuid="af33b556-05a4-4bf3-9794-fddcb9143e3e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="102" width="1490" height="28" uuid="29dd7a7b-20a8-4cfd-9b8d-599b90a62495">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECEIPTS  ALLOCATIONS  REPORT]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[($V{PAGE_NUMBER} > 1 && $P{format} != null && $P{format}.equals("pdf")) || ($V{PAGE_NUMBER} == 1)]]></printWhenExpression>
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="20" isPrintWhenDetailOverflows="true" uuid="a73ac050-ec02-4567-bed1-38bc25a291ce"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Receipt No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="d931b44d-c2a3-4878-8c9e-75fd911b228f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Allocation Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="03cec987-7329-4d32-8e35-496097b6fa02"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Debit Note Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="0" width="320" height="20" isPrintWhenDetailOverflows="true" uuid="5b0291a7-a127-4f39-82c0-cdca62dab754"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="610" y="0" width="140" height="20" isPrintWhenDetailOverflows="true" uuid="0ee13aa1-9877-4758-8693-65e7b1932442"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Client Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="750" y="0" width="90" height="20" isPrintWhenDetailOverflows="true" uuid="eb18913a-ac6e-472c-a6fc-3d90c3ebad4d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Invoice Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="840" y="0" width="180" height="20" isPrintWhenDetailOverflows="true" uuid="4b86d714-0c39-4571-9c69-f5bcb6f955cf"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Invoice No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1020" y="0" width="80" height="20" isPrintWhenDetailOverflows="true" uuid="07042326-7248-4f81-9f12-8a49eb8ea1fe"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Receipt Amt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1100" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="ee169d5b-cfe0-4a29-a673-42f224edf99a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trans Amt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1200" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="c9373da0-ecff-4ce8-8455-e4817bacd481"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Allocated Amt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1310" y="0" width="80" height="20" isPrintWhenDetailOverflows="true" uuid="6783a24d-227e-42d6-8a25-25fd9d32c45c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Balance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1390" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="74ae4bd7-217e-4f31-939f-4db4b611b690"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reference]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="38" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="80" height="38" isPrintWhenDetailOverflows="true" uuid="e068c671-1154-4d50-bda3-70babd10bdf5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{receipt_no}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-YYYY" isBlankWhenNull="true">
+				<reportElement x="80" y="0" width="100" height="38" isPrintWhenDetailOverflows="true" uuid="38ceb89d-311e-4541-a200-dc6669fb3ae4"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{alloc_date}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="290" y="0" width="320" height="38" isPrintWhenDetailOverflows="true" uuid="33cc81b5-2849-4cc7-882b-a8ba95116f48"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{pol_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="610" y="0" width="140" height="38" isPrintWhenDetailOverflows="true" uuid="ad8d009c-a2fb-4caa-91df-047e553f7f11"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{client_fname}+" "+$F{client_onames}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="750" y="0" width="90" height="38" isPrintWhenDetailOverflows="true" uuid="8de45689-d1fd-448f-85c3-2f637b8bc0a7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{receipt_date}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MM-YYYY" isBlankWhenNull="true">
+				<reportElement x="840" y="0" width="180" height="38" isPrintWhenDetailOverflows="true" uuid="2f5ee9fe-f7d1-4d2e-93da-7dc0aa263782"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{receipt_payment_ref}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1020" y="0" width="80" height="38" isPrintWhenDetailOverflows="true" uuid="cc8a0c58-d517-4504-9020-4716bd31cb04"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{rect_amount}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1100" y="0" width="100" height="38" isPrintWhenDetailOverflows="true" uuid="bcffcc95-bc7d-43ef-a211-a78e77ead513"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{trans_amount}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1200" y="0" width="110" height="38" isPrintWhenDetailOverflows="true" uuid="bc55c545-9277-4846-a3b9-e1ba4d2dae74"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{alloc_amt}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1390" y="0" width="100" height="38" isPrintWhenDetailOverflows="true" uuid="38d840e9-dd46-43fb-b1a1-e03751e1d19a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{alloc_ref_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1310" y="0" width="80" height="38" isPrintWhenDetailOverflows="true" uuid="19bb4790-10bd-4f0d-8a22-42c700d4f902"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{trans_balance}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-YYYY" isBlankWhenNull="true">
+				<reportElement x="180" y="0" width="110" height="38" isPrintWhenDetailOverflows="true" uuid="677d2ef5-d4fa-450c-8fab-35a623d7881d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{trans_ref_no}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="21">
+			<printWhenExpression><![CDATA[$P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+			<textField>
+				<reportElement x="1290" y="3" width="103" height="14" uuid="ce19d3d4-c11c-412e-9d41-cff6a9dad9c0"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="1390" y="3" width="100" height="14" uuid="de68bb8e-4aef-4563-817e-f046db91b8cd"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="5" y="3" width="70" height="15" uuid="f34ba931-6ba9-45df-8162-143611538f54"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Printed on]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy h:mm a" isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="95" y="3" width="150" height="15" uuid="ecec26ed-c8f7-4ccb-a93d-0c67a31e4648"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-12-16T12:37:10 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_quot_sections" pageWidth="765" pageHeight="842" whenNoDataType="BlankPage" columnWidth="765" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="baa44456-5706-47a0-8851-b1c0b6c94e5e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Broker_db"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+	<parameter name="quotId" class="java.lang.Long"/>
+	<parameter name="prodId" class="java.lang.Long"/>
+	<queryString language="SQL">
+		<![CDATA[select distinct acct_id,acct_name,quot_pr_id,pr_desc,quot_id,s7.quot_rsk_value,s7.quote_rsk_sht_desc,s7.quot_rsk_desc,
+s8.quot_sect_amount,s8.quot_sect_sec_id,s8.quot_sect_rate,s8.quot_sect_prem,s9.sc_desc,s7.quot_rsk_id,
+s8.quot_sect_div_fact,s8.quot_sect_free_limit,s10.cov_desc
+from sys_brk_quotations s
+ left outer join sys_brk_clients s1 on s.quot_client_id = s1.client_id
+ inner join sys_brk_quot_products s3 on s.quot_id = s3.quot_pr_quot_id
+ inner join  sys_brk_accounts s2 on s2.acct_id = s3.quot_pr_agent_id
+ inner join  sys_brk_products s4 on s4.pr_code = s3.quot_pr_pro_id
+ inner join sys_brk_currencies s5 on s5.cur_code = s.quot_curr_id
+ inner join sys_brk_binders s6 on s6.bin_id = s3.quot_pr_bind_id
+inner join sys_brk_quot_risks s7 on s3.quot_pr_id = s7.quot_rsk_pr_id
+inner join sys_brk_quot_limits s8 on s7.quot_rsk_id = s8.quot_sect_rsk_id
+inner join sys_brk_sections s9 on s9.sc_id = s8.quot_sect_sec_id
+inner join sys_brk_covertypes s10  on S7.quot_rsk_cov_id = s10.cov_id
+ where quot_id = $P{quotId} 
+ and quot_pr_id =  $P{prodId} 
+ order by quot_pr_id, s7.quot_rsk_id]]>
+	</queryString>
+	<field name="acct_id" class="java.lang.Long"/>
+	<field name="acct_name" class="java.lang.String"/>
+	<field name="quot_pr_id" class="java.lang.Long"/>
+	<field name="pr_desc" class="java.lang.String"/>
+	<field name="quot_id" class="java.lang.Long"/>
+	<field name="quot_rsk_value" class="java.math.BigDecimal"/>
+	<field name="quote_rsk_sht_desc" class="java.lang.String"/>
+	<field name="quot_rsk_desc" class="java.lang.String"/>
+	<field name="quot_sect_amount" class="java.math.BigDecimal"/>
+	<field name="quot_sect_sec_id" class="java.lang.Long"/>
+	<field name="quot_sect_rate" class="java.math.BigDecimal"/>
+	<field name="quot_sect_prem" class="java.math.BigDecimal"/>
+	<field name="sc_desc" class="java.lang.String"/>
+	<field name="quot_rsk_id" class="java.lang.Long"/>
+	<field name="quot_sect_div_fact" class="java.math.BigDecimal"/>
+	<field name="quot_sect_free_limit" class="java.math.BigDecimal"/>
+	<field name="cov_desc" class="java.lang.String"/>
+	<variable name="Premium" class="java.lang.Double" resetType="Group" resetGroup="Risk" calculation="Sum">
+		<variableExpression><![CDATA[$F{quot_sect_prem}]]></variableExpression>
+	</variable>
+	<group name="Product">
+		<groupExpression><![CDATA[$F{quot_pr_id}]]></groupExpression>
+	</group>
+	<group name="Risk">
+		<groupExpression><![CDATA[$F{quot_rsk_id}]]></groupExpression>
+		<groupHeader>
+			<band height="49">
+				<rectangle>
+					<reportElement x="0" y="0" width="765" height="35" backcolor="#C9C7C7" uuid="4d4d520f-a095-4e3c-8513-cd655df51f48">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+				</rectangle>
+				<rectangle>
+					<reportElement x="0" y="35" width="765" height="14" backcolor="#C9C7C7" uuid="b829344a-3709-44b2-b73d-28378f4f4bb8"/>
+				</rectangle>
+				<staticText>
+					<reportElement positionType="Float" x="0" y="0" width="70" height="17" uuid="e2d55643-0ac7-48f9-9760-09c00cbfec40">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[RISK: ]]></text>
+				</staticText>
+				<textField>
+					<reportElement positionType="Float" x="70" y="0" width="695" height="17" uuid="dda0a845-1075-42bb-8e61-cd634ae13079"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{quot_rsk_desc}.toUpperCase()+" : "+$F{quote_rsk_sht_desc}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" x="0" y="35" width="220" height="14" uuid="2a499607-6a94-4a9f-9076-89857f71da9d">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[SECTIONS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="220" y="35" width="120" height="14" uuid="dd19a772-4a5e-466c-bf23-01c6da311f5a">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[VALUE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="450" y="35" width="120" height="14" uuid="aa3812aa-3f12-47fc-83b1-8df69c4f2e6c">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[RATE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="570" y="35" width="195" height="14" uuid="62af137b-df8b-46f6-8895-3e133390e23f">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[PREMIUM]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="340" y="35" width="110" height="14" uuid="7ac028e7-7867-4740-93cf-440c3a11a521">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[FREE LIMIT]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="220" y="17" width="120" height="17" uuid="914933b8-d5e5-4302-8a69-acb4b3d650f5">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[COVER SUMMARY: ]]></text>
+				</staticText>
+				<textField>
+					<reportElement positionType="Float" x="340" y="17" width="425" height="17" uuid="53f8bc22-891a-4fc8-8500-9bf7295eebb4"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cov_desc}.toUpperCase()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="13">
+				<rectangle>
+					<reportElement x="450" y="0" width="315" height="13" backcolor="#BABABA" uuid="e339b378-b8f8-4843-98d3-a1725f8cbfa9"/>
+				</rectangle>
+				<textField pattern="#,##0.###;(#,##0.###)">
+					<reportElement positionType="Float" x="450" y="0" width="120" height="13" uuid="b54b4f59-0807-4766-ad55-4f3915c2552b"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{quote_rsk_sht_desc}.toUpperCase()+ "  TOTAL: "]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.###;(#,##0.###)">
+					<reportElement positionType="Float" x="570" y="0" width="195" height="13" uuid="55fbc498-f6b5-4d30-a463-d9792728dafa"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Premium}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="765" height="13" backcolor="#EDEDED" uuid="8991e7d8-944c-4aeb-9d8f-b048a6aebda2"/>
+			</rectangle>
+			<textField>
+				<reportElement positionType="Float" x="0" y="0" width="220" height="13" uuid="c0389ea1-f404-41ec-be0f-548cdd4f36ab"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sc_desc}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###)">
+				<reportElement positionType="Float" x="220" y="0" width="120" height="13" uuid="6aa8e703-887d-4323-b19d-227ad97ff158"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{quot_sect_amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###)">
+				<reportElement positionType="Float" x="450" y="0" width="120" height="13" uuid="2fe201ab-3fa8-49dc-9004-e9d5bb722400"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{quot_sect_div_fact}.doubleValue()==100?$F{quot_sect_rate}+" %":$F{quot_sect_rate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="570" y="0" width="195" height="13" uuid="e75572fe-7b39-485c-9139-1d9e729c3f46"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{quot_sect_prem}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###)">
+				<reportElement positionType="Float" x="340" y="0" width="110" height="13" uuid="7ca8efc4-2cb9-4aea-b011-28a31d7d899e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{quot_sect_free_limit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

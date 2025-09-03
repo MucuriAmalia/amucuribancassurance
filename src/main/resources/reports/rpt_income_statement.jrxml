@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_income_statement" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="500bb39a-8d5a-4467-84dd-714081ce27af">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="current_year" class="java.lang.Integer"/>
+	<parameter name="previous_year" class="java.lang.Integer"/>
+	<parameter name="format" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+  sbgt.gl_year,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '3%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS Total_income,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '31%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS commissions_income,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '32%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS distribution_fee_income,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '41%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS agent_commission_expenses,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '4%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS total_expenses,
+  ROUND(
+    SUM(
+      CASE 
+        WHEN sbcs.co_code LIKE '3111%' OR sbcs.co_code LIKE '3121%' 
+        THEN sbgt.gl_amount 
+        ELSE 0 
+      END
+    )
+  , 0) AS captive_policies_total,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '3111%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS captive_life,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '3121%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS captive_general,
+  ROUND(
+    SUM(
+      CASE 
+        WHEN sbcs.co_code LIKE '3112%' OR sbcs.co_code LIKE '3122%' 
+        THEN sbgt.gl_amount 
+        ELSE 0 
+      END
+    )
+  , 0) AS non_captive_policies_total,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '3112%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS non_captive_life,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '3122%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS non_captive_general,
+  ROUND(
+    SUM(
+      CASE 
+        WHEN sbcs.co_code LIKE '3211%' OR sbcs.co_code LIKE '3221%' 
+        THEN sbgt.gl_amount 
+        ELSE 0 
+      END
+    )
+  , 0) AS distribution_captive_total,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '3211%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS distribution_captive_life,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '3221%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS distribution_captive_general,
+  ROUND(
+    SUM(
+      CASE 
+        WHEN sbcs.co_code LIKE '3212%' OR sbcs.co_code LIKE '3222%' 
+        THEN sbgt.gl_amount 
+        ELSE 0 
+      END
+    )
+  , 0) AS distribution_non_captive_total,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '3212%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS distribution_non_captive_life,
+  ROUND(
+    SUM(CASE WHEN sbcs.co_code LIKE '3222%' THEN sbgt.gl_amount ELSE 0 END)
+  , 0) AS distribution_non_captive_general
+FROM sys_brk_gl_trans sbgt
+JOIN sys_brk_coa_sub sbcs
+  ON sbgt.gl_account = sbcs.co_id
+WHERE sbgt.gl_year IN ($P{current_year}, $P{previous_year})
+GROUP BY sbgt.gl_year
+ORDER BY sbgt.gl_year;]]>
+	</queryString>
+	<field name="gl_year" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="gl_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="gl_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_gl_trans"/>
+	</field>
+	<field name="total_income" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_income"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_income"/>
+	</field>
+	<field name="commissions_income" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="commissions_income"/>
+		<property name="com.jaspersoft.studio.field.label" value="commissions_income"/>
+	</field>
+	<field name="distribution_fee_income" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="distribution_fee_income"/>
+		<property name="com.jaspersoft.studio.field.label" value="distribution_fee_income"/>
+	</field>
+	<field name="agent_commission_expenses" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="agent_commission_expenses"/>
+		<property name="com.jaspersoft.studio.field.label" value="agent_commission_expenses"/>
+	</field>
+	<field name="total_expenses" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_expenses"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_expenses"/>
+	</field>
+	<field name="captive_policies_total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="captive_policies_total"/>
+		<property name="com.jaspersoft.studio.field.label" value="captive_policies_total"/>
+	</field>
+	<field name="captive_life" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="captive_life"/>
+		<property name="com.jaspersoft.studio.field.label" value="captive_life"/>
+	</field>
+	<field name="captive_general" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="captive_general"/>
+		<property name="com.jaspersoft.studio.field.label" value="captive_general"/>
+	</field>
+	<field name="non_captive_policies_total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="non_captive_policies_total"/>
+		<property name="com.jaspersoft.studio.field.label" value="non_captive_policies_total"/>
+	</field>
+	<field name="non_captive_life" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="non_captive_life"/>
+		<property name="com.jaspersoft.studio.field.label" value="non_captive_life"/>
+	</field>
+	<field name="non_captive_general" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="non_captive_general"/>
+		<property name="com.jaspersoft.studio.field.label" value="non_captive_general"/>
+	</field>
+	<field name="distribution_captive_total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="distribution_captive_total"/>
+		<property name="com.jaspersoft.studio.field.label" value="distribution_captive_total"/>
+	</field>
+	<field name="distribution_captive_life" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="distribution_captive_life"/>
+		<property name="com.jaspersoft.studio.field.label" value="distribution_captive_life"/>
+	</field>
+	<field name="distribution_captive_general" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="distribution_captive_general"/>
+		<property name="com.jaspersoft.studio.field.label" value="distribution_captive_general"/>
+	</field>
+	<field name="distribution_non_captive_total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="distribution_non_captive_total"/>
+		<property name="com.jaspersoft.studio.field.label" value="distribution_non_captive_total"/>
+	</field>
+	<field name="distribution_non_captive_life" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="distribution_non_captive_life"/>
+		<property name="com.jaspersoft.studio.field.label" value="distribution_non_captive_life"/>
+	</field>
+	<field name="distribution_non_captive_general" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="distribution_non_captive_general"/>
+		<property name="com.jaspersoft.studio.field.label" value="distribution_non_captive_general"/>
+	</field>
+	<variable name="YearLabel" class="java.lang.Integer">
+		<variableExpression><![CDATA[($F{gl_year} != null && $F{gl_year} == 2024) ? "2024" :
+($F{gl_year} != null && $F{gl_year} == 2025) ? "2025" :
+""]]></variableExpression>
+	</variable>
+	<variable name="commisions_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{previous_year}) ? $F{commissions_income} : $V{commisions_previous_year}]]></variableExpression>
+	</variable>
+	<variable name="commisions_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{current_year}) ? $F{commissions_income} : $V{commisions_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="distribution_income_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{previous_year}) ?$F{distribution_fee_income} : $V{distribution_income_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="distribution_income_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{current_year}) ?$F{distribution_fee_income} : $V{distribution_income_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="agent_commision_expense" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{previous_year}) ?$F{agent_commission_expenses} : $V{agent_commision_expense}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="agent_commision_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{current_year}) ?$F{agent_commission_expenses} : $V{agent_commision_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="captive_plicies_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{previous_year}) ?$F{captive_policies_total} : $V{captive_plicies_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="captive_policies_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{current_year}) ?$F{captive_policies_total} : $V{captive_policies_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="captive_life_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{previous_year}) ?$F{captive_life} : $V{captive_life_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="captive_life_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{current_year}) ?$F{captive_life} :$V{captive_life_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="captive_general_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{previous_year}) ?$F{captive_general} :$V{captive_general_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="captive_general_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{current_year}) ?$F{captive_general} : $V{captive_general_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="non_captive_policies_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{previous_year}) ?$F{non_captive_policies_total}: $V{non_captive_policies_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="non_captive_policies_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{current_year}) ?$F{non_captive_policies_total}: $V{non_captive_policies_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="non_captive_life_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{previous_year}) ?$F{non_captive_life}: $V{non_captive_life_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="non_captive_life_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year} .equals($P{current_year}) ?$F{non_captive_life}: $V{non_captive_life_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="nn_captive_general_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{previous_year}) ?$F{non_captive_general}: $V{nn_captive_general_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="nn_captive_general_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{current_year}) ?$F{non_captive_general}: $V{nn_captive_general_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="distributed_captive_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{previous_year}) ?$F{distribution_captive_total}: $V{distributed_captive_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="distributed_captive_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{current_year}) ?$F{distribution_captive_total}: $V{distributed_captive_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="distribution_captive_life_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{previous_year}) ?$F{distribution_captive_life}: $V{distribution_captive_life_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="distribution_captive_life_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{current_year}) ?$F{distribution_captive_life}: $V{distribution_captive_life_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="didtributed_captive_general_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{previous_year}) ?$F{distribution_captive_general}: $V{didtributed_captive_general_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="didtributed_captive_general_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{current_year}) ?$F{distribution_captive_general}: $V{didtributed_captive_general_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="distributed_non_captive_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{previous_year}) ?$F{distribution_non_captive_total}: $V{distributed_non_captive_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="distributed_non_captive_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{current_year}) ?$F{distribution_non_captive_total}: $V{distributed_non_captive_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="distributed_non_captive_life_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{previous_year}) ?$F{distribution_non_captive_life}: $V{distributed_non_captive_life_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="distributed__non_captive_general_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{previous_year}) ?$F{distribution_non_captive_general}: $V{didtributed_captive_general_previous_year}]]></variableExpression>
+	</variable>
+	<variable name="distributed__non_captive_general_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{current_year}) ?$F{distribution_non_captive_general}: $V{distributed__non_captive_general_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="distributed_non_captive_life_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{current_year}) ?$F{distribution_non_captive_life}: $V{distributed_non_captive_life_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="total_income_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{previous_year}) ?$F{total_income}: $V{total_income_previous_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="total_income_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{gl_year}.equals($P{current_year}) ?$F{total_income}: $V{total_income_current_year}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="net_income_previous_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{total_income_previous_year}.subtract($V{agent_commision_expense})]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="net_income_current_year" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{total_income_current_year}.subtract($V{agent_commision_current_year})]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="119" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="119" uuid="d2cc9e5e-84ae-45f2-bc53-36a00eac355d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="179" y="86" width="200" height="33" uuid="bc38859b-e4db-4757-bb54-c7b9e0bf90c8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INCOME STATEMENT]]></text>
+			</staticText>
+			<image evaluationTime="Master">
+				<reportElement x="5" y="5" width="105" height="105" uuid="2b13a191-6c29-41c6-9236-d3f267618531">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="60" splitType="Stretch">
+			<printWhenExpression><![CDATA[($V{PAGE_NUMBER} > 1 && $P{format} != null && $P{format}.equals("pdf")) || ($V{PAGE_NUMBER} == 1)]]></printWhenExpression>
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="60" uuid="47266272-ec15-44b3-88e3-226680df878d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement x="295" y="0" width="130" height="59" uuid="46b5f489-a628-49fb-a2ab-b99b27d43c35"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{current_year} + "\nDEC\nActual YTD"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="0" width="130" height="60" uuid="9043ef4a-44df-40a4-9297-f84d344f28a0"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{previous_year} + "\nDEC\nActual YTD"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="425" y="0" width="1" height="60" uuid="35edc76e-1278-4103-965d-e37c2f668ee1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="60" uuid="e9c16dbe-fcb9-4153-9e5f-3fbb488cede9"/>
+			</line>
+			<line>
+				<reportElement x="295" y="0" width="1" height="60" uuid="ff39e14b-5cd2-42d7-b8f3-e71fb8795a54"/>
+			</line>
+		</band>
+	</columnHeader>
+	<summary>
+		<band height="576" splitType="Stretch">
+			<printWhenExpression><![CDATA[($V{PAGE_NUMBER} > 1 && $P{format} != null && $P{format}.equals("pdf")) || ($V{PAGE_NUMBER} == 1)]]></printWhenExpression>
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="575" uuid="6e93bbf0-2a7a-4939-be21-be25f5fb0d0f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="7" y="0" width="100" height="30" uuid="1c7ae8ee-de67-4ac3-b877-b8faef4f62b7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Income]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="30" width="123" height="30" uuid="ced0502e-1a53-4395-aa63-3b383d8b6007"/>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[a:Commission Income]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="295" y="30" width="130" height="30" uuid="8cae4eb5-80e2-41c3-8b27-369681dfeeb4"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{commisions_current_year}.compareTo(BigDecimal.ZERO) == 0 
+    ? "__" 
+    : new java.text.DecimalFormat("#,##0").format($V{commisions_current_year})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="30" width="130" height="30" uuid="e7966ed1-1747-4a48-a84a-501323300415"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{commisions_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "-" : $V{commisions_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="60" width="130" height="30" uuid="5b204487-69b1-4956-b029-7348e3c887f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{captive_plicies_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{captive_plicies_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="60" width="130" height="30" uuid="b462dd09-63be-4a62-b8f1-d2daaadba4bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{captive_policies_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{captive_policies_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="90" width="130" height="30" uuid="a40fb54b-c231-4a81-bd0d-22e4f26fc30c"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{captive_life_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{captive_life_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="90" width="130" height="30" uuid="76082509-f17b-4e57-95fd-6973a01601c4"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{captive_life_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{captive_life_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="120" width="130" height="30" uuid="3f145e28-7076-4119-8243-d46b01a9a461"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{captive_general_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{captive_general_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="120" width="130" height="30" uuid="d7319ffe-167a-41c4-ac1c-21553ee75cd8"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{captive_general_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{captive_general_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="150" width="130" height="30" uuid="ecabd747-82ac-4f7a-b371-724227517e16"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{non_captive_policies_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{non_captive_policies_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="150" width="130" height="30" uuid="216a6699-3c61-424d-9622-7455bc5df843"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{non_captive_policies_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{non_captive_policies_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="180" width="130" height="30" uuid="249204e6-1499-4ff0-8cca-c975f83fdabf"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{non_captive_life_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{non_captive_life_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="180" width="130" height="30" uuid="66e93d16-269e-4b01-bd65-c59e2cfd2b7a"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{non_captive_life_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{non_captive_life_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="210" width="130" height="30" uuid="66247762-9c51-4c92-a544-50b450646031"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{nn_captive_general_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{nn_captive_general_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="210" width="130" height="30" uuid="ecb00892-2dd6-438f-bf2d-d25bedf39561"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{nn_captive_general_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{nn_captive_general_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="250" width="130" height="30" uuid="371c045d-b57f-42e3-a2c5-ac4ac73ab924"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distribution_income_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distribution_income_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="250" width="130" height="30" uuid="cb2f4e6e-bb67-4fd0-ae95-8c84670f07ad"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distribution_income_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distribution_income_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="280" width="130" height="30" uuid="09586fb5-e840-460c-989d-bebd3169a3fb"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distributed_captive_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distributed_captive_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="280" width="130" height="30" uuid="88e3fe02-bf18-489d-b002-111a767d5bb9"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distributed_captive_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distributed_captive_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="310" width="130" height="30" uuid="48c69016-6913-41b4-bbdc-432a1c903834"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distribution_captive_life_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distribution_captive_life_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="310" width="130" height="30" uuid="25495b69-f3c4-4459-be8b-af655ed1d74b"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distribution_captive_life_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distribution_captive_life_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="340" width="130" height="30" uuid="7ea302af-0c23-408b-9f3b-904df2093b3c"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{didtributed_captive_general_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{didtributed_captive_general_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="340" width="130" height="30" uuid="0f7bed75-2cc4-4961-a54b-c048f0892af5"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{didtributed_captive_general_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{didtributed_captive_general_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="370" width="130" height="30" uuid="c7b82504-a313-4587-92a3-62f5066289cb"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distributed_non_captive_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distributed_non_captive_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="370" width="130" height="30" uuid="099946ef-7861-4f85-b12d-e87ea3679a2a"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distributed_non_captive_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distributed_non_captive_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="400" width="130" height="30" uuid="2b190bef-5b60-4a04-a89c-d11afac2c701"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distributed_non_captive_life_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distributed_non_captive_life_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="400" width="130" height="30" uuid="903aa241-afae-431f-b5bd-e1fc60aa9598"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distributed_non_captive_life_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distributed_non_captive_life_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="430" width="130" height="30" uuid="862e0c67-7931-4689-9fb5-5c5f5c17f635"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distributed__non_captive_general_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distributed__non_captive_general_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="430" width="130" height="30" uuid="e81fc4e1-af68-4898-a439-47d7f5602127"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{distributed__non_captive_general_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{distributed__non_captive_general_previous_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="500" width="130" height="30" uuid="897df73a-b054-484b-8c93-41e0567bded7"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{agent_commision_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{agent_commision_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="500" width="130" height="30" uuid="fa50428d-0929-422b-a424-589bd3ee6b7e"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{agent_commision_expense}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{agent_commision_expense}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="295" y="540" width="130" height="30" uuid="6cdeb943-4ea1-445b-9593-f6f945069bdf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{net_income_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{net_income_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="540" width="130" height="30" uuid="7ab8fa9e-4e78-4b5c-8bb1-13bd08fd34bc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{net_income_previous_year}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="60" width="123" height="30" uuid="d555d406-9df4-44e6-8239-a333dbec1b9e">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[1. Captive Policies]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="90" width="123" height="30" uuid="f619d798-1c14-4a49-8d6c-ff75d601ecdd">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[1.1 Life]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="120" width="123" height="30" uuid="c3550e16-6870-4067-ac49-fca0037cf10d">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[1.2 General]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="150" width="133" height="30" uuid="39404559-aeca-42a9-95bc-865e910ff685">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[2. Non-Captive Policies]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="180" width="123" height="30" uuid="2de5b35d-f7d2-4e48-a83a-551dc587fe02">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[2.1 Life]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="210" width="123" height="30" uuid="ae59ab87-0fd8-4248-b5a4-7cd2960deafc">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[2.2 General]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="250" width="153" height="30" uuid="6df7a385-d277-41da-8b5e-594a0f5b0620"/>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[b. Distribution Fee Income]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="280" width="123" height="30" uuid="a5a0e466-1122-4612-9166-bf7d68e02894">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[1. Captive Policies]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="310" width="123" height="30" uuid="8c837830-9f1b-4b52-a158-c813f5f977bb">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[1.1 Life]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="340" width="123" height="30" uuid="9a5bd177-cdaf-49e6-bd0b-08a108d5446f">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[1.2 General]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="370" width="123" height="30" uuid="5091a2f1-a40c-4455-9269-65db42d6dff3">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[2. Non-Captive Policies]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="400" width="123" height="30" uuid="c4ea87aa-fe40-47d6-a961-7a21a77798bb">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[2.1 Life]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="430" width="123" height="30" uuid="0a854cae-6258-41eb-8a6a-0177d409fedb">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[2.2 General]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="470" width="123" height="30" uuid="c739bf54-d519-4348-8d38-7a977b9fb2c6">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Expenses]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="500" width="169" height="30" uuid="cbf17136-8ea2-4f69-bf3d-90f5300034f2"/>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Agent Commission Expenses]]></text>
+			</staticText>
+			<textField pattern="#,##0&#xD;&#xA;">
+				<reportElement x="295" y="0" width="130" height="30" uuid="40a5fa92-f6ef-4d98-b591-b01dcb07c708"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{total_income_current_year}.compareTo(BigDecimal.ZERO) == 0 ? "__" : $V{total_income_current_year}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="425" y="0" width="130" height="30" uuid="5743063a-1813-40f1-87b2-1d85bfaa6e68"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{total_income_previous_year}.compareTo(BigDecimal.ZERO) == 0 ? "__-" : $V{total_income_previous_year}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="540" width="169" height="30" uuid="64289853-bd36-4b86-b0eb-5cee5c8f5a90">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Net Income]]></text>
+			</staticText>
+			<line>
+				<reportElement x="295" y="0" width="1" height="570" uuid="13a3aa84-2886-41ed-bcb3-bca2f299f1ea"/>
+			</line>
+			<line>
+				<reportElement x="425" y="0" width="1" height="570" uuid="57a76d14-6129-473c-bb40-20f0bfc8c3bd"/>
+			</line>
+			<line>
+				<reportElement x="295" y="570" width="260" height="1" uuid="33085f96-90fd-41a1-8ce8-c5e968a66001"/>
+			</line>
+			<line>
+				<reportElement x="295" y="540" width="260" height="1" uuid="61a690e3-4b37-4570-9d30-c658aeedd3fe"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

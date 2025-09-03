@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_certs_monthly_expiry" pageWidth="1042" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1002" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d7658c28-eded-4d82-bad3-d48bc4dd0eef">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Broker_db"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="840"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="146"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="Agent" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="dateTo" class="java.util.Date">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="dateFrom" class="java.util.Date">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="certType" class="java.lang.String"/>
+	<parameter name="format" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select org_address,org_mobile, org_phone,add_email_addr,org_website    ,org_name,    
+s3.cq_client_name, s2.pol_no, s1.risk_sht_desc, s1.risk_wef_date,
+s1.risk_wet_date,s4.user_name,s.pc_cert_no,s.pc_wef,s.pc_wet,s5.acct_name,
+s6.pr_desc,S2.pol_no,s2.pol_ref_no,s.pc_wet
+from sys_brk_organization ,sys_brk_policy_certs s
+inner join sys_brk_risks s1 on s1.risk_id = s.pc_rsk_id
+inner join sys_brk_policies s2 on s2.pol_id = s1.risk_pol_id
+inner join sys_brk_cert_queue s3 on s.pc_id = s3.cq_pc_id
+inner join sys_brk_users s4 on s4.user_id = s2.pol_created_user
+inner join sys_brk_accounts s5 on s5.acct_id = s2.pol_agent_id
+inner join sys_brk_products s6 on s6.pr_code = s2.pol_prod_id
+inner join sys_brk_brn_certs s7 on s7.bc_id = s.pc_bc_id 
+inner join sys_brk_certs s8 on s8.cer_id = s7.bc_cer_id
+inner join sys_brk_cert_types s9 on s9.cert_id = s8.cer_cert_code 
+Where s.pc_print_status='P'
+AND S.pc_status ='A'
+and date_trunc('day', s.pc_wet) <date_trunc('day',  s1.risk_wet_date)
+AND s.pc_risk_code IN  ( SELECT s.pc_risk_code FROM sys_brk_policy_certs s
+WHERE date_trunc('day', s.pc_wet)  BETWEEN  $P{dateFrom}   AND   $P{dateTo} 
+AND  (acct_id::varchar) = COALESCE( $P{Agent},(acct_id::varchar))
+and   (cert_id::varchar) = COALESCE( $P{certType},(cert_id::varchar)))]]>
+	</queryString>
+	<field name="org_address" class="java.lang.String"/>
+	<field name="org_mobile" class="java.lang.String"/>
+	<field name="org_phone" class="java.lang.String"/>
+	<field name="add_email_addr" class="java.lang.String"/>
+	<field name="org_website" class="java.lang.String"/>
+	<field name="org_name" class="java.lang.String"/>
+	<field name="cq_client_name" class="java.lang.String"/>
+	<field name="pol_no" class="java.lang.String"/>
+	<field name="risk_sht_desc" class="java.lang.String"/>
+	<field name="risk_wef_date" class="java.sql.Date"/>
+	<field name="risk_wet_date" class="java.sql.Date"/>
+	<field name="user_name" class="java.lang.String"/>
+	<field name="pc_cert_no" class="java.lang.Long"/>
+	<field name="pc_wef" class="java.sql.Timestamp"/>
+	<field name="pc_wet" class="java.sql.Timestamp"/>
+	<field name="acct_name" class="java.lang.String"/>
+	<field name="pr_desc" class="java.lang.String"/>
+	<field name="COLUMN_18" class="java.lang.String"/>
+	<field name="pol_ref_no" class="java.lang.String"/>
+	<field name="COLUMN_20" class="java.sql.Timestamp"/>
+	<group name="acct_name">
+		<groupExpression><![CDATA[$F{acct_name}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<rectangle>
+					<reportElement x="0" y="0" width="1000" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e6ac4e16-e267-46d6-bc05-25e1c78f5d46"/>
+					<graphicElement>
+						<pen lineColor="#B4BBBB"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="0" width="140" height="20" uuid="2e04487c-7744-442f-bcda-97a25022b94a"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Insurance Company : ]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="140" y="0" width="170" height="20" uuid="5fa291e9-325a-4c6c-9ec6-07c8a473efc5"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{acct_name}.toUpperCase()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="pr_desc">
+		<groupExpression><![CDATA[$F{pr_desc}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<rectangle>
+					<reportElement x="0" y="0" width="1000" height="20" backcolor="#FFFFFF" uuid="13e2f6f3-faaa-4e66-95a4-5cbff6333faf"/>
+					<graphicElement>
+						<pen lineColor="#B4BBBB"/>
+					</graphicElement>
+				</rectangle>
+				<textField isBlankWhenNull="true">
+					<reportElement x="140" y="0" width="170" height="20" uuid="2d8eea23-d03d-401f-81b9-92b441e4e7a4"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{pr_desc}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="140" height="20" uuid="5e39e284-286e-4f9f-bce2-6ca3c1191922"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Product : ]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="107" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+			<rectangle>
+				<reportElement x="0" y="0" width="1000" height="107" forecolor="#000000" backcolor="#FFFFFF" uuid="2cea8bab-119b-4e33-ae73-1facb5900c00">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#C4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="2" y="2" width="105" height="105" uuid="9ff84a9f-0836-4051-baf7-4e70a175ada1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="77" width="738" height="30" uuid="4a247a63-8067-41e2-9ec3-2944238dfc1e">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXPIRED CERTIFICATE REPORT ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="738" y="92" width="100" height="15" forecolor="#C9C5C5" uuid="4532188c-4e6c-46b1-9b2d-735e8282a18b">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[To:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="738" y="77" width="100" height="15" forecolor="#C9C5C5" uuid="481f60e8-8333-4ff2-934d-75947c074919">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[From: ]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement x="838" y="92" width="162" height="15" isPrintInFirstWholeBand="true" forecolor="#BFBDBD" uuid="6d552935-4ca2-4b41-a333-b900a43101ef">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateTo}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement x="838" y="77" width="162" height="15" forecolor="#BFBDBD" uuid="991ceebf-23f1-4997-8294-1aead573e03b">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateFrom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[($V{PAGE_NUMBER} > 1 && $P{format} != null && $P{format}.equals("pdf")) || ($V{PAGE_NUMBER} == 1)]]></printWhenExpression>
+			<rectangle>
+				<reportElement x="0" y="0" width="1000" height="20" backcolor="#FFFFFF" uuid="6484af34-8d43-41ae-a4b0-bca71117d71a"/>
+				<graphicElement>
+					<pen lineColor="#B4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="140" height="20" forecolor="#030303" backcolor="#FFFFFF" uuid="95269898-6d8c-4d3b-bf4a-cecda1a98cd3"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Client Name ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="0" width="170" height="20" forecolor="#030303" backcolor="#FFFFFF" uuid="37985f05-5a4d-4a28-ac53-02693f149625"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="100" height="20" forecolor="#030303" backcolor="#FFFFFF" uuid="593ef1c2-a41f-4764-9dcd-e15860b52fa0"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Risk ID.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="520" y="0" width="100" height="20" forecolor="#030303" backcolor="#FFFFFF" uuid="c0fec831-9c03-4ce5-8a5f-70e5a629de5a"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Risk WEF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="620" y="0" width="114" height="20" forecolor="#030303" backcolor="#FFFFFF" uuid="d74e5b50-a446-46ea-bc2f-0236535bf2aa"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Risk WET]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="734" y="0" width="86" height="20" forecolor="#030303" backcolor="#FFFFFF" uuid="27266a15-0ad5-47c1-b045-630c03d880b1"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Done By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="0" width="110" height="20" forecolor="#030303" uuid="32819364-4c9c-4242-86d7-b0c6b43eaaab"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trans. Ref. No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="820" y="0" width="80" height="20" forecolor="#030303" backcolor="#FFFFFF" uuid="0926b163-a92e-4c85-b695-8292e83891bc"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cert.WEF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="900" y="0" width="100" height="20" forecolor="#030303" backcolor="#FFFFFF" uuid="9813fa9e-2fef-40b0-bb64-b60617568990"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cert. Expiry]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="1000" height="20" forecolor="#B4BBBB" backcolor="#FFFFFF" uuid="8464cdc9-384d-4118-9cca-f04149e077c2"/>
+			</rectangle>
+			<textField textAdjust="StretchHeight" pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="140" height="20" uuid="2f1c8989-83da-4c0f-b782-7b1d66d1b2ab"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cq_client_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="0" width="170" height="20" uuid="ca996723-0dde-45ee-88a7-4b3041e99cd4"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="0" width="100" height="20" uuid="71ae3dae-adc7-4e3a-9c4c-6ca5f6361a58"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{risk_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="520" y="0" width="100" height="20" uuid="25719ab8-b740-47b5-a564-ee89de31ee70"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{risk_wef_date}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="620" y="0" width="114" height="20" uuid="a072be52-e0ac-4f74-a599-01d65ec675ea"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{risk_wet_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="734" y="0" width="86" height="20" uuid="8c0150ed-376d-47fb-acb6-782881451647"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{user_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="0" width="110" height="20" uuid="12f9c0c0-1241-4200-a5a1-8cc4d40c6843"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_ref_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="900" y="0" width="100" height="20" uuid="994a3978-65cd-48aa-a18d-e7b9a0a95b58"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wet}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="820" y="0" width="80" height="20" uuid="8bd1afc7-9af7-43ca-a618-0312063436b0"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pc_wef}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

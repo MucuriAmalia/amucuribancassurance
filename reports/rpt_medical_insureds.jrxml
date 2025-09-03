@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-08-17T14:48:07 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_medical_insureds" pageWidth="765" pageHeight="842" whenNoDataType="BlankPage" columnWidth="765" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0830ed02-546e-42bc-82bf-ecf217e44331">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Broker_db"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="275"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="725"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="647"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="353"/>
+	<parameter name="polId" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT s1.client_fname,s1.client_onames,s.cm_age,s1.client_dob,s.cm_dep_type,s.cm_child_type,
+s.cm_cat_id, s2.mc_desc
+from sys_brk_cat_members s
+inner join sys_brk_clients s1 on s1.client_id = s.cm_client_id
+inner join sys_brk_med_category s2 on s2.mc_id = s.cm_cat_id
+inner join sys_brk_policies s3 on s3.pol_id = s2.mc_policy_id
+where  pol_id=  $P{polId}
+order BY s.cm_id asc]]>
+	</queryString>
+	<field name="client_fname" class="java.lang.String"/>
+	<field name="client_onames" class="java.lang.String"/>
+	<field name="cm_age" class="java.lang.Long"/>
+	<field name="client_dob" class="java.sql.Timestamp"/>
+	<field name="cm_dep_type" class="java.lang.String"/>
+	<field name="cm_child_type" class="java.lang.String"/>
+	<field name="cm_cat_id" class="java.lang.Long"/>
+	<field name="mc_desc" class="java.lang.String"/>
+	<group name="members">
+		<groupExpression><![CDATA[$F{cm_cat_id}]]></groupExpression>
+		<groupHeader>
+			<band height="36">
+				<rectangle>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="0" width="765" height="36" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="df7f9168-6814-4265-a9cc-ef9412402c9e"/>
+					<graphicElement>
+						<pen lineColor="#B4BBBB"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="20" width="270" height="16" uuid="17b30a83-7591-41dd-813c-de9e517c2dbc"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[   NAME]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="270" y="20" width="170" height="16" uuid="88a581ff-e30a-43b4-813f-1a608ccc6204"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[    DATE OF BIRTH]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="570" y="20" width="195" height="16" uuid="99074887-21d2-4c38-8341-07051f853124"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[    RELATION TO POLICYHOLDER]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="440" y="20" width="130" height="16" uuid="6bbb5329-ce5c-45ae-a435-b4a0b6160906"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[    AGE IN YEARS]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="0" y="0" width="765" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="2e9638e9-b3eb-452c-9ec1-484f4d87895f"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mc_desc}.toUpperCase()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20">
+			<rectangle>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="0" width="765" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="44d3a4be-c96d-4f51-81e9-2a431f69dd5f"/>
+				<graphicElement>
+					<pen lineColor="#B4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="2" width="765" height="18" uuid="f574c59a-8e30-4959-8e42-903dac2d2fbe"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[   DETAILS OF INSURED AND DEPENDANTS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<rectangle>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="0" width="765" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="2dd61982-d8e4-4ee0-8268-73e04ff826e1"/>
+				<graphicElement>
+					<pen lineColor="#B4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="0" width="270" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="150665cf-cec7-49e6-b04b-56202d2a064c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["    "+$F{client_fname}.toUpperCase()+" "+$F{client_onames}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd-MMMM-yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="270" y="0" width="170" height="12" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="96b70665-aea5-40ec-ae48-18ad2d2242ec"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["    "+DATEFORMAT($F{client_dob},"dd-MMM-yyyy")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="440" y="0" width="130" height="12" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="c4546307-ce0c-4cb4-ae2d-5fcba4dc50fe"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["    "+$F{cm_age}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="570" y="0" width="195" height="12" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="9b0e962c-f243-48c9-8415-20eb70b62d1c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cm_dep_type} .equals("P") ? "    PRINCIPAL" : $F{cm_dep_type} .equals("S") ? "    SPOUSE" : $F{cm_child_type} .equals("S") ? "    SON":$F{cm_child_type} .equals("D") ? "    DAUGHTER":$F{cm_child_type} .equals("SS") ? "    SISTER":$F{cm_child_type} .equals("B") ? "    BROTHER":$F{cm_child_type} .equals("N") ? "    NEPHEW":$F{cm_child_type} .equals("C") ? "    COUSIN":" "]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="13">
+			<rectangle>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="0" width="765" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="f0bb4ab9-21d3-4e41-aca7-32976a7be382"/>
+				<graphicElement>
+					<pen lineColor="#B4BBBB"/>
+				</graphicElement>
+			</rectangle>
+		</band>
+	</columnFooter>
+</jasperReport>

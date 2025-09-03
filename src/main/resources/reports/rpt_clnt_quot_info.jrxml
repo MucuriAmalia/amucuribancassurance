@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2018-02-26T16:41:44 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_quote_info" pageWidth="765" pageHeight="842" whenNoDataType="BlankPage" columnWidth="765" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="184ea684-60a5-4403-b02d-84674dfe2d58">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgres Brokerage"/>
+	<parameter name="quotId" class="java.lang.Long"/>
+	<queryString language="SQL">
+		<![CDATA[select distinct acct_name,client_fname,client_onames,s12.prs_fname,s12.prs_onames, quot_pr_pro_id,
+quot_pr_id,pr_desc,quot_id,quot_no,s3.quot_pr_wef,s3.quot_pr_wet,s7.quot_rsk_value,s7.quote_rsk_sht_desc,
+s7.quot_rsk_desc,s8.cnt_title,s.quot_clnt_type
+from sys_brk_quotations s
+ left outer join sys_brk_clients s1 on s.quot_client_id = s1.client_id
+ left outer join sys_brk_prospects s12 on s12.prs_id = s.quot_prs_id
+ inner join sys_brk_quot_products s3 on s.quot_id = s3.quot_pr_quot_id
+ inner join  sys_brk_accounts s2 on s2.acct_id = s3.quot_pr_agent_id
+ inner join  sys_brk_products s4 on s4.pr_code = s3.quot_pr_pro_id
+ inner join sys_brk_currencies s5 on s5.cur_code = s.quot_curr_id
+ inner join sys_brk_binders s6 on s6.bin_id = s3.quot_pr_bind_id
+inner join sys_brk_quot_risks s7 on s3.quot_pr_id = s7.quot_rsk_pr_id
+left outer join sys_brk_client_titles s8 on s8.cnt_title_id = s1.client_title_id
+ where quot_id = $P{quotId}]]>
+	</queryString>
+	<field name="acct_name" class="java.lang.String"/>
+	<field name="client_fname" class="java.lang.String"/>
+	<field name="client_onames" class="java.lang.String"/>
+	<field name="prs_fname" class="java.lang.String"/>
+	<field name="prs_onames" class="java.lang.String"/>
+	<field name="quot_pr_pro_id" class="java.lang.Long"/>
+	<field name="quot_pr_id" class="java.lang.Long"/>
+	<field name="pr_desc" class="java.lang.String"/>
+	<field name="quot_id" class="java.lang.Long"/>
+	<field name="quot_no" class="java.lang.String"/>
+	<field name="quot_pr_wef" class="java.sql.Date"/>
+	<field name="quot_pr_wet" class="java.sql.Date"/>
+	<field name="quot_rsk_value" class="java.math.BigDecimal"/>
+	<field name="quote_rsk_sht_desc" class="java.lang.String"/>
+	<field name="quot_rsk_desc" class="java.lang.String"/>
+	<field name="cnt_title" class="java.lang.String"/>
+	<field name="quot_clnt_type" class="java.lang.String"/>
+	<group name="product">
+		<groupExpression><![CDATA[$F{quot_pr_pro_id}]]></groupExpression>
+		<groupHeader>
+			<band height="100">
+				<rectangle>
+					<reportElement x="0" y="0" width="765" height="100" uuid="60af6239-6428-4844-8158-6566237ae338"/>
+				</rectangle>
+				<staticText>
+					<reportElement positionType="Float" x="0" y="40" width="180" height="20" uuid="6ed45028-ad10-47f6-a1b1-b10f17da9298">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[	QUOTATION NUMBER: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="0" y="20" width="180" height="20" uuid="53fbca09-b56a-4451-aa4c-592a3a017284">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[	INSURED:]]></text>
+				</staticText>
+				<textField>
+					<reportElement positionType="Float" x="180" y="80" width="585" height="20" uuid="bca1c634-c52d-46a9-97d5-6e3d3104c9a6"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["	"+DATEFORMAT($F{quot_pr_wef},"dd-MMM-yyyy")+" to "+DATEFORMAT($F{quot_pr_wet},"dd-MMM-yyyy")
++ " BOTH DATES INCLUSIVE."]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement positionType="Float" x="180" y="60" width="585" height="20" uuid="e0bf8997-9cdf-4b08-b443-48c1a63b3798"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["	"+$F{pr_desc}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" x="0" y="80" width="180" height="20" uuid="f80b3bd3-96bd-489e-a3f5-8dfe6fceb188">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[	PERIOD OF INSURANCE:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" x="180" y="20" width="585" height="20" uuid="9fbac055-846a-48ff-9733-351c34c94976">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{quot_clnt_type}.equals("P") ? "	"+ $F{prs_fname}.toUpperCase()+ " "+$F{prs_onames}.toUpperCase() : "	"+$F{cnt_title}.toUpperCase()+". "+$F{client_fname}.toUpperCase()+ " "+$F{client_onames}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="180" y="0" width="585" height="20" uuid="d953670b-67bc-4a12-8fe8-c2844b13e4f7"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["	"+$F{acct_name}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" x="0" y="60" width="180" height="20" uuid="1fe129b3-1e30-4b41-b769-eab9de86cd30">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[	PRODUCT:]]></text>
+				</staticText>
+				<textField>
+					<reportElement positionType="Float" x="180" y="40" width="585" height="20" uuid="fc5156f8-173d-4fd3-804f-dfddb193650c"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["	"+$F{quot_no}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" x="0" y="0" width="180" height="20" uuid="15c52af3-e212-44f2-98c9-076305be7aff">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[	INSURER: ]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="40">
+				<rectangle>
+					<reportElement x="0" y="0" width="765" height="40" uuid="75a1ccdf-cc17-42ee-813a-ca27647bb72d"/>
+				</rectangle>
+				<subreport>
+					<reportElement positionType="Float" x="0" y="0" width="765" height="20" isRemoveLineWhenBlank="true" uuid="a6a34b47-407f-4c75-9535-d9a66b695a30"/>
+					<subreportParameter name="quotId">
+						<subreportParameterExpression><![CDATA[$F{quot_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="prodId">
+						<subreportParameterExpression><![CDATA[$F{quot_pr_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["reports/rpt_quot_sections.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement positionType="Float" x="0" y="20" width="765" height="20" isRemoveLineWhenBlank="true" uuid="41a2a862-825a-4a4a-bf71-a3c49f129762"/>
+					<subreportParameter name="prodId">
+						<subreportParameterExpression><![CDATA[$F{quot_pr_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="quotId">
+						<subreportParameterExpression><![CDATA[$F{quot_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["reports/rpt_quot_clauses.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+</jasperReport>

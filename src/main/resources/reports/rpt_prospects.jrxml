@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_prospects" pageWidth="1330" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="960" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1bf9c828-381b-4849-8fb8-dac124bc168d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Adapter"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="prospectId" class="java.lang.String"/>
+	<parameter name="dateFrom" class="java.util.Date"/>
+	<parameter name="dateTo" class="java.util.Date"/>
+	<parameter name="format" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select prs_id, prs_fname, prs_onames , prs_created_by, coalesce (sbp2.pol_client_pol_no, '') as pol_client_pol_no,
+case when sbp2.pol_auth_status = 'A' then 'Converted' else 'Not Converted' end as pol_auth_status ,user_absa_no, 
+coalesce (sbp2.pol_no, '') as pol_no,sbu2.user_name as converted_by , sbp2.pol_auth_date , sbb.ob_name, 
+case when sbp.prs_status = 'A' then 'Active' else 'Terminated' end as prs_status,prs_datereg
+from sys_brk_prospects sbp 
+left join sys_brk_clients sbc on sbc.client_id = sbp.prs_clnt_code
+left join sys_brk_policies sbp2 on sbp2.pol_client_id = sbc.client_id 
+left join sys_brk_users sbu2 on sbu2.user_id = sbp2.pol_created_user
+left join sys_brk_branches sbb on sbb.ob_id = sbp2.pol_branch_id
+where (prs_id::varchar) = coalesce ($P{prospectId}, (prs_id::varchar))
+ and sbp.prs_datereg between $P{dateFrom}  and $P{dateTo}]]>
+	</queryString>
+	<field name="prs_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="prs_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="prs_fname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prs_fname"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_fname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="prs_onames" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prs_onames"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_onames"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="prs_created_by" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="prs_created_by"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_created_by"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="pol_client_pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_client_pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_client_pol_no"/>
+	</field>
+	<field name="pol_auth_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_auth_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_auth_status"/>
+	</field>
+	<field name="user_absa_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="user_absa_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="user_absa_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_users"/>
+	</field>
+	<field name="pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="converted_by" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="converted_by"/>
+		<property name="com.jaspersoft.studio.field.label" value="converted_by"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_users"/>
+	</field>
+	<field name="pol_auth_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="pol_auth_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_auth_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="ob_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ob_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="ob_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_branches"/>
+	</field>
+	<field name="prs_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prs_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_status"/>
+	</field>
+	<field name="prs_datereg" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="prs_datereg"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_datereg"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="130" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="1293" height="130" backcolor="#FFFFFF" uuid="70eacbfd-ab9e-479e-ac08-ee6853265959">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="8" y="10" width="105" height="105" uuid="0a6dbdf3-915d-40b8-89f3-b6774a57612e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="105" width="1293" height="20" uuid="ee142e99-36cd-4ea1-93a0-bcc9918ee75b">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROSPECTS LIST]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[($V{PAGE_NUMBER} > 1 && $P{format} != null && $P{format}.equals("pdf")) || ($V{PAGE_NUMBER} == 1)]]></printWhenExpression>
+			<staticText>
+				<reportElement x="0" y="0" width="130" height="20" isPrintWhenDetailOverflows="true" uuid="6cd27428-4053-4ba3-a218-3daff6b2046b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Prospect Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="229" height="20" isPrintWhenDetailOverflows="true" uuid="2a17a15f-fead-4844-88fb-655e49dcdc28"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reference No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="589" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="86ff2f1d-99e9-4aaf-9032-e71bf629e14c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date Converted]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="689" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="db334a97-3157-4626-983b-81071cef4c8b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date Registered]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="913" y="0" width="150" height="20" isPrintWhenDetailOverflows="true" uuid="1b785c14-3bdc-4294-b839-378be113cecc"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Converted By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1153" y="0" width="140" height="20" isPrintWhenDetailOverflows="true" uuid="20db030c-a5b6-4921-b98c-8a1eb966fd62"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Branch]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="789" y="0" width="124" height="20" isPrintWhenDetailOverflows="true" uuid="fed52b0d-736e-459d-a53e-3a8f52bdfc4d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="359" y="0" width="230" height="20" isPrintWhenDetailOverflows="true" uuid="aafa6ba8-dcef-48a7-b230-1a5e2a0f0c6a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1063" y="0" width="90" height="20" isPrintWhenDetailOverflows="true" uuid="8f90293b-d995-4b06-83df-c1b324d4a298"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AB Number]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="130" height="20" isPrintWhenDetailOverflows="true" uuid="4e4f73b4-de51-44ed-8f48-15b5f9f366d7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{prs_fname}.toUpperCase()+" "+$F{prs_onames}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="0" width="229" height="20" isPrintWhenDetailOverflows="true" uuid="a6093adf-3019-44fe-9723-e1b8ec5cde29"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pol_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="d/M/y" isBlankWhenNull="true">
+				<reportElement x="589" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="12a5ef41-2ed2-4484-95a9-7d104a7a6f1e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pol_auth_date}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="d/M/y" isBlankWhenNull="true">
+				<reportElement x="689" y="0" width="100" height="20" uuid="6dd5a62f-8acf-4399-82c8-4b16dde30bb8"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{prs_datereg}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MM-YYYY" isBlankWhenNull="true">
+				<reportElement x="1153" y="0" width="140" height="20" isPrintWhenDetailOverflows="true" uuid="5e13c9b7-5ecf-4048-8bff-fa6342042bfe"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ob_name}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="913" y="0" width="150" height="20" isPrintWhenDetailOverflows="true" uuid="c597ce67-8c41-44f0-a877-cfd0aa938ffc"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{converted_by}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="789" y="0" width="124" height="20" isPrintWhenDetailOverflows="true" uuid="c23fd07e-ab45-4871-9ca2-772cef811356"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pol_auth_status}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="359" y="0" width="230" height="20" isPrintWhenDetailOverflows="true" uuid="117074cb-77ff-49c7-a341-c51e003dc4b3"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="359" y="0" width="230" height="20" uuid="38eba581-0c51-4454-ab7b-3dcbedb93184"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pol_client_pol_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1063" y="0" width="90" height="20" isPrintWhenDetailOverflows="true" uuid="339a5b36-7fa0-410b-985b-dc4f38b062bd"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{user_absa_no}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="36">
+			<printWhenExpression><![CDATA[$P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+			<textField>
+				<reportElement x="1020" y="5" width="100" height="30" uuid="beeb1d57-c162-444e-8885-c4f63acf5b29"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="1120" y="5" width="100" height="30" uuid="6c1636cb-e30c-4007-a155-e086f6f22dd0"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="498" y="10" width="70" height="15" uuid="8612439e-f1bd-4ade-a6cb-8501187436ef"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Printed on]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy h:mm a" isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="643" y="10" width="150" height="15" uuid="18701ab7-4cff-40f8-ba2b-c4fcc6f05b4b"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_claims_daily_report" pageWidth="1955" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1915" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="0e77c0ed-835f-4c0d-9587-6db88c6fe371">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="absaa"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="302"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="691"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="597"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="393"/>
+	<parameter name="logo" class="java.lang.Object" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{logo}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="format" class="java.lang.String"/>
+	<parameter name="dateFrom" class="java.sql.Date">
+		<defaultValueExpression><![CDATA[new java.sql.Date(System.currentTimeMillis())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateTo" class="java.sql.Date">
+		<defaultValueExpression><![CDATA[new java.sql.Date(System.currentTimeMillis())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="causation" class="java.lang.String">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+    cb.clm_no AS "Claim No",
+    REPLACE(REPLACE(CONCAT(cl.client_fname, ' ', cl.client_onames), CHR(13), ' '), CHR(10), ' ') AS "Client",
+    pol.pol_no AS "Policy Number",
+    cb.clm_booked_dt AS "Booked Date",
+    ca_act.clm_act_rem_dt AS "Reminder Date", 
+    cb.clm_insurer_dt AS "Notification Date",
+    REPLACE(REPLACE(ca.ca_desc, CHR(13), ' '), CHR(10), ' ') AS "Activity",
+    cb.clm_loss_date AS "Loss Date",
+    CASE
+        WHEN UPPER(sbpg.bpg_desc) LIKE '%LIFE%' THEN COALESCE(cl.client_idno, 'MISSING_CLIENT_IDNO')
+        ELSE COALESCE(rk.risk_sht_desc, 'MISSING_RISK_SHT_DESC')
+    END AS "Risk Identifier",
+    rk.risk_wef_date AS "Period From",
+    rk.risk_wet_date AS "Period To",
+    rk.risk_sum_insur_amt AS "Value",
+    REPLACE(REPLACE(cl.client_sht_desc, CHR(13), ' '), CHR(10), ' ') AS "Insured"
+FROM
+    sys_brk_clm_bookings cb
+JOIN
+    sys_brk_risks rk ON cb.clm_risk_id = rk.risk_id
+JOIN
+    sys_brk_clients cl ON rk.risk_insured_id = cl.client_id
+JOIN
+    sys_brk_policies pol ON rk.risk_pol_id = pol.pol_id
+JOIN
+    sys_brk_products sbp3 ON pol.pol_prod_id = sbp3.pr_code
+JOIN
+    sys_brk_product_grp sbpg ON sbp3.pr_bpg_code = sbpg.bpg_code
+INNER JOIN
+    (SELECT
+         clm_act_id,
+         clm_act_clm_id,
+         clm_act_status_id,
+         clm_act_rem_dt,
+         ROW_NUMBER() OVER (PARTITION BY clm_act_clm_id ORDER BY clm_act_dt DESC) AS rn
+     FROM
+         sys_brk_clm_activities
+     WHERE
+         clm_act_status_id IS NOT NULL
+         AND clm_act_rem_dt BETWEEN $P{dateFrom} AND $P{dateTo}
+    ) ca_act ON cb.clm_id = ca_act.clm_act_clm_id AND ca_act.rn = 1
+INNER JOIN
+    sys_brk_causations ca ON ca_act.clm_act_status_id = ca.ca_id
+WHERE
+    ($P{causation} IS NULL OR ca.ca_desc LIKE $P{causation})]]>
+	</queryString>
+	<field name="Claim No" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Claim No"/>
+		<property name="com.jaspersoft.studio.field.label" value="Claim No"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="Client" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Client"/>
+		<property name="com.jaspersoft.studio.field.label" value="Client"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="Policy Number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Policy Number"/>
+		<property name="com.jaspersoft.studio.field.label" value="Policy Number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="Booked Date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="Booked Date"/>
+		<property name="com.jaspersoft.studio.field.label" value="Booked Date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="Reminder Date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="Reminder Date"/>
+		<property name="com.jaspersoft.studio.field.label" value="Reminder Date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_activities"/>
+	</field>
+	<field name="Notification Date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="Notification Date"/>
+		<property name="com.jaspersoft.studio.field.label" value="Notification Date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="Activity" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Activity"/>
+		<property name="com.jaspersoft.studio.field.label" value="Activity"/>
+	</field>
+	<field name="Loss Date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="Loss Date"/>
+		<property name="com.jaspersoft.studio.field.label" value="Loss Date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="Risk Identifier" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Risk Identifier"/>
+		<property name="com.jaspersoft.studio.field.label" value="Risk Identifier"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="Period From" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="Period From"/>
+		<property name="com.jaspersoft.studio.field.label" value="Period From"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_risks"/>
+	</field>
+	<field name="Period To" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="Period To"/>
+		<property name="com.jaspersoft.studio.field.label" value="Period To"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_risks"/>
+	</field>
+	<field name="Value" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="Value"/>
+		<property name="com.jaspersoft.studio.field.label" value="Value"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_risks"/>
+	</field>
+	<field name="Insured" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Insured"/>
+		<property name="com.jaspersoft.studio.field.label" value="Insured"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="121" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="1915" height="120" uuid="40b85106-fda0-4556-a824-58103407b8bf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#C4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="4" y="4" width="105" height="105" uuid="f7f4748a-0e55-46d1-b216-ad73db1ef780">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="91" width="1915" height="30" uuid="8a4fd08b-db0b-4ffb-b555-e79a842a1e22">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLAIMS DAILY REPORTS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
+			<printWhenExpression><![CDATA[($V{PAGE_NUMBER} > 1 && $P{format} != null && $P{format}.equals("pdf")) || ($V{PAGE_NUMBER} == 1)]]></printWhenExpression>
+			<staticText>
+				<reportElement x="0" y="0" width="90" height="20" uuid="481beec1-3602-4839-8ace-e90eefb6bfb2"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Claim No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="0" width="176" height="20" uuid="5333eab3-0c65-44fd-9456-b56c3b6ba3fa"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Client]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="266" y="0" width="403" height="20" uuid="77b68b79-cb09-4d9c-9a85-45cf8b655451"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="669" y="0" width="128" height="20" uuid="61ace6d6-71ed-45da-afce-a98362050730"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Booked Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="797" y="0" width="129" height="20" uuid="902514fa-837f-414f-be67-14450b20afcb"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reminder Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="926" y="0" width="138" height="20" uuid="8265e15c-4671-4a90-80f4-07e71d3537b4"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Notification Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1064" y="0" width="134" height="20" uuid="ded8fb9f-5cbf-40b5-bb6a-50ecd1ce0c38"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Activity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1198" y="0" width="132" height="20" uuid="5d96d3ec-8b90-4aee-b5dd-d3618efbfb86"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Loss Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1330" y="0" width="146" height="20" uuid="1c09ebbf-5017-44a6-b0a2-80597d2d11b0"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Risk Identifier]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1476" y="0" width="95" height="20" uuid="879bd22f-7045-47bf-8185-2128febfa3bb"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Period From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1571" y="0" width="96" height="20" uuid="e1caa64f-661a-463c-9de1-c0e686c26f26"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Period To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1667" y="0" width="111" height="20" uuid="afd5d9a7-a28c-476c-a150-6e525d1b86a4"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Value]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1778" y="0" width="137" height="20" uuid="30b5b8d9-d938-4080-b0d4-b7cc1a75fcd8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Insured]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="90" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="0a087186-01f7-4c48-88d1-b6ad077e56f8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Claim No}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="90" y="0" width="176" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="d8d03499-f6ec-4255-9b44-5e764b6b3ef9"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Client}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="266" y="0" width="403" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="2e957440-7ff6-40dc-a957-50dee95f317a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Policy Number}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="669" y="0" width="128" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="49f49704-a91b-4fa3-8d7f-d6d5d0ff4a2a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Booked Date}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="797" y="0" width="129" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="70eb997f-896a-489d-bea5-0c27f85fe4ba"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Reminder Date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="926" y="0" width="138" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="469b3dbe-2064-49ee-b8fe-3b73f78938e6"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Notification Date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1064" y="0" width="134" height="20" uuid="80e2ba5e-2f75-4087-86ab-e4d3c0957436"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Activity}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1198" y="0" width="132" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="4a2cc4f3-05cd-40af-83dc-c1793eeb8b0a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Loss Date}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1330" y="0" width="146" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="873370e2-f46f-45cc-be20-ae4d53140a5e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Risk Identifier}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1476" y="0" width="95" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="36b5beea-0c14-4f92-9791-2b0e76592b11"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Period From}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1571" y="0" width="96" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="dcecb0c8-653a-4231-9c9b-5a1c2599cb81"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Period To}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1667" y="0" width="111" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="714d3aed-f828-4c6b-9507-7eaac6fa74c0"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Value}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1778" y="0" width="137" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="a86c0fc3-298b-459e-a811-9cf4e41233f8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Insured}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<printWhenExpression><![CDATA[$P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+			<textField>
+				<reportElement x="1629" y="0" width="98" height="30" uuid="cb2e4b43-84a3-4869-a986-70a0c5051c9e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="1727" y="0" width="100" height="30" uuid="8de7a181-6d07-4acb-a5ec-9af43419d48f"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="20">
+			<printWhenExpression><![CDATA[$P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+		</band>
+	</lastPageFooter>
+</jasperReport>

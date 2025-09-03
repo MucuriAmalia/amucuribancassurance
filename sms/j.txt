@@ -1,0 +1,2 @@
+
+D:\Alex\b-app\sms>move *.csv  /home/peter/dump 

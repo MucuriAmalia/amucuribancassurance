@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-02-28T17:10:01 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rep_header_7" pageWidth="85" pageHeight="842" whenNoDataType="BlankPage" columnWidth="85" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b2dae869-7ecd-47f3-89d7-6eb131d7bcf4">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Brokerage DB"/>
+	<parameter name="sub_class_id" class="java.lang.Long">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT upper(sm_col_name)
+  FROM sys_brk_sched_mappings
+ WHERE sm_col_index = '7' 
+ AND sm_sub_code =  $P{sub_class_id}]]>
+	</queryString>
+	<field name="upper" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="85" height="20" uuid="15b38470-425b-49de-8a05-455f0c9f04ee"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="85" height="20" uuid="66080b81-075e-453d-bd00-f510d655e531"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{upper}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

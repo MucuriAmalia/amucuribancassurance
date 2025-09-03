@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_quote_info" pageWidth="765" pageHeight="842" whenNoDataType="BlankPage" columnWidth="765" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="184ea684-60a5-4403-b02d-84674dfe2d58">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ABSA UPDATED"/>
+	<parameter name="polId" class="java.lang.Long"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT 
+  s21.surrender_value, s21.surrender_yr
+FROM sys_brk_pol_surrender_values s21
+where s21.surr_pol_id = $P{polId}]]>
+	</queryString>
+	<field name="surrender_value" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="surrender_value"/>
+		<property name="com.jaspersoft.studio.field.label" value="surrender_value"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_pol_surrender_values"/>
+	</field>
+	<field name="surrender_yr" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="surrender_yr"/>
+		<property name="com.jaspersoft.studio.field.label" value="surrender_yr"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_pol_surrender_values"/>
+	</field>
+	<group name="product">
+		<groupHeader>
+			<band height="100">
+				<rectangle>
+					<reportElement x="0" y="0" width="765" height="100" uuid="60af6239-6428-4844-8158-6566237ae338"/>
+				</rectangle>
+				<textField>
+					<reportElement x="390" y="10" width="310" height="20" uuid="d953670b-67bc-4a12-8fe8-c2844b13e4f7"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{surrender_value}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="70" y="10" width="310" height="20" uuid="35ae54c0-0487-4962-b889-091a7edb0110"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{surrender_yr}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="40">
+				<rectangle>
+					<reportElement x="0" y="0" width="765" height="40" uuid="75a1ccdf-cc17-42ee-813a-ca27647bb72d"/>
+				</rectangle>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+</jasperReport>

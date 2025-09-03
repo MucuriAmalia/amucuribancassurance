@@ -1,0 +1,67 @@
+pipeline {
+    agent any
+    stages{
+        stage('Clone repo') {
+            steps {
+                checkout scmGit(branches: [[name: '*/fix/migrate-from-select3-to-select4']], extensions: [], userRemoteConfigs: [[credentialsId: 'tokentoken', url: 'https://github.com/EMTECH-ELP/General_NEW.git']])
+            }
+        }
+
+        stage('Intergrate for absa pentest application') {
+            steps {
+                script {
+                    sh 'cp /var/lib/jenkins/ci-files/absa/pentest/pom.xml pom.xml'
+                    sh 'cp /var/lib/jenkins/ci-files/absa/pentest/config.properties src/main/resources/config.properties'
+                    sh 'cp /var/lib/jenkins/ci-files/absa/pentest/AicareagencyUAT.pfx AicareagencyUAT.pfx'
+                    sh 'cp /var/lib/jenkins/ci-files/absa/pentest/Dockerfile Dockerfile'
+		    sh 'cp /var/lib/jenkins/ci-files/absa/pentest/id_rsa id_rsa'
+		    sh 'ls default-calculators'
+                    sh 'ls cert'
+		    sh 'cp -r /var/lib/jenkins/ci-files/absa/pentest/images images'
+		    sh 'cp /var/lib/jenkins/ci-files/absa/pentest/startup.sh startup.sh'
+		    sh 'cp /var/lib/jenkins/ci-files/absa/pentest/config config'
+                }
+            }
+        }
+
+        stage('Clean project pentest') {
+            steps {
+                sh "mvn clean"
+            }
+
+        }
+
+        stage('Build Docker image pentest'){
+            steps {
+                script {
+
+                def appName = "absabanca"
+
+                sh "docker build -t ${appName}:7.0.0 ."
+            }
+            }
+
+        }
+
+        stage('Push to Docker Registry pentest'){
+            steps{
+
+                 withCredentials([string(credentialsId: 'dockeruser', variable: 'dockeruser'),string(credentialsId: 'dockerpasswd', variable: 'dockerpasswd')]){
+
+                        script {
+                            def appName = "absabanca"
+                            sh """
+                            aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/y4m1g9m0
+                            docker tag ${appName}:7.0.0 public.ecr.aws/y4m1g9m0/absabanca-public:7.0.1
+                            docker push public.ecr.aws/y4m1g9m0/absabanca-public:7.0.1
+                            """
+
+                    }
+                }
+
+            }
+
+        }
+    }
+}
+

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-08-25T12:11:34 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_aging_analysis" pageWidth="802" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="672a5776-4c3e-42d5-9723-cc9edb5fcdf5">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Broker_db"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="630"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="356"/>
+	<parameter name="client_id" class="java.lang.Long">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT client_id, client_brn_code,
+ client_clnt_type , trans_curr_id ,
+ trans_control_acc, 
+  SUM(CASE WHEN trans_type = 'RC' THEN CASE WHEN trans_dc = 'C' 
+                THEN ABS(trans_balance)*-1 
+                 WHEN trans_dc = 'D' 
+                     THEN ABS(trans_balance) 
+             END 
+            WHEN trans_type = 'PM' 
+               THEN ABS(trans_balance) 
+                    ELSE
+        CASE 
+            WHEN trans_type = 'RC'
+                 THEN ABS(trans_balance)*-1 
+                     ELSE
+                     0 
+            END                                
+    END) AS open_cash, 
+ SUM(CASE WHEN trans_type = 'RC' OR trans_type = 'PM' 
+                THEN
+                 0 
+             ELSE 
+             CASE WHEN  date_trunc('day', trans_date) >= CURRENT_DATE - 30 
+                THEN 
+                     CASE WHEN trans_dc = 'C' 
+                         THEN ABS(trans_balance)*-1 
+                      ELSE ABS(trans_balance) 
+                END 
+                ELSE 0 
+            END 
+    END) AS ONE_MONTH,
+    SUM(CASE WHEN trans_type = 'RC' OR trans_type = 'PM' 
+            THEN
+             0 
+             ELSE 
+        CASE WHEN  date_trunc('day', trans_date) <= CURRENT_DATE - 31 and date_trunc('day', trans_date) >= CURRENT_DATE - 60
+        
+            THEN 
+                    CASE WHEN trans_dc = 'C' 
+                            THEN ABS(trans_balance)*-1
+                         ELSE ABS(trans_balance) 
+                    END 
+                ELSE
+                 0
+            END
+    END) AS TWO_MONTH,
+        SUM(CASE WHEN trans_type = 'RC' OR trans_type = 'PM' 
+            THEN
+             0 
+             ELSE 
+        CASE WHEN  date_trunc('day', trans_date) <= CURRENT_DATE - 61 and date_trunc('day', trans_date) >= CURRENT_DATE - 90
+        
+            THEN 
+                    CASE WHEN trans_dc = 'C' 
+                            THEN ABS(trans_balance)*-1
+                         ELSE ABS(trans_balance) 
+                    END 
+                ELSE
+                 0
+            END
+    END) AS THREE_MONTH,
+        SUM(CASE WHEN trans_type = 'RC' OR trans_type = 'PM' 
+            THEN
+             0 
+             ELSE 
+        CASE WHEN  date_trunc('day', trans_date) <= CURRENT_DATE - 91 and date_trunc('day', trans_date) >= CURRENT_DATE - 120
+        
+            THEN 
+                    CASE WHEN trans_dc = 'C' 
+                            THEN ABS(trans_balance)*-1
+                         ELSE ABS(trans_balance) 
+                    END 
+                ELSE
+                 0
+            END
+    END) AS FOUR_MONTH,
+        SUM(CASE WHEN trans_type = 'RC' OR trans_type = 'PM' 
+            THEN
+             0 
+             ELSE 
+        CASE WHEN  date_trunc('day', trans_date) <= CURRENT_DATE - 121 and date_trunc('day', trans_date) >= CURRENT_DATE - 150
+        
+            THEN 
+                    CASE WHEN trans_dc = 'C' 
+                            THEN ABS(trans_balance)*-1
+                         ELSE ABS(trans_balance) 
+                    END 
+                ELSE
+                 0
+            END
+    END) AS FIVE_MONTH,
+            SUM(CASE WHEN trans_type = 'RC' OR trans_type = 'PM' 
+            THEN
+             0 
+             ELSE 
+        CASE WHEN  date_trunc('day', trans_date) <= CURRENT_DATE - 151        
+            THEN 
+                    CASE WHEN trans_dc = 'C' 
+                            THEN ABS(trans_balance)*-1
+                         ELSE ABS(trans_balance) 
+                    END 
+                ELSE
+                 0
+            END
+    END) AS OVER_5_MONTH,
+  SUM(trans_balance) as BALANCE
+FROM sys_brk_main_transactions
+INNER JOIN sys_brk_clients ON client_sht_desc = trans_control_acc
+INNER JOIN sys_brk_policies ON pol_id = trans_pol_id
+where  client_id = COALESCE( $P{client_id},client_id)
+GROUP BY client_id, trans_curr_id, client_clnt_type,trans_control_acc,client_brn_code]]>
+	</queryString>
+	<field name="client_id" class="java.lang.Long"/>
+	<field name="client_brn_code" class="java.lang.Long"/>
+	<field name="client_clnt_type" class="java.lang.Long"/>
+	<field name="trans_curr_id" class="java.lang.Long"/>
+	<field name="trans_control_acc" class="java.lang.String"/>
+	<field name="open_cash" class="java.math.BigDecimal"/>
+	<field name="one_month" class="java.math.BigDecimal"/>
+	<field name="two_month" class="java.math.BigDecimal"/>
+	<field name="three_month" class="java.math.BigDecimal"/>
+	<field name="four_month" class="java.math.BigDecimal"/>
+	<field name="five_month" class="java.math.BigDecimal"/>
+	<field name="over_5_month" class="java.math.BigDecimal"/>
+	<field name="balance" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="22">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="22" uuid="9e37c6b5-f3c6-4c40-b410-9a891e6e0900"/>
+				<graphicElement>
+					<pen lineColor="#C4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="22" uuid="a9723f20-1b8e-4433-83db-c8ceca6c18fe"/>
+				<textElement>
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[    AGING ANALYSIS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="20" uuid="d1121307-d8bf-4ce0-9526-ba68df9fd5c8"/>
+				<graphicElement>
+					<pen lineColor="#C4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="351" y="0" width="120" height="20" uuid="294335b8-d0b6-4226-8075-a40573b667ce"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["91 - 120 DAYS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="580" y="0" width="100" height="20" uuid="656198db-080c-4e5d-9c72-8b05ef404d1d"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["OVER 150 DAYS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="231" y="0" width="120" height="20" uuid="b2abd182-5085-4616-904a-f62b0df60a50"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["61 - 90 DAYS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="111" height="20" uuid="223d9f7f-d79b-4fa9-9294-bb549af58f5c"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0 - 30 DAYS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="0" width="120" height="20" uuid="159de3d5-33fe-4c2d-99b9-73a8c917a41d"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["31 - 60 DAYS"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="680" y="0" width="122" height="20" uuid="193a8a10-5272-48fb-8a76-f0e6d6aef3b9"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unallocated Receipts]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="471" y="0" width="109" height="20" uuid="88db5e0c-0aaf-46dd-b976-3d5c62cf5b01"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["121 - 150 DAYS"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="20" forecolor="#C4BBBB" uuid="d128cef1-50ec-4b3c-b334-4628e3a4e403"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true" pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+				<reportElement x="680" y="0" width="122" height="20" uuid="aafa33bf-d863-4edc-a667-9e767fe534cb"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{open_cash}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###)">
+				<reportElement x="0" y="0" width="111" height="20" uuid="fcd6113b-92c9-4a85-b549-dc8f8726ea5f"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{one_month}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###)">
+				<reportElement x="111" y="0" width="120" height="20" uuid="9aaa9db5-ad1e-4687-b4cb-5494831123d0"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{two_month}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+				<reportElement x="231" y="0" width="120" height="20" uuid="1db0920b-d186-4fb2-bb33-2735fb202119"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{three_month}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+				<reportElement x="351" y="0" width="120" height="20" uuid="3809fb3f-0e8a-4dc9-9d01-2bab1910273c"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{four_month}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+				<reportElement x="471" y="0" width="109" height="20" uuid="4b0ab348-173b-453c-8551-792450d2a747"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{five_month}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+				<reportElement x="580" y="0" width="100" height="20" uuid="8924b7a9-a2c9-4cde-ab31-d5af34ba3940"/>
+				<box>
+					<pen lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{over_5_month}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

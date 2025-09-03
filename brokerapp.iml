@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="AdditionalModuleElements">
+    <content url="file://$MODULE_DIR$" dumb="true">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-test-sources/test-annotations" isTestSource="false" />
+    </content>
+  </component>
+  <component name="EclipseModuleManager">
+    <libelement value="file://E:/Alex/jar/com.mysql.jdbc_5.1.5.jar.zip" />
+    <libelement value="file://E:/Alex/jar/mssql-jdbc-6.1.0.jre8.jar" />
+    <libelement value="file://E:/Alex/jar/mysql-connector-java-8.0.12.jar" />
+    <libelement value="file://E:/Alex/jar/ojdbc6-11.2.0.3.jar" />
+    <libelement value="file://E:/Alex/jar/postgresql-42.2.5.jar" />
+    <libelement value="file://E:/Alex/jar/sqljdbc4-2.0.jar.zip" />
+    <libelement value="file://src/main/resources/mssql/rpt_policy_register.jrxml" />
+    <conelement value="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER" />
+    <src_description expected_position="9">
+      <src_folder value="file://$MODULE_DIR$/src/main/java" expected_position="7" />
+      <src_folder value="file://$MODULE_DIR$/target/generated-sources/java" expected_position="8" />
+      <src_folder value="file://$MODULE_DIR$/src/main/resources" expected_position="9" />
+      <src_folder value="file://$MODULE_DIR$/src/test/java" expected_position="10" />
+      <src_folder value="file://$MODULE_DIR$/target/generated-sources/annotations" expected_position="13" />
+      <src_folder value="file://$MODULE_DIR$/target/generated-test-sources/test-annotations" expected_position="14" />
+    </src_description>
+  </component>
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <datasource-mapping />
+        <naming-strategy-map />
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
+      </configuration>
+    </facet>
+  </component>
+</module>

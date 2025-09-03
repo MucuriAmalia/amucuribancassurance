@@ -1,0 +1,14 @@
+<html lang="en">
+<body style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+<h3>Hi $client, </h3>
+ <p> 
+  Attached is your Quote Report for quote no <strong> $quote </strong>
+ </p>
+<p>
+    Thank you for doing business with us
+    With Regards,
+    <strong>$orgname</strong>
+</p>
+</body>
+
+</html>

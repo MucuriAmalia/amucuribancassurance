@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-03-21T20:35:18 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_client_statmnt" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0e77c0ed-835f-4c0d-9587-6db88c6fe371">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="test"/>
+	<parameter name="logo" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="Client" class="java.lang.String"/>
+	<parameter name="asOfDate" class="java.sql.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select  client_id,pol_id,org_name,org_mobile ,org_phone,org_address,org_website,phy_address,
+add_email_addr,client_fname,client_onames,client_address,client_sht_desc,acct_name,acct_address,pol_no,
+client_phone,client_email,client_sms_number,client_pin,cur_iso_code,client_idno,cur_code,
+trans_date,trans_no ,client_id agn_code,trans_clnt_type,trans_clnt_code,
+client_sht_desc agn_sht_desc, client_onames||' '||client_fname agn_name,client_status,
+client_email agn_email_address, client_address agn_postal_address,trans_control_acc,trans_type ref_no,trans_ref_no MTRAN_REF_NO,
+trans_other_ref,trans_amount,trans_settle_amt settlements,trans_net_amt MTRAN_NET_AMT,
+trans_balance mtran_balance, client_fname insured,pol_wef_date pol_policy_cover_from,cur_iso_code mtran_cur_symbol,
+trans_tl mtran_tl,trans_sd mtran_sd,trans_whtx mtran_whtx,trans_extras mtran_extras,trans_comm mtran_commission,
+trans_whtx MTRAN_PHFUND, trans_dc ordby, pr_remarks POL_REMARKS , pr_desc MTRAN_NARRATIONS, 
+trans_narrations MTRAN_NARRATIONS1, trans_type TRAN_DESC
+from sys_brk_organization,sys_brk_main_transactions
+inner  join sys_brk_clients on trans_clnt_code = client_id
+inner join sys_brk_policies on pol_id = trans_pol_id
+inner join  sys_brk_accounts on pol_agent_id = acct_id
+inner join sys_brk_currencies on cur_code = pol_curr_id
+inner join sys_brk_products on pr_code = pol_prod_id
+left join sys_brk_pol_remarks on pr_policy_id = pol_id
+where (client_id::varchar) = COALESCE($P{Client}, (client_id::varchar))
+and trans_date <= $P{asOfDate} 
+order by  client_id,cur_code,trans_date desc]]>
+	</queryString>
+	<field name="client_id" class="java.lang.Long"/>
+	<field name="pol_id" class="java.lang.Long"/>
+	<field name="org_name" class="java.lang.String"/>
+	<field name="org_mobile" class="java.lang.String"/>
+	<field name="org_phone" class="java.lang.String"/>
+	<field name="org_address" class="java.lang.String"/>
+	<field name="org_website" class="java.lang.String"/>
+	<field name="phy_address" class="java.lang.String"/>
+	<field name="add_email_addr" class="java.lang.String"/>
+	<field name="client_fname" class="java.lang.String"/>
+	<field name="client_onames" class="java.lang.String"/>
+	<field name="client_address" class="java.lang.String"/>
+	<field name="client_sht_desc" class="java.lang.String"/>
+	<field name="acct_name" class="java.lang.String"/>
+	<field name="acct_address" class="java.lang.String"/>
+	<field name="pol_no" class="java.lang.String"/>
+	<field name="client_phone" class="java.lang.String"/>
+	<field name="client_email" class="java.lang.String"/>
+	<field name="client_sms_number" class="java.lang.String"/>
+	<field name="client_pin" class="java.lang.String"/>
+	<field name="cur_iso_code" class="java.lang.String"/>
+	<field name="client_idno" class="java.lang.String"/>
+	<field name="cur_code" class="java.lang.Long"/>
+	<field name="trans_date" class="java.sql.Timestamp"/>
+	<field name="trans_no" class="java.lang.Long"/>
+	<field name="agn_code" class="java.lang.Long"/>
+	<field name="trans_clnt_type" class="java.lang.String"/>
+	<field name="trans_clnt_code" class="java.lang.Long"/>
+	<field name="agn_sht_desc" class="java.lang.String"/>
+	<field name="agn_name" class="java.lang.String"/>
+	<field name="client_status" class="java.lang.String"/>
+	<field name="agn_email_address" class="java.lang.String"/>
+	<field name="agn_postal_address" class="java.lang.String"/>
+	<field name="trans_control_acc" class="java.lang.String"/>
+	<field name="ref_no" class="java.lang.String"/>
+	<field name="mtran_ref_no" class="java.lang.String"/>
+	<field name="trans_other_ref" class="java.lang.String"/>
+	<field name="trans_amount" class="java.math.BigDecimal"/>
+	<field name="settlements" class="java.math.BigDecimal"/>
+	<field name="mtran_net_amt" class="java.math.BigDecimal"/>
+	<field name="mtran_balance" class="java.math.BigDecimal"/>
+	<field name="insured" class="java.lang.String"/>
+	<field name="pol_policy_cover_from" class="java.sql.Date"/>
+	<field name="mtran_cur_symbol" class="java.lang.String"/>
+	<field name="mtran_tl" class="java.math.BigDecimal"/>
+	<field name="mtran_sd" class="java.math.BigDecimal"/>
+	<field name="mtran_whtx" class="java.math.BigDecimal"/>
+	<field name="mtran_extras" class="java.math.BigDecimal"/>
+	<field name="mtran_commission" class="java.math.BigDecimal"/>
+	<field name="mtran_phfund" class="java.math.BigDecimal"/>
+	<field name="ordby" class="java.lang.String"/>
+	<field name="pol_remarks" class="java.lang.String"/>
+	<field name="mtran_narrations" class="java.lang.String"/>
+	<field name="mtran_narrations1" class="java.lang.String"/>
+	<field name="tran_desc" class="java.lang.String"/>
+	<variable name="Balance" class="java.lang.Double" resetType="Group" resetGroup="client_id" calculation="Sum">
+		<variableExpression><![CDATA[$F{mtran_balance}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="TOTAL_BALANCE" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{mtran_balance}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="all_clients" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{client_id}]]></variableExpression>
+	</variable>
+	<group name="client_id" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{client_id}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="41">
+				<rectangle>
+					<reportElement x="0" y="0" width="800" height="40" uuid="eef3eefb-83cf-486f-a3bb-d4d5de330945"/>
+					<graphicElement>
+						<pen lineColor="#C4BBBB"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="600" y="-1" width="100" height="21" uuid="602a4cda-9f8a-4537-93db-3f05a43098eb"/>
+					<box>
+						<pen lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Balance :]]></text>
+				</staticText>
+				<textField pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+					<reportElement x="700" y="0" width="100" height="20" uuid="1f000eac-0620-45b0-9f95-4fea8326932c"/>
+					<box>
+						<pen lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Balance}]]></textFieldExpression>
+				</textField>
+				<subreport>
+					<reportElement x="1" y="20" width="799" height="20" uuid="e0dfe0c7-f933-4e96-9ede-421a57b950bd"/>
+					<subreportParameter name="client_id">
+						<subreportParameterExpression><![CDATA[$F{client_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["reports/rpt_aging_analysis.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Currency">
+		<groupExpression><![CDATA[$F{cur_code}]]></groupExpression>
+		<groupHeader>
+			<band height="41">
+				<rectangle>
+					<reportElement x="1" y="0" width="799" height="40" uuid="d5eedb50-96f8-40fd-8cfd-121716651550"/>
+					<graphicElement>
+						<pen lineColor="#C4BBBB"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement positionType="FixRelativeToBottom" x="100" y="20" width="110" height="20" uuid="6a36787e-5597-45d1-954d-0b9bb3f15ad3"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Trans Description]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="330" y="20" width="90" height="20" uuid="6201e57f-ee56-405b-8cbe-0c527c6ef74b"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="10" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Ref No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="710" y="20" width="90" height="20" uuid="e8eafe85-d253-46b3-947a-c9112e8ab414"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Net Amount]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="420" y="20" width="130" height="20" uuid="97384a2c-f1e5-4a83-b338-f255a92a1c51"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Product]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="210" y="20" width="120" height="20" uuid="41ddd4e3-a87c-43c3-b838-c6d69eab0e76"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Policy No. / Description]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="630" y="20" width="79" height="20" uuid="8e7e2507-17fa-4d14-b140-1c98a262a3d7"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Settlements]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="20" width="100" height="20" uuid="91c4bdd5-adf7-4b36-808f-6ff7b6e24609"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Trans Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="550" y="20" width="81" height="20" uuid="fdea0725-dbea-4023-8fc1-310655b94286"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Trans Amount]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="80" y="1" width="200" height="18" uuid="0ee2aabc-41b9-40ec-a338-145233a4d8ee"/>
+					<textElement>
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cur_iso_code}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="1" width="80" height="18" uuid="11c50c77-f0ae-4573-b444-6c4ef2dd97b9"/>
+					<textElement>
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Currency:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="107" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="800" height="107" uuid="40b85106-fda0-4556-a824-58103407b8bf"/>
+				<graphicElement>
+					<pen lineColor="#C4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="1" y="2" width="145" height="90" uuid="f7f4748a-0e55-46d1-b216-ad73db1ef780"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="510" y="0" width="265" height="15" uuid="a3c8dbcf-14fe-4c5a-8487-df4161550493">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="510" y="17" width="265" height="15" uuid="3342839f-957a-4d2f-9ab7-a07d74180e18">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_address}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="510" y="32" width="265" height="15" uuid="528cf960-fbf9-4e2d-8a0e-d57519c98cbe">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TEL: " + $F{org_mobile} +"," +$F{org_phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="509" y="62" width="265" height="15" uuid="d36ec9d7-56b0-43af-82c7-a8fec89c90b0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["EMAIL: "+$F{add_email_addr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="509" y="47" width="265" height="15" uuid="3a3455d8-21e5-42e5-bb23-9190620d3926"/>
+				<textFieldExpression><![CDATA["WEBSITE: " + $F{org_website}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="250" y="77" width="259" height="30" uuid="8a4fd08b-db0b-4ffb-b555-e79a842a1e22"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[STATEMENT OF ACCOUNT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="513" y="92" width="100" height="15" forecolor="#C9C5C5" uuid="473eacf9-b1fd-4731-8f57-e6d33eb08ae4"/>
+				<textElement>
+					<font size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[A/C Number:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="513" y="80" width="100" height="12" forecolor="#C9C5C5" uuid="7122f25c-8737-4be4-ae3d-69212bef04aa"/>
+				<textElement>
+					<font size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[A/C Name: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="613" y="92" width="161" height="14" forecolor="#BFBDBD" uuid="f7e13623-e115-4c29-80a2-eeda85d24f7f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{client_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="613" y="80" width="161" height="12" forecolor="#BFBDBD" uuid="9257fa02-8bb8-4945-a587-6c965f2ed430"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{client_fname}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="-3" width="800" height="81" uuid="1dbe09b7-490f-4ecb-bea0-7b9a0aa6aa68"/>
+				<graphicElement>
+					<pen lineColor="#C4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement positionType="Float" x="0" y="45" width="80" height="15" uuid="7aca81b5-bd22-44e2-b0e2-0e7a945984e4"/>
+				<textFieldExpression><![CDATA["Email: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="80" y="14" width="200" height="16" uuid="12246ead-be73-4765-b19d-3d1e328fb3e6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{client_address}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="30" width="80" height="15" uuid="a0ad0921-15cf-4ed7-abac-9870cb39484d"/>
+				<textFieldExpression><![CDATA["Tel: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="80" y="30" width="200" height="15" uuid="33c99ea5-6a90-4a87-a96f-b5dc20d3e83a"/>
+				<textFieldExpression><![CDATA[$F{client_phone}+","+$F{client_sms_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="14" width="80" height="16" uuid="8f904117-760a-4d1a-a481-00bdd677ba74"/>
+				<textFieldExpression><![CDATA["Postal Address: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="80" y="0" width="200" height="14" uuid="328ae3e8-190f-4320-9be9-396f395b5605">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{client_fname}.toUpperCase()+" "+$F{client_onames}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="80" y="46" width="200" height="14" uuid="e5396ba7-ab43-4416-8f16-3782f4a9f29e"/>
+				<textFieldExpression><![CDATA[$F{client_email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="0" width="80" height="14" uuid="e7bbb4ef-3264-4395-af65-8e56563d85d4"/>
+				<textFieldExpression><![CDATA["Client: "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="509" y="0" width="104" height="20" uuid="1b4feafb-3b38-4cf0-b9e9-ed8ac5c5de0b"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[A/C DATE :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="613" y="20" width="161" height="20" uuid="df531a57-2776-4ea8-8d4e-2a7d16046a8b"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{client_fname}.toUpperCase() + " " +$F{client_onames}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="509" y="20" width="104" height="20" uuid="cbcfeb69-0ba9-4c70-b6b5-afc289e91c83"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[ACCOUNT NAME : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="509" y="41" width="104" height="18" uuid="3042df47-50ed-45b9-97c0-121816b8e073"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[ACCOUNT NO. :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="613" y="41" width="161" height="18" uuid="bf5d4400-e7ff-407e-9ae0-43f37376035e"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{client_sht_desc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="510" y="60" width="104" height="18" uuid="903e3b95-80d4-4f0e-91d8-0aaae9e19cb6"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Account Status :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="614" y="60" width="161" height="18" uuid="49ab9bde-66ad-4dcd-93cc-06e54524cea0"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[( $F{client_status}.equals("A") ? "ACTIVE" : "INACTIVE" )]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-YYYY">
+				<reportElement x="614" y="-1" width="161" height="21" uuid="32591248-2078-4972-bb45-cffb8c08f37a"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="800" height="20" uuid="35a483a3-cd76-478d-80d4-95b5e284707c"/>
+			</rectangle>
+			<textField>
+				<reportElement x="210" y="0" width="120" height="20" uuid="873370e2-f46f-45cc-be20-ae4d53140a5e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_no}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yyyy">
+				<reportElement x="0" y="0" width="100" height="20" uuid="0a087186-01f7-4c48-88d1-b6ad077e56f8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{trans_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="0" width="90" height="20" uuid="4a2cc4f3-05cd-40af-83dc-c1793eeb8b0a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mtran_ref_no}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="550" y="0" width="81" height="20" uuid="70eb997f-896a-489d-bea5-0c27f85fe4ba"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{trans_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="630" y="0" width="79" height="20" uuid="42a89ac3-039f-4a28-9113-40301917979b"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{settlements}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="710" y="0" width="90" height="20" uuid="2e957440-7ff6-40dc-a957-50dee95f317a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mtran_balance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="0" width="130" height="20" uuid="49f49704-a91b-4fa3-8d7f-d6d5d0ff4a2a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{mtran_narrations}.equals(null)) ? $F{mtran_narrations1}.toUpperCase(): $F{mtran_narrations}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="110" height="20" uuid="80e2ba5e-2f75-4087-86ab-e4d3c0957436"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{tran_desc}.equals("NBD")) ? "New Transaction" :  ( ($F{tran_desc}.equals("RN")) ? "Renewal" : (($F{tran_desc}.equals("RC")) ? "Receipt" :  ($F{tran_desc}.equals("APD")) ? "Endorsement" :  "Invalid"))]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="20">
+			<rectangle>
+				<reportElement x="1" y="0" width="799" height="20" uuid="d2452011-ca98-49b6-9579-0aff33815e7e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="480" y="-1" width="210" height="21" uuid="c279d9f5-4475-49c0-94a6-60321ca0f7e1"/>
+				<box>
+					<pen lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Balance :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" evaluationTime="Master" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="690" y="0" width="110" height="20" uuid="85d28e3f-907c-41b2-a6b2-e0a25ed42d08"/>
+				<box>
+					<pen lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Serif" size="14" isBold="true" isUnderline="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_BALANCE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

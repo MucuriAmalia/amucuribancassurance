@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-02-18T14:35:42 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_unauth_business" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="46b52bf1-0236-4ec3-9183-465a0cb659af">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Broker_db"/>
+	<queryString>
+		<![CDATA[ SELECT client_fname,client_onames,cnt_type_desc,acct_name,ob_name,pr_desc,pol_no,user_name,
+ pol_date,pol_wef_date,pol_wet_date,
+ pol_sum_insur_amt,pol_basic_premium_amt
+ from sys_brk_policies
+ inner join sys_brk_clients on client_id = pol_client_id
+ inner join sys_brk_client_types on cnt_type_id = client_clnt_type
+ inner join sys_brk_accounts on pol_agent_id = acct_id
+ inner join sys_brk_branches on ob_id = pol_branch_id
+ inner join sys_brk_products on pr_code = pol_prod_id
+ inner join sys_brk_users on user_id = pol_created_user
+ where pol_auth_status != 'A'
+ and pol_date between '2017-01-01' and current_date
+ ]]>
+	</queryString>
+	<field name="client_fname" class="java.lang.String"/>
+	<field name="pol_date" class="java.sql.Date"/>
+	<field name="pol_no" class="java.lang.String"/>
+	<field name="pr_desc" class="java.lang.String"/>
+	<field name="pol_wef_date" class="java.sql.Date"/>
+	<field name="client_onames" class="java.lang.String"/>
+	<field name="pol_sum_insur_amt" class="java.math.BigDecimal"/>
+	<field name="pol_basic_premium_amt" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

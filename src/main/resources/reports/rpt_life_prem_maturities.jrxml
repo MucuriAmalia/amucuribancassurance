@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2019-04-25T22:14:09 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_life_prem_schedule" pageWidth="400" pageHeight="500" whenNoDataType="BlankPage" columnWidth="400" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="79dc085a-92cf-4347-ad8b-5ad762d41ef0">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgres Brokerage"/>
+	<parameter name="polId" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[WITH rec AS (
+    SELECT
+      (SELECT min(mat_yr)
+       FROM sys_brk_pol_benefits
+       WHERE mat_pol_id = sbs.pol_id) mat_yr,
+      sbpb.mat_est_benefit,
+      sbs.pol_sum_insur_amt,
+      sbpb.mat_id
+    FROM sys_brk_pol_benefits sbpb
+      INNER JOIN sys_brk_policies sbs ON  sbpb.mat_pol_id = sbs.pol_id
+)
+SELECT
+  s6.mat_est_benefit,
+  s6.mat_expected_dt,
+  s6.mat_yr,
+  s1.cur_iso_code,
+round((r.mat_est_benefit / ((r.mat_yr * r.pol_sum_insur_amt * 0.025) + r.pol_sum_insur_amt)*100),2) perct
+FROM rec r
+ INNER JOIN sys_brk_pol_benefits s6 ON s6.mat_id = r.mat_id
+  INNER JOIN sys_brk_policies s ON s.pol_id = s6.mat_pol_id
+  INNER JOIN sys_brk_currencies s1 ON s1.cur_code = s.pol_curr_id
+WHERE s6.mat_pol_id =  $P{polId}
+ORDER BY s6.mat_yr ASC]]>
+	</queryString>
+	<field name="mat_est_benefit" class="java.math.BigDecimal"/>
+	<field name="mat_expected_dt" class="java.sql.Timestamp"/>
+	<field name="mat_yr" class="java.lang.Integer"/>
+	<field name="cur_iso_code" class="java.lang.String"/>
+	<field name="perct" class="java.math.BigDecimal"/>
+	<group name="Insured">
+		<groupHeader>
+			<band height="21">
+				<staticText>
+					<reportElement x="180" y="0" width="90" height="21" uuid="36fe1c94-c0cd-41a7-84d3-97368d871dd8"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[% (S.A + BONUS)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="70" height="21" uuid="6f757541-2b6e-417b-9786-1e9b7829d2ec"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[YEAR]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="270" y="0" width="130" height="21" uuid="1f958ee1-60c7-4d61-b8a3-a162e9855ec6"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[MATURITY VALUE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="70" y="0" width="110" height="21" uuid="0b72db4d-baf0-41e8-adeb-beffbee89baf"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[MATURITY DATES]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<columnHeader>
+		<band height="19">
+			<rectangle>
+				<reportElement x="0" y="0" width="400" height="19" uuid="ae2a9363-664b-4f6c-bdec-88d5110df760"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="1" width="400" height="18" uuid="04ec7210-d3d3-4bf4-a746-0031cd752502">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PROJECTED MATURITY  VALUE" + "("+$F{cur_iso_code}.toUpperCase()+")"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="180" y="0" width="90" height="18" isPrintWhenDetailOverflows="true" uuid="6fbf598d-1205-422f-9dd5-71475e11116e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{perct}+"% + Bonus"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="70" y="0" width="110" height="18" isPrintWhenDetailOverflows="true" uuid="efc8bb00-a60e-4388-9ae5-d8f5b5743d47"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[DATEFORMAT($F{mat_expected_dt},"dd-MMMM-YYYY")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="270" y="0" width="130" height="18" isPrintWhenDetailOverflows="true" uuid="0451d45e-903a-45aa-b3da-78746b4476a3"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{mat_est_benefit}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="70" height="18" isPrintWhenDetailOverflows="true" uuid="f442b7f0-7c9b-4621-8077-10b1ea7d21dd"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{mat_yr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

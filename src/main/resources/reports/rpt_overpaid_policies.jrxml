@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_policy_register" pageWidth="1050" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="962" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="23a07438-245c-4eed-b6df-048a58b30f40">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="absa_insurance"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="dateFrom" class="java.util.Date"/>
+	<parameter name="dateTo" class="java.util.Date"/>
+	<parameter name="Agent" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT org_name, org_mobile, org_phone,
+         org_address, org_website, phy_address, add_email_addr,
+pol_no,
+       pol_cover_to,
+       client_fname,
+       client_onames,
+       pol_basic_premium_amt,
+       pol_business_type,
+       SUM(COALESCE(rd.rect_amount, 0)) AS total_receipts,
+       SUM(COALESCE(li.install_prem, 0)) AS total_life_inst,
+       -- Add refund premium calculation (for example: refund_premium is calculated by subtracting total receipts from basic premium or installment)
+       CASE
+           WHEN p.pol_business_type = 'N'
+               THEN SUM(COALESCE(rd.rect_amount, 0)) - COALESCE(p.pol_basic_premium_amt, 0)
+           WHEN p.pol_business_type = 'L'
+               THEN SUM(COALESCE(rd.rect_amount, 0)) - SUM(COALESCE(li.install_prem, 0))
+           ELSE 0
+           END AS refund_premium
+from sys_brk_organization sbo , sys_brk_policies p
+         INNER JOIN sys_brk_clients c ON p.pol_client_id = c.client_id
+         LEFT JOIN sys_brk_receipt_dtls rd ON p.pol_id = rd.rect_pol_id
+         LEFT JOIN sys_brk_receipts r ON rd.rect_receipt_no = r.receipt_id
+         LEFT JOIN sys_brk_life_rcts lr ON rd.rect_receipt_no = lr.lrct_receipt_id
+         LEFT JOIN sys_brk_life_installments li ON p.pol_id = li.lrct_policy_id
+WHERE (
+    (pol_wet_date BETWEEN $P{dateFrom} AND $P{dateTo})
+    OR (pol_wef_date BETWEEN $P{dateFrom} AND $P{dateTo})
+    OR (r.receipt_date BETWEEN $P{dateFrom} AND $P{dateTo})
+    OR (lr.receipt_date BETWEEN $P{dateFrom} AND $P{dateTo})
+)
+  AND (pol_agent_id::varchar = $P{Agent} OR  $P{Agent} IS NULL)
+GROUP BY client_onames, client_fname, pol_no, pol_basic_premium_amt, pol_business_type, pol_cover_to, org_name, org_mobile, org_phone,
+         org_address, org_website, phy_address, add_email_addr
+HAVING
+    -- General policies: ensure that the refund premium is greater than or equal to 1
+    (p.pol_business_type = 'N' AND (SUM(COALESCE(rd.rect_amount, 0)) - COALESCE(p.pol_basic_premium_amt, 0)) >= 1)
+
+    -- Life policies: ensure that the refund premium is greater than or equal to 1
+    OR (p.pol_business_type = 'L' AND (SUM(COALESCE(rd.rect_amount, 0)) - SUM(COALESCE(li.install_prem, 0)) >= 1))
+ORDER BY pol_no DESC;]]>
+	</queryString>
+	<field name="org_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_phone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_phone"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_phone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_website" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_website"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_website"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="phy_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="phy_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="phy_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="add_email_addr" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="add_email_addr"/>
+		<property name="com.jaspersoft.studio.field.label" value="add_email_addr"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_cover_to" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="pol_cover_to"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_cover_to"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="client_fname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_onames" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="pol_basic_premium_amt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="pol_basic_premium_amt"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_basic_premium_amt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_business_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_business_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_business_type"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="total_receipts" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_receipts"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_receipts"/>
+	</field>
+	<field name="total_life_inst" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_life_inst"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_life_inst"/>
+	</field>
+	<field name="refund_premium" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="refund_premium"/>
+		<property name="com.jaspersoft.studio.field.label" value="refund_premium"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="131" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="10" width="1010" height="121" uuid="faed9325-8011-4cdd-bd9c-34f52e4cda9e"/>
+				<graphicElement>
+					<pen lineColor="#0A0A0A"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="10" y="19" width="115" height="90" uuid="2512f9fd-48e8-4950-a663-9d80c4a6178e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="1" y="100" width="1009" height="30" uuid="eaddc9d4-6d05-4d35-89b0-0d4ac480494d"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[POLICY PREMIUMS REFUND REPORT]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
+			<rectangle>
+				<reportElement x="0" y="0" width="1010" height="20" uuid="e9b1524c-07ab-4f7e-9697-95006821557e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="40" y="0" width="160" height="20" uuid="73c1cb1f-4105-463b-9c13-14c61f614afc"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[POLICY NUMBER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="130" height="20" uuid="a2f4a83c-cb35-496a-a7ae-22b782feb466"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[POLICY TYPE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="110" height="20" uuid="b0b632f2-7d6e-4f81-a7b9-a140ff5fdddf"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MATURITY DATE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="0" width="180" height="20" uuid="45f1cb7d-71a7-43e4-ae21-8122bb24fc11"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="880" y="0" width="130" height="20" uuid="ba338538-04b8-4da3-b82e-b49b35d6fc7e"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REFUND AMOUNT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="620" y="0" width="134" height="20" uuid="11414209-a51e-4676-86c4-43601614bbf1"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL PREMIUM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="755" y="0" width="125" height="20" uuid="3554e644-e8b1-4ac0-ba00-a17ec71d3744"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PAID PREMIUM]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="1010" height="20" uuid="efda1e6d-5365-4b73-a1e6-47df12a25bfe"/>
+			</rectangle>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="40" y="0" width="160" height="20" uuid="479b8704-a62c-4a48-a534-338b20af13ff"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="200" y="0" width="130" height="20" uuid="12486294-e92d-43a4-ba68-3037e90ffe93"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_business_type}.equalsIgnoreCase("N")?"General":"Life"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="330" y="0" width="110" height="20" uuid="7cfc0f7b-d507-49f2-b3ff-288b14ab8069"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_cover_to}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="440" y="0" width="180" height="20" uuid="012816df-cbdb-4bd0-8093-ee0a14b95013"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{client_fname}+" "+$F{client_onames}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="754" y="0" width="126" height="20" uuid="c087b38b-5d6c-40f4-a073-5a8c0edf0387"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_receipts}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="620" y="0" width="134" height="20" uuid="d48df69f-a35b-4497-9c7b-b85267c53002"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_business_type}.equalsIgnoreCase("N")?$F{pol_basic_premium_amt}:$F{total_life_inst}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="880" y="0" width="130" height="20" uuid="707671ff-7783-4eac-bee2-23e2ef32dce9"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#0A0A0A"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_receipts}.subtract(
+    "N".equalsIgnoreCase($F{pol_business_type} != null ? $F{pol_business_type} : "")
+    ? ($F{pol_basic_premium_amt} != null ? $F{pol_basic_premium_amt} : BigDecimal.ZERO)
+    : ($F{total_life_inst} != null ? $F{total_life_inst} : BigDecimal.ZERO)
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="0" width="39" height="19" uuid="74ac1435-a965-4481-9c82-368cdb03aff4"/>
+				<box>
+					<pen lineColor="#0A0A0A"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#070808"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#070808"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="27"/>
+	</summary>
+</jasperReport>

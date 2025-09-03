@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_sub_last_expense" pageWidth="715" pageHeight="500" whenNoDataType="BlankPage" columnWidth="665" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="baa44456-5706-47a0-8851-b1c0b6c94e5e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="728"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="258"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="220"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="773"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Adapter"/>
+	<parameter name="polId" class="java.lang.Long"/>
+	<queryString language="SQL">
+		<![CDATA[select "NO" , "NAME" , "OCCUPATION" ,"FUNERAL EXPENSES" , "EST NO", "EST.ANNUAL EARNINGS" ,"AGE" 
+from "LAST EXPENSE" le   
+inner join sys_brk_risks sbr on sbr.risk_id = le.s_brk_risks_id
+where sbr.risk_pol_id =  $P{polId}]]>
+	</queryString>
+	<field name="NO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NO"/>
+		<property name="com.jaspersoft.studio.field.label" value="NO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="LAST EXPENSE"/>
+	</field>
+	<field name="NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="NAME"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="LAST EXPENSE"/>
+	</field>
+	<field name="OCCUPATION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="OCCUPATION"/>
+		<property name="com.jaspersoft.studio.field.label" value="OCCUPATION"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="LAST EXPENSE"/>
+	</field>
+	<field name="FUNERAL EXPENSES" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="FUNERAL EXPENSES"/>
+		<property name="com.jaspersoft.studio.field.label" value="FUNERAL EXPENSES"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="LAST EXPENSE"/>
+	</field>
+	<field name="EST NO" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="EST NO"/>
+		<property name="com.jaspersoft.studio.field.label" value="EST NO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="LAST EXPENSE"/>
+	</field>
+	<field name="EST.ANNUAL EARNINGS" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="EST.ANNUAL EARNINGS"/>
+		<property name="com.jaspersoft.studio.field.label" value="EST.ANNUAL EARNINGS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="LAST EXPENSE"/>
+	</field>
+	<field name="AGE" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="AGE"/>
+		<property name="com.jaspersoft.studio.field.label" value="AGE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="LAST EXPENSE"/>
+	</field>
+	<group name="Surrender Values"/>
+	<group name="Risk">
+		<groupHeader>
+			<band height="17">
+				<staticText>
+					<reportElement mode="Transparent" x="0" y="0" width="90" height="17" backcolor="#BEBEBE" uuid="0187f2aa-d82d-4d73-83f7-95e690670b86">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[RISK NO.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="90" y="0" width="90" height="17" backcolor="#BEBEBE" uuid="db69cb2a-ddb2-4c13-b595-3dfbe776c121">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[NAME]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="180" y="0" width="90" height="17" backcolor="#BEBEBE" uuid="cb3c2ffb-8579-4276-a9ad-bc07d899759b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[OCCUPATION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="270" y="0" width="80" height="17" backcolor="#BEBEBE" uuid="e00cf37f-2e32-455d-b108-7f106b899c36">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[EST.NO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="350" y="0" width="150" height="17" backcolor="#BEBEBE" uuid="5affd836-4803-49c7-9993-164fa394cc02">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[EST. ANNUAL EARNINGS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="500" y="0" width="139" height="17" backcolor="#BEBEBE" uuid="1d486f31-5d54-4d5e-a05b-97c56cef40d2">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[FUNERAL EXPENSES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="639" y="0" width="70" height="17" backcolor="#BEBEBE" uuid="6cce9b39-68ca-4b24-a616-3a46ab8b31cd">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Justified">
+						<font size="12" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[AGE]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band height="12" splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="23" splitType="Prevent">
+			<textField textAdjust="StretchHeight" pattern="Ksh #,##0.###;(Ksh #,##0.###)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="90" y="0" width="90" height="19" uuid="e75572fe-7b39-485c-9139-1d9e729c3f46"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="180" y="0" width="90" height="19" uuid="982bd7de-c4de-4af8-8a97-5826f28abd81"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OCCUPATION}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="270" y="0" width="80" height="19" uuid="d962d994-8695-48a7-a619-6d6503ecaffb"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EST NO}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="350" y="0" width="150" height="19" uuid="5620aaed-b8f1-4e1b-b0dd-41dcdcdecee9"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EST.ANNUAL EARNINGS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="90" height="19" uuid="bfb2bb00-4e6a-40a8-9769-8a5e3d02b0d3"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NO}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="500" y="0" width="139" height="19" uuid="3bb4720b-5a75-4ba4-a835-94ec31a1adfd"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FUNERAL EXPENSES}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="639" y="0" width="70" height="19" uuid="82fafdc0-73d9-409c-ae25-3224958e0d7c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AGE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

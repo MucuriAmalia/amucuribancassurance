@@ -1,0 +1,987 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_claim_synopsis" pageWidth="920" pageHeight="842" columnWidth="765" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="116ba2e3-f64b-47ad-a401-c58172b6c593">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="absa"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="318"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="670"/>
+	<import value="org.apache.commons.codec.binary.Base64"/>
+	<parameter name="clmId" class="java.lang.Long"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT on (s.clm_no)
+    org_name, org_mobile, org_phone, org_address, org_website, phy_address, add_email_addr,
+    s.clm_id,
+    s3.client_fname, s3.client_onames, s5.pol_client_pol_no, s5.pol_no,
+    s2.risk_sht_desc, s2.risk_desc, s2.risk_wef_date, s2.risk_wet_date,
+    s.clm_no, s6.acct_name, s5.pol_sum_insur_amt,
+    
+    SUM(CASE WHEN s7.trans_dc = 'D' THEN s7.trans_balance END) AS Ins_bal,
+    SUM(CASE WHEN s7.trans_dc = 'C' THEN s7.trans_balance END) * -1 AS client_bal,
+    
+    s8.pr_desc, s9.cov_desc, s.clm_loss_date, s.clm_time, s.clm_booked_dt, s.clm_insurer_dt,
+    s.clm_next_rvw_dt, s.clm_status, s6.acct_contact_person, s6.acct_contact_title,
+    s6.acct_email, s6.acct_phone,
+    
+    s4.user_name,
+    s.clm_loss_desc,
+    
+    CASE WHEN clm_clmnt_tp = 'S' THEN s10.client_fname || ' ' || s10.client_onames END AS claimants,
+    CASE WHEN clm_clmnt_tp = 'T' THEN s11.clmnt_othernames || ' ' || s11.clmnt_surname END AS oClaimants,
+    
+    s12.clm_prl_total_reserve AS claim_estimate,
+(SELECT clm_act_insurer_ref 
+ FROM sys_brk_clm_activities 
+ WHERE clm_act_clm_id = s.clm_id 
+ ORDER BY (CASE WHEN clm_act_insurer_ref IS NOT NULL THEN 0 ELSE 1 END)
+ LIMIT 1) AS clm_act_insurer_ref,
+    s.balance_approval_date,
+    claim_approval_date,
+    approver.user_name AS claim_approver
+
+FROM sys_brk_organization,
+    sys_brk_clm_bookings s
+    left join sys_brk_clm_claimants s1 ON s.clm_id = s1.clm_clmnt_clm_id
+    left join sys_brk_risks s2 ON s2.risk_id = s.clm_risk_id
+    left join sys_brk_clients s3 ON s3.client_id = s2.risk_insured_id
+    left join sys_brk_users s4 ON s4.user_id = s.clm_booked_by
+    left JOIN sys_brk_users approver ON approver.user_id = s.claim_approved_by
+    left join sys_brk_policies s5 ON s5.pol_id = s2.risk_pol_id
+    left join sys_brk_accounts s6 ON s6.acct_id = s5.pol_agent_id
+    left join sys_brk_main_transactions s7 ON s5.pol_id = s7.trans_pol_id
+    left join sys_brk_products s8 ON s8.pr_code = s5.pol_prod_id
+    left join sys_brk_covertypes s9 ON s9.cov_id = s2.risk_cover_id
+    LEFT OUTER JOIN sys_brk_clients s10 ON s10.client_id = s1.clm_clmnt_client_id
+    LEFT OUTER JOIN sys_brk_claimants s11 ON s11.clmnt_id = s1.clm_clmnt_clmnt_id
+    left join sys_brk_clm_perils s12 ON s.clm_id = s12.clm_prl_clm_id
+    LEFT JOIN sys_brk_clm_activities sbca ON sbca.clm_act_clm_id = s.clm_id
+
+WHERE s.clm_id = $P{clmId}
+    AND sbca.clm_act_insurer_ref IS NOT NULL
+
+GROUP BY 
+    s3.client_fname, s3.client_onames, s5.pol_client_pol_no, s2.risk_sht_desc, s2.risk_desc, s5.pol_no,
+    s2.risk_wef_date, s2.risk_wet_date, s.clm_no, s6.acct_name, s5.pol_sum_insur_amt,
+    s8.pr_desc, s9.cov_desc, s.clm_loss_date, s.clm_time, s.clm_booked_dt, s.clm_insurer_dt,
+    s.clm_next_rvw_dt, s.clm_status, s6.acct_contact_person, s6.acct_contact_title,
+    s6.acct_email, s6.acct_phone, s4.user_name, s.clm_loss_desc,
+    claimants, oClaimants, s.clm_id,
+    org_name, org_mobile, org_phone, org_address, org_website, phy_address, add_email_addr,
+    s12.clm_prl_total_reserve, sbca.clm_act_insurer_ref,
+    s.balance_approval_date, claim_approval_date, approver.user_name
+    order by    s.clm_no
+]]>
+	</queryString>
+	<field name="org_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_phone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_phone"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_phone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_website" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_website"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_website"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="phy_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="phy_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="phy_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="add_email_addr" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="add_email_addr"/>
+		<property name="com.jaspersoft.studio.field.label" value="add_email_addr"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="clm_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="clm_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="client_fname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_onames" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="pol_client_pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_client_pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_client_pol_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="risk_sht_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="risk_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="risk_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_risks"/>
+	</field>
+	<field name="risk_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="risk_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="risk_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_risks"/>
+	</field>
+	<field name="risk_wef_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="risk_wef_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="risk_wef_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_risks"/>
+	</field>
+	<field name="risk_wet_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="risk_wet_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="risk_wet_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_risks"/>
+	</field>
+	<field name="clm_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="clm_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="acct_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="pol_sum_insur_amt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="pol_sum_insur_amt"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_sum_insur_amt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="ins_bal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ins_bal"/>
+		<property name="com.jaspersoft.studio.field.label" value="ins_bal"/>
+	</field>
+	<field name="client_bal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="client_bal"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_bal"/>
+	</field>
+	<field name="pr_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pr_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="pr_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_products"/>
+	</field>
+	<field name="cov_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cov_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="cov_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_covertypes"/>
+	</field>
+	<field name="clm_loss_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="clm_loss_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_loss_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="clm_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="clm_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="clm_booked_dt" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="clm_booked_dt"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_booked_dt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="clm_insurer_dt" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="clm_insurer_dt"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_insurer_dt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="clm_next_rvw_dt" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="clm_next_rvw_dt"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_next_rvw_dt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="clm_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="clm_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_status"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="acct_contact_person" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_contact_person"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_contact_person"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="acct_contact_title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_contact_title"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_contact_title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="acct_email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_email"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="acct_phone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_phone"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_phone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="user_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="user_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="user_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_users"/>
+	</field>
+	<field name="clm_loss_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="clm_loss_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_loss_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="claimants" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="claimants"/>
+		<property name="com.jaspersoft.studio.field.label" value="claimants"/>
+	</field>
+	<field name="oclaimants" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="oclaimants"/>
+		<property name="com.jaspersoft.studio.field.label" value="oclaimants"/>
+	</field>
+	<field name="claim_estimate" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="claim_estimate"/>
+		<property name="com.jaspersoft.studio.field.label" value="claim_estimate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_perils"/>
+	</field>
+	<field name="clm_act_insurer_ref" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="clm_act_insurer_ref"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_act_insurer_ref"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_activities"/>
+	</field>
+	<field name="balance_approval_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="balance_approval_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="balance_approval_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="claim_approval_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="claim_approval_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="claim_approval_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="claim_approver" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="claim_approver"/>
+		<property name="com.jaspersoft.studio.field.label" value="claim_approver"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_users"/>
+	</field>
+	<title>
+		<band height="121" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<rectangle>
+				<reportElement x="0" y="0" width="880" height="121" uuid="52ee6e29-10f7-4dbf-8b5c-dcc4900939c0"/>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="3" y="3" width="110" height="110" uuid="04d5d3e1-acde-4423-a512-40cd8b076205">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="99" width="880" height="21" uuid="52dc9970-c478-4fb1-acb7-cf05587ba90b"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{client_fname}.toUpperCase()+" "+$F{client_onames}.toUpperCase()+"'S CLAIM SYNOPSIS"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="100">
+			<rectangle>
+				<reportElement x="1" y="0" width="879" height="100" uuid="f9f56447-1828-4dc9-af65-c058ccd30cd8"/>
+			</rectangle>
+			<textField>
+				<reportElement positionType="Float" x="183" y="30" width="165" height="17" uuid="9638ab53-d89a-4355-b556-2927f6773dcc"/>
+				<textFieldExpression><![CDATA[$F{risk_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="183" y="15" width="165" height="15" uuid="5c72b12d-7c20-4dab-91a8-c70ed64c2565">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{pol_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="183" y="47" width="165" height="17" uuid="a7bb01c9-251f-4456-a670-679393bc3983"/>
+				<textFieldExpression><![CDATA[$F{risk_desc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="30" width="180" height="17" uuid="738e38dd-ad67-4433-8973-9c50aa74f256">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RISK: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="47" width="180" height="17" uuid="61ac4c60-3443-40a1-bb58-792620d066a4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RISK DESCRIPTION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="15" width="180" height="15" uuid="873d6bab-e500-4143-ad73-7380e840d4f2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[POLICY NO: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="64" width="180" height="17" uuid="5b40a131-96ec-4382-b9dd-3f60903cb7e6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERIOD OF INSURANCE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="183" y="64" width="165" height="17" uuid="68d1c8d6-1dfe-4618-8c15-cc1770c9a669"/>
+				<textFieldExpression><![CDATA[DATEFORMAT($F{risk_wef_date},"dd-MMM-yyyy")+" to " + DATEFORMAT($F{risk_wet_date},"dd-MMM-yyyy")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="506" y="32" width="161" height="17" uuid="6d66bfc3-afe9-4f54-9157-835122540cc8">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSURANCE PREMIUM BAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="506" y="15" width="161" height="17" uuid="427c9566-1b5b-4b9b-8a0e-74860deb42bc">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUM INSURED: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="506" y="0" width="161" height="15" uuid="01e42c18-b389-4354-bb65-39c85cbc8777">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSURER: ]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="667" y="49" width="212" height="17" forecolor="#FA130F" uuid="76ffd8ad-4e80-4c81-b4e7-429411ac08b9"/>
+				<textFieldExpression><![CDATA[$F{ins_bal}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="667" y="32" width="212" height="17" forecolor="#FA130F" uuid="bfa33fb5-779b-423a-ae08-714e5594245d"/>
+				<textFieldExpression><![CDATA[$F{client_bal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="506" y="49" width="161" height="17" uuid="977cbd06-7aae-419f-946c-ff0f771018ce">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENT PREMIUM BAL:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="667" y="15" width="212" height="17" uuid="e2d20428-ce2d-4763-b2e6-e09e15f99c70"/>
+				<textFieldExpression><![CDATA[$F{pol_sum_insur_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="667" y="0" width="212" height="15" uuid="f43eacef-5fb2-4bb2-8e17-d166de1417a0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{acct_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="183" y="81" width="165" height="17" uuid="3c58e673-0aea-4989-978e-8a29de54191c"/>
+				<textFieldExpression><![CDATA[$F{clm_act_insurer_ref}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="81" width="180" height="17" uuid="fec3e7c3-905b-4bee-bddb-8812d5922067">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLAIM REF]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="183" y="0" width="165" height="15" uuid="1c28a0a4-9789-4900-8ca0-7521b80b401a"/>
+				<textFieldExpression><![CDATA[$F{client_fname}.toUpperCase() + " "+$F{client_onames}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="0" width="180" height="15" uuid="9e4bb1d3-a629-426d-9a04-d3c99e7a459a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSURED: ]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="412">
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="1" y="0" width="879" height="239" uuid="0105f83a-674f-4a93-a32d-d057b64f43ad"/>
+			</rectangle>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="26" width="694" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="a4cb0c9c-0054-460d-b7c8-29deea02652d"/>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ $F{cov_desc}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="42" width="694" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="197eea3d-e910-414b-9213-4874576ee588">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ ($F{claimants}==null ? $F{oclaimants}.toUpperCase() : $F{claimants}.toUpperCase())]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="9" width="694" height="17" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="310cc926-d5aa-4f81-bfa9-7afc0943548e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ $F{pr_desc}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="58" width="694" height="14" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="de3c50e5-4813-400a-8679-37cb5c966b4e"/>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ DATEFORMAT($F{clm_loss_date},"dd-MMM-yyyy")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="9" width="182" height="17" uuid="e5e0c4e6-c288-42b0-be9f-8c06d3fd8976">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="26" width="182" height="16" uuid="41209bd2-9583-4459-8ac5-51fedcfccfe4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COVER TYPE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="58" width="182" height="14" uuid="b334af6f-5428-4a40-aa52-9ba5147abeb6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OCCURRENCE DATE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="42" width="182" height="16" uuid="c7e5a245-37c9-4e18-9b28-ea7247fd5d1f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLAIMANT(S):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="4" y="370" width="118" height="13" uuid="fb2530d1-ce27-4be8-a653-ae33b660c093"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ISSUING OFFICER:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="" positionType="Float" x="625" y="395" width="64" height="13" uuid="ca12da20-ad22-48c5-b076-1c4eb9bcb9b8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATE: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="" positionType="Float" x="625" y="370" width="64" height="13" uuid="6bee32f8-d98d-4169-a783-74993449d1f4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATE:]]></text>
+			</staticText>
+			<textField pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="689" y="370" width="175" height="13" uuid="f1338a34-ce25-40a5-a551-3df1a166a167"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clm_booked_dt}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="4" y="395" width="118" height="13" uuid="00443021-ab18-4387-b4a0-496547f821e8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VERIFIED BY: ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="122" y="370" width="118" height="13" uuid="5e4c1cd2-084d-4782-9765-d74ac8d6cda9"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{user_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="689" y="395" width="175" height="13" uuid="4ea0cd16-1b6c-4e1c-a2a9-919f6b8035a9"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{claim_approval_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="122" y="395" width="118" height="13" uuid="d9be42fc-11e8-4c53-866f-28bea04f3637"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{claim_approver} == null || $F{claim_approver}.trim().isEmpty() ? "" : $F{claim_approver}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="506" y="-34" width="161" height="15" uuid="b62e4757-d421-4fe5-8bc5-993796e7dbbc">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLAIM NO: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="667" y="-34" width="212" height="15" uuid="d2c767c1-cadd-4697-9173-266922561121"/>
+				<textFieldExpression><![CDATA[$F{clm_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="72" width="694" height="17" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="716296b2-43b6-40f2-90d2-ebb01216b807">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ DATEFORMAT($F{clm_booked_dt},"dd-MMM-yyyy")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="72" width="182" height="17" uuid="482bacc0-6b51-47e4-89f6-3afc897e1dcc">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATE ADVISED:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="89" width="694" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="3fe8edbe-f2f6-4f21-86bd-acd1af29066f"/>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ DATEFORMAT($F{clm_insurer_dt},"dd-MMM-yyyy")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="105" width="182" height="16" uuid="f71077cf-3b78-402c-8278-1ed421b91adc">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLAIM ESTIMATE AMOUNT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="121" width="182" height="14" uuid="9b943e5e-5cf0-4495-819f-3e2853f8da18">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSURANCE CONTACT PERSON:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="89" width="182" height="16" uuid="d633ac27-2463-493d-bfd6-166c41b7bc63">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATE INSURANCE NOTIFIED:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="121" width="694" height="14" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="53ca3cf3-fb58-4127-9cab-77a9a0ca5958"/>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ $F{acct_contact_person}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="105" width="694" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="01a2a34d-3398-45a6-ae5f-57bacbf2edb0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+  (new DecimalFormat("#,##0.###;(#,##0.###)").format($F{claim_estimate} ))]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="135" width="694" height="17" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="7408abca-d78c-4e35-859f-1cc9b8917f7b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ $F{acct_phone}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="135" width="182" height="17" uuid="5bc3a81a-c5f9-479f-b995-cbc5a7f92d49">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTACT PERSON PHONE NO:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="152" width="694" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="c6e93042-d92f-46f1-86b6-b850a24c4fd6"/>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ $F{acct_email}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="168" width="182" height="16" uuid="c53b88e5-3c2d-4e31-ba5d-b405bfabbe86">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NEXT REVIEW DATE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="198" width="182" height="17" uuid="626d8dab-db20-4f45-88dc-994205124dda">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[BRIEF DETAILS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="184" width="182" height="14" uuid="39abfe17-8c10-43f7-ade8-ffda02a1235c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NEXT REVIEW USER:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="152" width="182" height="16" uuid="89ba6f3b-e3a2-4743-91d4-778b7f683f4f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTACT PERSON E-MAIL:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="198" width="694" height="17" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="8571b614-9d51-4498-82a4-33d8ff6fd305">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ $F{clm_loss_desc}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="184" width="694" height="14" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="9ab887aa-7a1e-4acc-916f-fd23d41c3406"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ $F{user_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="3" y="215" width="182" height="16" uuid="337d529a-0474-4093-8959-a1345623fb4c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRESENT POSITION:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="168" width="694" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="13f8fd95-29b6-41d7-94da-fdba45bc1129">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ DATEFORMAT($F{clm_next_rvw_dt},"dd-MMM-yyyy")]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="185" y="215" width="694" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="7b06ac35-0235-4349-a59f-7c254025e9ea"/>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" "+ $F{clm_status}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="5" y="247" width="875" height="20" uuid="158408e7-cbed-4b31-b294-d05e093a1eab"/>
+				<subreportParameter name="clm_id">
+					<subreportParameterExpression><![CDATA[$F{clm_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["reports/rpt_req_docs.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="1" y="307" width="879" height="18" uuid="12f41a7a-526f-4022-9364-d87e74ffd066">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<subreportParameter name="clmId">
+					<subreportParameterExpression><![CDATA[$F{clm_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["reports/rpt_claim_activities.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement positionType="Float" x="9" y="278" width="180" height="16" uuid="81802e2e-782e-4690-89d7-57c2943c122d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#B4BBBB"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ACTIVITIES]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="769" y="1" width="100" height="16" uuid="3778ee06-b448-4970-8e4f-a0491125a26a"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="429" y="0" width="50" height="16" uuid="5a6ac211-3509-42cd-aaa3-2b18760f00c9"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Printed on]]></text>
+			</staticText>
+			<textField pattern="d/M/yy h:mm a">
+				<reportElement positionType="FixRelativeToBottom" x="509" y="1" width="100" height="16" uuid="f9254de1-5c27-4eac-95fb-50d47b2ee12b"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

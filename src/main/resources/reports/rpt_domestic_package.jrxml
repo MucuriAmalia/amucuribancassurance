@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_risk_note" pageWidth="805" pageHeight="842" whenNoDataType="BlankPage" columnWidth="765" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="12cdfaf0-6b78-4257-b161-86d77b76476a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Adapter"/>
+	<parameter name="polId" class="java.lang.Long"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<queryString language="SQL">
+		<![CDATA[select  pol_id,org_name,org_mobile ,org_phone,org_address,org_website,phy_address,
+add_email_addr,client_fname,client_onames,client_address,client_sht_desc,acct_name,acct_address,pol_no,pol_wef_date,pol_wet_date,
+pr_desc,client_phone,client_email,client_sms_number,client_pin,cur_iso_code,client_idno,pol_calc_premium_amt,pol_stamp_duty,
+pol_training_levy,pol_phcf,pol_net_premium_amt,pol_sum_insur_amt,pol_auth_date,pol_date ,b.user_name pol_created_user,a.user_name pol_auth_user,
+pol_client_pol_no,pol_ref_no,pol_extras,bin_name,ob_name,pm_desc,pol_auth_status,pol_basic_premium_amt,sbc2.cov_desc,
+bn_name,bb_name bank_branch,acct_bnk_account,acct_paybill,s13.prefix_name phone_prefix,s14.cou_prefix ,s15.prefix_name sms_prefix,client_post_code,client_tel_number,ob_sht_desc,occ_name
+ from sys_brk_organization,sys_brk_policies
+ inner join sys_brk_clients on pol_client_id = client_id
+ inner join  sys_brk_accounts on pol_agent_id = acct_id
+ inner join  sys_brk_products on pol_prod_id = pr_code
+ inner join sys_brk_currencies on pol_curr_id=cur_code
+ inner join sys_brk_binders on pol_binder_id = bin_id
+ left  join sys_brk_branches on  pol_branch_id=ob_id
+ left  join sys_brk_payment_modes on pol_pmode_id = pm_id
+ left  join sys_brk_users b on pol_created_user =b.user_id
+ left outer join SYS_BRK_BANK_BRANCHES on  bb_id = acct_branch_code
+ left outer join sys_brk_banks on acct_bnk_code = bn_id
+ left outer join sys_brk_users a on pol_auth_user = a.user_id
+ left outer  join  sys_brk_mob_prefix s13 on client_phone_prefix = s13.prefix_id
+left outer join sys_brk_countries s14 on s14.cou_code = s13.prefix_cou_code
+left outer join sys_brk_mob_prefix s15 on client_sms_prefix = s15.prefix_id
+left join sys_brk_occupation on client_occup_id = occ_id
+inner join sys_brk_risks sbr on sbr.risk_pol_id = pol_id
+inner join sys_brk_covertypes sbc2 on sbc2.cov_id = sbr.risk_cover_id
+  where pol_id=  $P{polId}]]>
+	</queryString>
+	<field name="pol_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="pol_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="org_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_phone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_phone"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_phone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_website" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_website"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_website"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="phy_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="phy_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="phy_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="add_email_addr" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="add_email_addr"/>
+		<property name="com.jaspersoft.studio.field.label" value="add_email_addr"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="client_fname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_onames" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_sht_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="acct_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="acct_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_wef_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="pol_wef_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_wef_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_wet_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="pol_wet_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_wet_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pr_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pr_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="pr_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_products"/>
+	</field>
+	<field name="client_phone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_phone"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_phone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_email"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_sms_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_sms_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_sms_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_pin" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_pin"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_pin"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="cur_iso_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cur_iso_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="cur_iso_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_currencies"/>
+	</field>
+	<field name="client_idno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_idno"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_idno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="pol_calc_premium_amt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="pol_calc_premium_amt"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_calc_premium_amt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_stamp_duty" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="pol_stamp_duty"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_stamp_duty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_training_levy" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="pol_training_levy"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_training_levy"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_phcf" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="pol_phcf"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_phcf"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_net_premium_amt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="pol_net_premium_amt"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_net_premium_amt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_sum_insur_amt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="pol_sum_insur_amt"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_sum_insur_amt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_auth_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="pol_auth_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_auth_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="pol_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_created_user" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_created_user"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_created_user"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_users"/>
+	</field>
+	<field name="pol_auth_user" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_auth_user"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_auth_user"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_users"/>
+	</field>
+	<field name="pol_client_pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_client_pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_client_pol_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_ref_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_ref_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_ref_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_extras" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="pol_extras"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_extras"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="bin_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bin_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bin_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_binders"/>
+	</field>
+	<field name="ob_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ob_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="ob_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_branches"/>
+	</field>
+	<field name="pm_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pm_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="pm_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_payment_modes"/>
+	</field>
+	<field name="pol_auth_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_auth_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_auth_status"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_basic_premium_amt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="pol_basic_premium_amt"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_basic_premium_amt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="cov_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cov_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="cov_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_covertypes"/>
+	</field>
+	<field name="bn_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bn_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bn_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_banks"/>
+	</field>
+	<field name="bank_branch" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bank_branch"/>
+		<property name="com.jaspersoft.studio.field.label" value="bank_branch"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_bank_branches"/>
+	</field>
+	<field name="acct_bnk_account" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_bnk_account"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_bnk_account"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="acct_paybill" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_paybill"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_paybill"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="phone_prefix" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="phone_prefix"/>
+		<property name="com.jaspersoft.studio.field.label" value="phone_prefix"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_mob_prefix"/>
+	</field>
+	<field name="cou_prefix" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cou_prefix"/>
+		<property name="com.jaspersoft.studio.field.label" value="cou_prefix"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_countries"/>
+	</field>
+	<field name="sms_prefix" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="sms_prefix"/>
+		<property name="com.jaspersoft.studio.field.label" value="sms_prefix"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_mob_prefix"/>
+	</field>
+	<field name="client_post_code" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="client_post_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_post_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_tel_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_tel_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_tel_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="ob_sht_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ob_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="ob_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_branches"/>
+	</field>
+	<field name="occ_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="occ_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="occ_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_occupation"/>
+	</field>
+	<pageHeader>
+		<band height="122" splitType="Stretch">
+			<image scaleImage="FillFrame" isUsingCache="false" evaluationTime="Master">
+				<reportElement key="" mode="Opaque" x="6" y="-14" width="105" height="105" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="96871d14-6b32-4365-b27b-90676a7e3c54">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="83" width="764" height="21" uuid="69f14614-6757-4fd2-84b4-ad9dd6f3910b"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acct_name}.toUpperCase()+' '+$F{pr_desc}.toUpperCase()+" RISK NOTE"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-3" y="109" width="770" height="1" uuid="c12d756a-0794-47a2-804d-072683a95c12"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="470" splitType="Stretch">
+			<textField>
+				<reportElement positionType="Float" x="160" y="20" width="200" height="17" uuid="f112af88-3b75-45cc-a416-aa32db19852d"/>
+				<textFieldExpression><![CDATA[$F{bin_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="-10" width="200" height="15" uuid="f7cceee4-99d9-4d58-8b38-2a3608b318b6"/>
+				<textFieldExpression><![CDATA[$F{acct_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="599" y="129" width="159" height="17" uuid="9ee4cb0c-f37a-4f61-971c-934ec0d6d17e"/>
+				<textFieldExpression><![CDATA[$F{ob_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="603" y="19" width="159" height="16" uuid="da5998a8-0d88-4643-a98e-5f80a18c7a73"/>
+				<textFieldExpression><![CDATA[$F{cur_iso_code}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="160" y="5" width="200" height="15" uuid="36355f90-7d4a-445d-89a2-9e8caecd00bc">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{pol_client_pol_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="603" y="-11" width="159" height="14" uuid="ad38122a-7e6f-4b2a-9d7f-50064fd449cc"/>
+				<textFieldExpression><![CDATA[$F{pol_ref_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="-10" width="123" height="14" uuid="18962330-4f5a-4016-b123-132bf9abe884">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RISK NOTE NO: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="20" width="123" height="16" uuid="eb0748d0-3abb-4dad-8e2a-6ea6478d491c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CURRENCY:  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="129" width="120" height="17" uuid="7a4f8794-38e2-45f4-b8f8-afb0d7390c4e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[BRANCH CODE: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="19" width="100" height="17" uuid="42166f61-27b7-408d-b40a-ff2d6ff00d7f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[POLICY: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="-11" width="100" height="15" uuid="730078db-110c-4441-bbad-9c0b819c8d1d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSURER: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="4" width="100" height="15" uuid="f0247f19-8222-44e7-b79a-4d6e00cf7ee4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[POLICY NO: ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="157" y="62" width="140" height="16" uuid="a28e564d-b4b1-41cb-bf1c-2c8228e1d458"/>
+				<textFieldExpression><![CDATA[$F{client_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="599" y="77" width="160" height="16" uuid="076ccfc7-0a5c-40cd-9122-60f462d0ab8b"/>
+				<textFieldExpression><![CDATA[$F{client_tel_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="157" y="144" width="140" height="15" uuid="46f81418-c911-45fd-8d44-3f990096209c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{client_pin}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="189" width="120" height="16" uuid="d84247bc-789c-458d-a7c9-5ccf97077b21">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COVER TO:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="157" y="77" width="140" height="17" uuid="d9f99741-9de9-4b22-810f-dfbe65501d1b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{client_fname}.toUpperCase()+" "+$F{client_onames}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="157" y="126" width="141" height="14" uuid="4b2df96d-bada-4ada-a4dc-41cddf85d754"/>
+				<textFieldExpression><![CDATA[$F{client_idno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="600" y="94" width="160" height="14" uuid="0bef1c7d-f101-4190-b942-5fbf06814c55"/>
+				<textFieldExpression><![CDATA[$F{client_email}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="42" width="128" height="20" uuid="b86227df-85a1-4052-9124-958868a59f7c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[CLIENT DETAILS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="187" width="120" height="18" uuid="d8489d8c-c766-4f1b-b694-d00f6e55e229">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COVER FROM:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement positionType="Float" x="157" y="186" width="160" height="18" uuid="74a594eb-f14e-4ea9-bfb8-a2f56e423800">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{pol_wef_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="157" y="94" width="160" height="17" uuid="e1f77302-b09d-495f-b4e2-80ae537a3bfe">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{client_address}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="599" y="190" width="160" height="15" uuid="7f5a0644-8568-42d3-adc6-cc46a66daba2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{pol_wet_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="77" width="110" height="17" uuid="97dbdcca-d953-4d8b-8beb-c219ec828dda">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[POLICY HOLDER:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="144" width="110" height="14" uuid="da4c7dfb-8ec3-44a2-8a59-f16af2660c41">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENT PIN NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="126" width="110" height="16" uuid="187b74b2-3f68-4d48-b7fa-8b795812cdc8">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENT ID:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="96" width="120" height="14" uuid="9876ca39-a55b-4ba1-ac0e-76a908d87aed">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMAIL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="65" width="120" height="16" uuid="dda4cc57-7e8d-45ed-8ba5-72702b716be9">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOBILE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="93" width="120" height="17" uuid="8f8d9cbb-54e8-466b-9010-7c1dc7f9d804">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[POSTAL ADDRESS:]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isLazy="true" evaluationTime="Report">
+				<reportElement key="" mode="Transparent" x="190" y="70" width="380" height="257" isRemoveLineWhenBlank="true" uuid="0bae960b-5da9-4c94-9dec-e8ac3564a659">
+					<printWhenExpression><![CDATA[!$F{pol_auth_status}.equals("A")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["reports/draft_watermark.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="37" width="770" height="1" uuid="66ba5a1d-34ef-4efc-85a9-0b285745eec5"/>
+			</line>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="62" width="110" height="17" uuid="98c825f7-5f7d-4518-9f81-9ff46c39b96c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CUST ID:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="111" width="120" height="17" uuid="1761c4ec-c7ab-4a91-a546-f0be05111007">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[POSTAL CODE:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="157" y="112" width="141" height="14" uuid="f1963057-a153-41e9-be44-cf4aafd95c8d"/>
+				<textFieldExpression><![CDATA[$F{client_post_code}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="80" width="120" height="16" uuid="f8000259-a9a4-47ff-afc9-f42f57556714">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TEL(OTHERS):]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="599" y="62" width="160" height="16" uuid="4dcde5c4-1e26-40c8-931b-e78de3ea8f32"/>
+				<textFieldExpression><![CDATA[$F{phone_prefix}+$F{client_phone}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="112" width="120" height="14" uuid="cb7cd3eb-eee8-48f4-bfc8-bbf9f6bc87f5">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANK A/C NO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="600" y="112" width="159" height="17" uuid="31793de0-f889-4330-ba97-e63be575ba98"/>
+				<textFieldExpression><![CDATA[$F{acct_bnk_account}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="146" width="117" height="17" uuid="3c569830-c54e-4f83-a383-ec6652b748bd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OCCUPATION:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="599" y="146" width="160" height="17" uuid="e2748bd2-e4c2-4939-b8a8-c5b4df6170ca"/>
+				<textFieldExpression><![CDATA[$F{occ_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="167" width="182" height="20" uuid="84988533-7630-4261-b44e-69b823ef43f9">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[PERIOD OF INSURANCE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="205" width="120" height="17" uuid="5991594a-7b5a-4eb4-96c5-12987d238068">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COVER:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="229" width="120" height="17" uuid="df786df2-02ac-4c83-9e5a-3b1083bdc767">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSURED:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="157" y="229" width="140" height="17" uuid="3b97f458-e2bb-4480-85b1-7110b597bad2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{client_fname}.toUpperCase()+" "+$F{client_onames}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="440" y="357" width="312" height="18" uuid="0dd59adf-a189-4c0b-bb6f-a77fa8aac036">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PREMIUM COMPUTATION " + "("+$F{cur_iso_code}+")"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="375" width="138" height="16" uuid="48927775-8fdc-4cda-ad1a-d6b4c2b201c2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Premium]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="653" y="375" width="105" height="15" uuid="d5ce7464-9cc4-4cfd-a438-2bdbc16bd470">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_calc_premium_amt}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="437" width="138" height="18" isRemoveLineWhenBlank="true" uuid="768d0f90-61eb-4991-bdc6-6977f453caf0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[First Premium]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="186" width="770" height="1" forecolor="rgba(8, 7, 7, 0.8039216)" uuid="70d92587-1979-4441-85bc-037d574259ab"/>
+			</line>
+			<subreport>
+				<reportElement positionType="Float" x="2" y="318" width="762" height="20" uuid="e16f1ebd-639a-4f44-b463-7f317ef51354"/>
+				<subreportParameter name="polId">
+					<subreportParameterExpression><![CDATA[$F{pol_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["reports/rpt_sub_dp.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement positionType="Float" x="521" y="419" width="138" height="18" isRemoveLineWhenBlank="true" uuid="dc61c260-54a3-47d4-a3a6-2b0d6efd5905">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Stamp Duty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="521" y="404" width="138" height="18" isRemoveLineWhenBlank="true" uuid="08d99cc0-c978-4308-8e17-129b453c5622">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Training Levy]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="520" y="389" width="138" height="18" isRemoveLineWhenBlank="true" uuid="3538fed3-5924-4bad-b6ee-4ce1f623fecb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Placeholder Fund]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="656" y="437" width="102" height="15" uuid="b26c591a-ef86-41ee-99b3-e050347f48c0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_calc_premium_amt}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="657" y="421" width="101" height="15" uuid="a6c0f5d5-255f-4414-a443-e6c688f989f7">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_stamp_duty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="658" y="407" width="100" height="15" uuid="2c95bcbf-9479-44d8-8a85-a54e385650db">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_training_levy}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00) ">
+				<reportElement positionType="Float" x="659" y="391" width="99" height="15" uuid="d8b87d8e-0316-43f5-ba3c-7694b028a2c3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_phcf}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="481" y="210" width="118" height="17" uuid="dc2d2b28-0554-4d82-97d0-a68778840cbe">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[INTERESTED PARTY:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="481" y="231" width="120" height="16" uuid="af75019c-5c63-4032-8dea-717507af0b79">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[JOINT CLIENT:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="158" y="206" width="160" height="18" uuid="ab676c5a-d735-4c91-9547-1fc30b0d5256">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{cov_desc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="25">
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="291" y="10" width="70" height="15" uuid="20e8440c-b726-4b7d-9781-d6e890008eab"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Printed on]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy h:mm a" isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="390" y="10" width="150" height="15" uuid="f63e3b6e-e958-4345-8b86-bf85d5371946"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="197">
+			<staticText>
+				<reportElement positionType="Float" x="0" y="100" width="227" height="20" isRemoveLineWhenBlank="true" uuid="8ca6d0f0-40f5-42da-9083-fd4dba7fd2f6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CUSTOMER SIGNATURE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="515" y="100" width="138" height="20" isRemoveLineWhenBlank="true" uuid="75afbfe9-25a9-4534-bd67-37c8672aa7e9">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date: ]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="171" y="0" width="600" height="90" isRemoveLineWhenBlank="true" uuid="773edc23-7080-413b-ac43-ab0ba86bc2a4">
+					<printWhenExpression><![CDATA[new Boolean( $F{pol_basic_premium_amt}.doubleValue()>0.00)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_name}.equalsIgnoreCase( "STIMA INVESTMENT INSURANCE AGENCY" )?("The Premium of "+ "<b>"+$F{cur_iso_code}+" "+ new java.text.DecimalFormat("#,##0.00").format($F{pol_basic_premium_amt}) +"</b> is payable to <b> STIMA INVESTMENT INSURANCE AGENCY  </b>"+" via <b>" +$F{pm_desc}+" </b><br>Bank: <b>COOPERATIVE BANK</b></br><br>Branch: <b>STIMA PLAZA BRANCH</b></br><br> Account Number: <b>01120070889203</b></br><br> M-Pesa PayBill Number: <b>609553</b></br>"):("The Premium of "+ "<b>"+$F{cur_iso_code}+" "+ new java.text.DecimalFormat("#,##0.00").format($F{pol_basic_premium_amt}) +"</b> is payable to <b>" +$F{acct_name}+" </b>"+" via <b>" +$F{pm_desc}+" </b><br>Bank: <b>"+(($F{bn_name}==null)?"T.B.A":$F{bn_name})+"</b></br><br>Branch: <b>"+(($F{bank_branch}==null)?"T.B.A":$F{bank_branch})+"</b></br><br> Account Number: <b>"+
+(($F{acct_bnk_account}==null ||$F{acct_bnk_account}.equals("") )?"T.B.A":$F{acct_bnk_account})+"</b></br><br> M-Pesa PayBill Number: <b>"+(($F{acct_paybill}==null ||$F{acct_paybill}.equals("") )?"T.B.A":$F{acct_paybill})+"</b></br>")]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="576" y="142" width="175" height="13" uuid="e7ac1062-0c90-4b29-b28b-3a7d26dc249f"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="" positionType="Float" x="512" y="142" width="64" height="13" uuid="d04b0047-84ba-421e-b987-5b4cf4c67a64"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATE:]]></text>
+			</staticText>
+			<textField pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="576" y="167" width="175" height="13" uuid="71169e89-a7b1-41a1-80b7-c369d8cee2ff"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_auth_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="" positionType="Float" x="512" y="167" width="64" height="13" uuid="be84ad2d-ceaf-432b-b208-d05f7621d8eb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATE: ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="184" width="764" height="1" forecolor="rgba(0, 0, 0, 0.13725491)" uuid="e4064202-5849-4f63-91ef-5f67c9586905"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="157" y="163" width="120" height="17" uuid="6704b8bf-8652-4bb2-8911-a5e73408d817"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_auth_user}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="157" y="138" width="120" height="13" uuid="10d2035b-b20e-4aef-985d-3b8ee56f9fd3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_created_user}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="2" y="138" width="118" height="13" uuid="2d7cf909-c253-400a-a0f5-5bbae2adcfc1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ISSUING OFFICER:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="2" y="163" width="118" height="13" uuid="0e45592b-e6f6-4d66-a4e7-da70d6b9236b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VERIFIED BY: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="120" height="17" isRemoveLineWhenBlank="true" uuid="ed94462f-59a8-45ae-a18b-d5a7dbd44190">
+					<printWhenExpression><![CDATA[new Boolean( $F{pol_basic_premium_amt}.doubleValue()>0.00)]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mode Of Payment: ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="130" width="764" height="1" forecolor="rgba(0, 0, 0, 0.13725491)" uuid="ee0bb23c-825e-47ac-939e-99aa2158d497"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

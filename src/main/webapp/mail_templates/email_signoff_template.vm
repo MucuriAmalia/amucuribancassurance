@@ -1,0 +1,23 @@
+<html>
+<body>
+Regards,
+<br>
+$fullName
+<br>
+$position
+<br>
+$department
+<br>
+T $telephone
+<br>
+M $mobile
+<br>
+E $email
+<br>
+$officeAddress
+<br>
+$website
+<br>
+$regulatoryNote
+</body>
+</html>

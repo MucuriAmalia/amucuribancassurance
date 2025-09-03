@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_updated_policies" pageWidth="2300" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="660" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1bf9c828-381b-4849-8fb8-dac124bc168d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="absa2_absa2"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="agentCode" class="java.lang.Long"/>
+	<parameter name="dateFrom" class="java.util.Date"/>
+	<parameter name="dateTo" class="java.util.Date"/>
+	<parameter name="status" class="java.lang.Boolean"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT sbp.pol_ref_no, 
+       sbc.client_fname || ' ' || sbc.client_onames AS client_name,
+       sba.acct_name,
+       sbp.pol_no, 
+       CASE 
+           WHEN sbp.client_pol_update_status = TRUE THEN 'Updated'
+           ELSE 'Pending'
+       END AS pol_update_status,
+       pol_auth_status, 
+       pol_current_status,
+       sbucp.insurer_code,
+       sbucp.risk_note_no,
+       sbucp.underwriter_pol_no,
+       sbucp.uploaded_date,
+       sbp.pol_client_pol_no, 
+       sbp2.pr_desc, 
+       sbucp.processed_date, 
+       sbp.pol_auth_date 
+FROM sys_brk_policies sbp  
+LEFT JOIN sys_brk_update_client_polno sbucp ON sbucp.policy_id = sbp.pol_id  
+INNER JOIN sys_brk_products sbp2 ON sbp2.pr_code = sbp.pol_prod_id  
+INNER JOIN sys_brk_clients sbc ON sbc.client_id = sbp.pol_client_id  
+INNER JOIN sys_brk_accounts sba ON sba.acct_id = sbp.pol_agent_id  
+WHERE pol_auth_status = 'A'  
+AND pol_current_status != 'CN'  
+AND pol_rev_status != 'CN'  
+AND sbp.pol_auth_date BETWEEN DATE($P{dateFrom}) AND DATE($P{dateTo}) + INTERVAL '1 day' - INTERVAL '1 second'  
+AND sbp.pol_agent_id = COALESCE($P{agentCode}, sbp.pol_agent_id)  
+AND sbp.client_pol_update_status = $P{status}  
+ORDER BY sbp.pol_auth_date DESC]]>
+	</queryString>
+	<field name="pol_ref_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_ref_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_ref_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="client_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_name"/>
+	</field>
+	<field name="acct_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_update_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_update_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_update_status"/>
+	</field>
+	<field name="pol_auth_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_auth_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_auth_status"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pol_current_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_current_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_current_status"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="insurer_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="insurer_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="insurer_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_update_client_polno"/>
+	</field>
+	<field name="risk_note_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="risk_note_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="risk_note_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_update_client_polno"/>
+	</field>
+	<field name="underwriter_pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="underwriter_pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="underwriter_pol_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_update_client_polno"/>
+	</field>
+	<field name="uploaded_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="uploaded_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="uploaded_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_update_client_polno"/>
+	</field>
+	<field name="pol_client_pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_client_pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_client_pol_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="pr_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pr_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="pr_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_products"/>
+	</field>
+	<field name="processed_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="processed_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="processed_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_update_client_polno"/>
+	</field>
+	<field name="pol_auth_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="pol_auth_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_auth_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="130" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="2270" height="130" backcolor="#FFFFFF" uuid="70eacbfd-ab9e-479e-ac08-ee6853265959"/>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="5" y="3" width="105" height="105" uuid="0a6dbdf3-915d-40b8-89f3-b6774a57612e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="106" width="2270" height="20" uuid="ee142e99-36cd-4ea1-93a0-bcc9918ee75b">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UPDATED POLICIES REPORT]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="190" height="20" isPrintWhenDetailOverflows="true" uuid="6cd27428-4053-4ba3-a218-3daff6b2046b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENT NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="0" width="120" height="20" isPrintWhenDetailOverflows="true" uuid="2a17a15f-fead-4844-88fb-655e49dcdc28"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RISK NOTE NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="860" y="0" width="290" height="20" isPrintWhenDetailOverflows="true" uuid="bc97c1b2-9f25-4d98-af38-6ba241a2424f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNDERWRITER POLICY NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1150" y="0" width="170" height="20" isPrintWhenDetailOverflows="true" uuid="86ff2f1d-99e9-4aaf-9032-e71bf629e14c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNDERWRITER TRANS CODE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1320" y="0" width="260" height="20" isPrintWhenDetailOverflows="true" uuid="db334a97-3157-4626-983b-81071cef4c8b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCT CLASS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1580" y="0" width="250" height="20" isPrintWhenDetailOverflows="true" uuid="8968bed3-5481-4788-9051-76f2f5008ca5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[POLICY NO UPDATED STATUS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1830" y="0" width="200" height="20" isPrintWhenDetailOverflows="true" uuid="a38e2223-153e-4b36-9be5-94275fae8fa5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[POL AUTH DATE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2030" y="0" width="240" height="20" isPrintWhenDetailOverflows="true" uuid="2911c2fe-d061-4dc4-b981-ffa90613fa9d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[POL NO UPDATED DATE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="590" y="0" width="270" height="20" isPrintWhenDetailOverflows="true" uuid="9a976b3c-036e-422f-bef3-8836115ca4ac"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSURANCE COMPANY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="280" height="20" isPrintWhenDetailOverflows="true" uuid="7f5196ca-482f-4ab7-bf7a-c2f0aded1d85"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SYSTEM POLICY NO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="190" height="20" isPrintWhenDetailOverflows="true" uuid="4e4f73b4-de51-44ed-8f48-15b5f9f366d7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{client_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="0" width="120" height="20" isPrintWhenDetailOverflows="true" uuid="a6093adf-3019-44fe-9723-e1b8ec5cde29"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pol_ref_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1150" y="0" width="170" height="20" isPrintWhenDetailOverflows="true" uuid="12a5ef41-2ed2-4484-95a9-7d104a7a6f1e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{insurer_code}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1320" y="0" width="260" height="20" uuid="6dd5a62f-8acf-4399-82c8-4b16dde30bb8"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pr_desc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="860" y="0" width="290" height="20" uuid="f9ca8906-726e-4567-a110-c9b471af5cb3"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pol_client_pol_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1580" y="0" width="250" height="20" uuid="1dfcb1e7-4543-45cd-accc-5fd135cfd01a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pol_update_status}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1830" y="0" width="200" height="20" uuid="2c45f97e-6662-457e-b19f-878a21ead0e7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pol_auth_date}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="2030" y="0" width="240" height="20" uuid="bbf65836-70bb-4244-bbce-c6c29791f16c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{uploaded_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="590" y="0" width="270" height="20" isPrintWhenDetailOverflows="true" uuid="59c7cd86-8158-4daf-b3cc-ecaa3714d80b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{acct_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="310" y="0" width="280" height="20" isPrintWhenDetailOverflows="true" uuid="4891a3bd-242b-4de0-a3ac-b3d0ab97922f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pol_no}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="29">
+			<textField isBlankWhenNull="true">
+				<reportElement x="1858" y="6" width="45" height="21" uuid="c881868d-f010-49a4-a037-86be83cc735b"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement x="1903" y="6" width="45" height="21" uuid="cd2410db-f6f4-46ce-8398-f7b30036683c"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="1593" y="8" width="70" height="15" uuid="46a3f87a-a465-4278-849c-51d40f483d78"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Printed on]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy h:mm a" isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="1665" y="8" width="150" height="15" uuid="e7f5550a-8745-4831-96a0-9d71e36890f3"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

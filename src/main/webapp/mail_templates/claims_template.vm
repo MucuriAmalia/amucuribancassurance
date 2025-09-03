@@ -1,0 +1,10 @@
+<html>
+<body>
+<h3>Hi $client,</h3>
+<p> Attached is your claim Report </p>
+<p>
+    From - {broker}
+</p>
+</body>
+
+</html>

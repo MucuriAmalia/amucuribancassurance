@@ -1,0 +1,101 @@
+
+package uwtrans
+
+import com.brokersystems.brokerapp.uw.model.PolicyTrans;
+import com.brokersystems.brokerapp.medical.model.BinderRulesObject;
+import com.brokersystems.brokerapp.medical.model.MedicalBinderRules;
+import com.brokersystems.brokerapp.server.utils.ErrorUtils;
+import com.brokersystems.brokerapp.uw.model.RiskTrans;
+import com.brokersystems.brokerapp.uw.model.RiskDocs;
+import com.brokersystems.brokerapp.schedules.model.ScheduleTrans;
+import  com.brokersystems.brokerapp.setup.model.PaymentModes;
+import com.brokersystems.brokerapp.uw.model.RiskInterestedParties;
+import com.brokersystems.brokerapp.setup.model.InterestedParties;
+import com.brokersystems.brokerapp.server.utils.DateUtilities;
+import com.brokersystems.brokerapp.kie.utils.PolicyRulesUtils;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import org.apache.commons.lang3.StringUtils
+import java.util.Date;
+import java.text.SimpleDateFormat;
+
+global ErrorUtils errorUtils;
+
+rule "check but charge"
+  when
+      $p: PolicyTrans()
+      $r : RiskTrans(butchargePrem!=null, butchargePrem.compareTo(BigDecimal.ZERO)!=0) from $p.riskTrans
+  then
+       errorUtils.addError("CHK_OVERRIDE_PREM");
+end
+
+rule "zero premium amount"
+  when
+      $p: PolicyTrans(premium==0)
+    and PolicyTrans(transType in ("NB","RN"))
+  then
+       errorUtils.addError("ZERO_PREM_AMT");
+end
+
+rule "tba_policy_no"
+  when
+      $p: PolicyTrans(clientPolNo =="TBA")
+  then
+       errorUtils.addError("CHK_CLIENT_POL");
+end
+
+rule "ipf_policy_no"
+  when
+      $p: PolicyTrans()
+      $r : RiskTrans() from $p.riskTrans
+      $m: PaymentModes(pmShtDesc=="IPF") from $p.paymentMode and not RiskInterestedParties(interestedParties.partType=="P") from $r.interestParties
+  then
+       errorUtils.addError("CHK_IPF_POL");
+end
+
+rule "check_documents"
+  when
+      $p: PolicyTrans()
+      $r: RiskTrans(PolicyRulesUtils.countPolicyDocs(riskId)) from $p.riskTrans
+  then
+       errorUtils.addError("CHK_RISK_DOCS");
+end
+
+rule "check_min_sum_insured"
+  when
+      $p: PolicyTrans()
+      $b:BinderRulesObject()
+      $c:MedicalBinderRules(shtDesc=="MIN_SUM_INSURED") from $b.binderRules
+      $r: RiskTrans(sumInsured < new BigDecimal($c.value)) from $p.riskTrans
+  then
+       errorUtils.addError("MIN_SUM_INSURED");
+end
+
+rule "check_vehicle_schedule"
+  when
+      $p: PolicyTrans()
+      $b:BinderRulesObject()
+      $c:MedicalBinderRules(shtDesc=="VEHICLE_SCHEDULE") from $b.binderRules
+      $r: RiskTrans() from $p.riskTrans
+      $s: ScheduleTrans(column3==null || column5==null ||  StringUtils.isBlank(column6) || column12==null) from $r.scheduleTrans
+  then
+       errorUtils.addError("VEHICLE_SCHEDULE");
+end
+
+rule "check_vehicle_age"
+  when
+      $p: PolicyTrans()
+      $b:BinderRulesObject()
+      $c:MedicalBinderRules(shtDesc=="VEHICLE_AGE") from $b.binderRules
+      $r: RiskTrans() from $p.riskTrans
+      $s: ScheduleTrans(!StringUtils.isBlank(column6) && new BigDecimal(LocalDate.now().getYear()).subtract(new BigDecimal(column6)) > new BigDecimal($c.value)) from $r.scheduleTrans
+  then
+       errorUtils.addError("VEHICLE_AGE");
+end
+
+rule "backdated policy"
+  when
+      $p: PolicyTrans(new SimpleDateFormat("dd-MMM-yyyy").format(wefDate).compareTo(new SimpleDateFormat("dd-MMM-yyyy").format(new Date()))<0)
+  then
+       errorUtils.addError("BACKDATED_POLICY");
+end

@@ -1,0 +1,81 @@
+package clientRules
+
+import com.brokersystems.brokerapp.setup.model.ClientDef;
+import com.brokersystems.brokerapp.server.utils.ErrorUtils;
+import com.brokersystems.brokerapp.server.utils.DateUtilities;
+import com.brokersystems.brokerapp.server.utils.ClientUtils;
+import org.apache.commons.lang3.StringUtils
+import java.util.Date;
+import java.text.SimpleDateFormat;
+
+global ErrorUtils errorUtils;
+
+
+rule "validate_null_dob"
+        when
+        $c: ClientDef(dob==null)
+        then
+        errorUtils.addError(" Date Of Birth is mandatory");
+        end
+
+rule "validate_null_email"
+        when
+        $c: ClientDef(emailAddress==null && tenantType.clientType=="I")
+        then
+        errorUtils.addError(" Email Address is mandatory for individual clients");
+        end
+rule "validate_null_phone"
+        when
+        $c: ClientDef(phoneNo==null && tenantType.clientType=="I")
+        then
+        errorUtils.addError(" Phone Number is mandatory for individual clients");
+        end
+
+rule "validate_dob"
+        when
+        $c: ClientDef(dob!=null && dob.compareTo(new Date())>0)
+        then
+        errorUtils.addError(" Date Of Birth "+new SimpleDateFormat("dd-MMM-yyyy").format($c.getDob())+" is greater than Current Date "+new SimpleDateFormat("dd-MMM-yyyy").format(new Date()));
+        end
+
+rule "validate_type"
+        when
+        ClientDef(dob!=null && DateUtilities.computeAge(dob)>=18 && tenantType==null )
+        then
+        errorUtils.addError("Client Type is Mandatory....");
+        end
+
+rule "validate_title"
+        when
+        ClientDef(dob!=null && DateUtilities.computeAge(dob)>=18 && tenantType!=null && tenantType.clientType=="I" &&  clientTitle==null)
+        then
+        errorUtils.addError("Client Title is Mandatory for Individual Clients...");
+end
+
+rule "validate_other_names"
+        when
+        ClientDef(tenantType!=null && tenantType.clientType=="I" && StringUtils.isBlank(otherNames))
+        then
+        errorUtils.addError("Client Other Names is Mandatory for Individual Clients...");
+end
+
+//rule "validate_postal_address"
+//        when
+//        ClientDef(dob!=null && DateUtilities.computeAge(dob)>=18 && StringUtils.isBlank(address))
+ //       then
+ //       errorUtils.addError("Postal Address cannot be null...");
+//end
+
+rule "validate_branch"
+        when
+        ClientDef(registeredbrn==null)
+        then
+        errorUtils.addError("Client Branch Cannot be null...");
+end
+
+rule "check_client_documents"
+           when
+           ClientDef(!StringUtils.isBlank(authStatus) && authStatus.equals("Y") && tenId!=null && clientDocses.size()==0)
+           then
+           errorUtils.addError("Upload Client Documents... ");
+end

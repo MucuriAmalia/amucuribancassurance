@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_valuation_rpt" pageWidth="642" pageHeight="742" whenNoDataType="BlankPage" columnWidth="602" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d977049f-60f5-4b8d-9095-ba3ff06a87cc">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="absa2_absa2"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="731"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="255"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="polId" class="java.lang.Long">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select s1.acct_address,s1.acct_email,s1.acct_phone,s2.risk_id,
+s.pol_client_pol_no,s1.acct_name,s3.client_fname,s3.client_onames,s2.risk_sht_desc
+FROM sys_brk_policies s
+inner join sys_brk_accounts s1 on s1.acct_id = s.pol_agent_id
+inner join sys_brk_risks s2 on s.pol_id = s2.risk_pol_id 
+inner join sys_brk_clients s3 on s3.client_id = s2.risk_insured_id
+where s.pol_id =  $P{polId}]]>
+	</queryString>
+	<field name="acct_address" class="java.lang.String"/>
+	<field name="acct_email" class="java.lang.String"/>
+	<field name="acct_phone" class="java.lang.String"/>
+	<field name="risk_id" class="java.lang.Long"/>
+	<field name="pol_client_pol_no" class="java.lang.String"/>
+	<field name="acct_name" class="java.lang.String"/>
+	<field name="client_fname" class="java.lang.String"/>
+	<field name="client_onames" class="java.lang.String"/>
+	<field name="risk_sht_desc" class="java.lang.String"/>
+	<group name="Risks">
+		<groupExpression><![CDATA[$F{risk_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="107">
+			<rectangle>
+				<reportElement x="0" y="-10" width="610" height="117" forecolor="#000000" backcolor="#F0F0F0" uuid="b13bc8e0-8345-4834-a893-07bfd46b303b"/>
+				<graphicElement>
+					<pen lineColor="#C4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="8" y="-7" width="105" height="105" uuid="0612b180-2a59-4c0e-ac42-1287790ad2e5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="420" y="6" width="185" height="18" uuid="a3e0100e-3e4b-45d7-999e-731ddc3c00b9">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acct_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="420" y="24" width="185" height="17" uuid="6a49d79b-e8ed-4150-b42d-bae1236f186c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acct_address}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="420" y="41" width="185" height="15" uuid="7dff7af0-41b4-4d0a-836e-257e9428710f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TEL: " + $F{acct_phone}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="419" y="71" width="185" height="15" uuid="736452f3-3fdb-414b-b7e8-f3863b26a206">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["EMAIL: "+$F{acct_email}.toLowerCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="419" y="56" width="185" height="15" uuid="5e05ab84-e6a1-4d6f-b81a-575343223ce0"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA["WEBSITE: "]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="140" y="80" width="290" height="27" uuid="2cfcdf2c-29e6-4809-b9ae-8689410b59df"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VEHICLE INSPECTION AND VALUATION"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="160">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="10" y="53" width="590" height="57" uuid="1f61e3dc-df02-4abd-b492-5e5f7541f42b"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="styled">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["We refer to the above vehicle which is insured comprehensively with us\n\nWe require all vehicles insured with us for the first time on comprehensive basic to undego inspection and valuation at our cost.This is meant to determine the mechanical condition of the vehicles and provide the estimate value at the date of inspection.\n\nIn this regard  avail your vehicle and copies of the log book or import document to either of the following Motor Inspection whose contacts and branches are stated overleaf to facilitate this exercise\n\n\t1.Regent Automobile Valuers\n\t2.Strategic Automobile Valuers Ltd\n\t3.Automobile Professional Assessors Kenya Ltd\n\t4.Auto star  Assessors and Valuers  Ltd\n\t5.AA of Kenya Valuers Ltd\n\n\nPlease note that the inspection and valuation must be done within Fourteen[14]days of inspection of cover failure to which your insurance cover may be down graded to Third party only[T.P.O]at the diserection of the company"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="10" y="130" width="310" height="30" uuid="b3cae754-bc41-460d-a7cc-8631b6b8c839"/>
+				<textElement textAlignment="Left" markup="styled">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Yours sincerely\n\n…………..\n\nAlex K Mwangi\n\nUnderwriting Department\n\n"+$F{acct_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="10" y="23" width="590" height="30" uuid="0656c260-1015-4b11-8e5c-33162d094e2b"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Date:\t\t"+DATEFORMAT(new java.util.Date(),"dd-MMMM-YYYY").toUpperCase()+"\n\n\nDear Sir/Madam,\n\nINSURED:\t\t\t"+$F{client_fname}.toUpperCase()+" "+$F{client_onames}.toUpperCase()+"\n\nPOLICY NO:\t\t\t"+$F{pol_client_pol_no}+"\n\nVEHICLE REG NO:\t\t"+$F{risk_sht_desc}+"\n\n"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

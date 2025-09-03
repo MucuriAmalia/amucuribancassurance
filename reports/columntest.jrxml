@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-01-17T22:18:04 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="columntest" printOrder="Horizontal" pageWidth="595" pageHeight="842" columnWidth="180" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ac2ae849-0e19-450b-98a5-75d5046bac16">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="broker_db"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="myStyle"/>
+	<queryString>
+		<![CDATA[SELECT trans_control_acc, trans_no,trans_amount FROM public.sys_brk_main_transactions
+ORDER BY trans_control_acc
+ASC]]>
+	</queryString>
+	<field name="trans_control_acc" class="java.lang.String"/>
+	<field name="trans_no" class="java.lang.Long"/>
+	<field name="trans_amount" class="java.math.BigDecimal"/>
+	<variable name="CLIENT_TOTAL_BALANCE" class="java.lang.Double" resetType="Group" resetGroup="clientsGroup" calculation="Sum">
+		<variableExpression><![CDATA[$F{trans_amount}]]></variableExpression>
+	</variable>
+	<group name="clientsGroup">
+		<groupExpression><![CDATA[$F{trans_control_acc}]]></groupExpression>
+		<groupHeader>
+			<band height="35">
+				<textField>
+					<reportElement x="178" y="0" width="162" height="20" uuid="008ec87f-211a-40e7-9ebe-df0c63517be6"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{trans_control_acc}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="20" width="100" height="14" uuid="b49b492e-41e4-4eee-9461-c06f8da0be78"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Transaction Number]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="278" y="20" width="100" height="14" uuid="198339f5-ff5d-4df7-a8b8-ebf4ac45fc46"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Transaction Amount]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="112" height="20" uuid="25336edb-6273-442d-9b5d-0c475c650323"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Client Account: ]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="34" width="553" height="1" uuid="23315367-8847-4555-9238-2e2b4fccc2f5"/>
+				</line>
+				<line>
+					<reportElement x="1" y="19" width="553" height="1" uuid="e7074ac1-48f0-493b-a808-7eefedda3932"/>
+				</line>
+				<line>
+					<reportElement x="179" y="20" width="1" height="14" uuid="54d2c763-f7a9-4895-ac31-58b0932ce52f"/>
+				</line>
+				<textField evaluationTime="Group" evaluationGroup="clientsGroup">
+					<reportElement positionType="FixRelativeToBottom" x="378" y="0" width="175" height="17" isPrintWhenDetailOverflows="true" printWhenGroupChanges="clientsGroup" backcolor="#6600FF" uuid="f32920c4-88ac-4a25-b6a6-1517c793ac69"/>
+					<textElement verticalAlignment="Bottom" markup="styled">
+						<font fontName="Times New Roman" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["No. Of Transactions "+$V{clientsGroup_COUNT}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<staticText>
+					<reportElement x="0" y="0" width="180" height="16" uuid="4cce39a6-a744-4d7f-9a33-1f066d8b8579"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[CLIENT TOTAL BALANCE: ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="278" y="-1" width="177" height="17" uuid="008ec87f-211a-40e7-9ebe-df0c63517be6"/>
+					<textElement>
+						<font isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{CLIENT_TOTAL_BALANCE}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="-2" width="553" height="1" uuid="2ccd8e38-4f6a-4662-b70b-63aa934b16de"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="50">
+			<staticText>
+				<reportElement x="0" y="0" width="535" height="47" isPrintInFirstWholeBand="true" forecolor="#00FF00" backcolor="#FFFF00" uuid="20ef8d83-f1be-4b6a-8d78-1fde3fadc106"/>
+				<textElement textAlignment="Center" markup="styled">
+					<font size="26" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTS ACCOUNT BALANCE]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<textField>
+				<reportElement x="278" y="0" width="140" height="13" uuid="0dd43097-9dda-4d57-99f6-87fabe836873"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Dashed" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{trans_amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="100" height="13" uuid="41581b3b-49f1-4a81-bcfb-bc390c1bf119"/>
+				<textFieldExpression><![CDATA[$F{trans_no}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="179" y="0" width="1" height="13" uuid="0d1a5455-8d5e-45b4-b1f5-ae68d7e0a60e"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

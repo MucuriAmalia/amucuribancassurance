@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_expired_risks" pageWidth="645" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="605" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ffef18f8-4901-4d64-8f0d-046bfa792609">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="logo" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="dateFrom" class="java.util.Date">
+		<parameterDescription><![CDATA[Date From]]></parameterDescription>
+	</parameter>
+	<parameter name="dateTo" class="java.util.Date">
+		<parameterDescription><![CDATA[Date To]]></parameterDescription>
+	</parameter>
+	<parameter name="pro_code" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT  org_name,org_address,org_mobile,org_phone,add_email_addr,org_website,
+ pr_desc, client_fname, client_onames, pol_wef_date, pol_wet_date,
+         risk_sht_desc, risk_wet_date, pr_desc, acct_name
+    FROM sys_brk_organization, sys_brk_policies s
+    INNER JOIN sys_brk_products s1 ON s1.pr_code = s.pol_prod_id
+         INNER JOIN sys_brk_clients ON pol_client_id = client_id
+         INNER JOIN sys_brk_risks ON risk_pol_id = s.pol_id
+         INNER JOIN sys_brk_accounts ON acct_id = s.pol_agent_id
+       AND pol_current_status = 'A'
+       AND pol_auth_status = 'A'
+    WHERE date_trunc('day', risk_wet_date)   BETWEEN   $P{dateFrom} AND  $P{dateTo} 
+   AND ( s.pol_prod_id::varchar) = COALESCE( $P{pro_code},( s.pol_prod_id::varchar))
+ORDER BY s1.pr_desc, risk_wet_date]]>
+	</queryString>
+	<field name="org_name" class="java.lang.String"/>
+	<field name="org_address" class="java.lang.String"/>
+	<field name="org_mobile" class="java.lang.String"/>
+	<field name="org_phone" class="java.lang.String"/>
+	<field name="add_email_addr" class="java.lang.String"/>
+	<field name="org_website" class="java.lang.String"/>
+	<field name="pr_desc" class="java.lang.String"/>
+	<field name="client_fname" class="java.lang.String"/>
+	<field name="client_onames" class="java.lang.String"/>
+	<field name="pol_wef_date" class="java.sql.Date"/>
+	<field name="pol_wet_date" class="java.sql.Date"/>
+	<field name="risk_sht_desc" class="java.lang.String"/>
+	<field name="risk_wet_date" class="java.sql.Date"/>
+	<field name="COLUMN_14" class="java.lang.String"/>
+	<field name="acct_name" class="java.lang.String"/>
+	<group name="pr_desc">
+		<groupExpression><![CDATA[$F{pr_desc}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<rectangle>
+					<reportElement x="0" y="0" width="610" height="20" backcolor="#FFFFFF" uuid="7b98c29a-2dde-4365-a047-3d06040793d2"/>
+					<graphicElement>
+						<pen lineColor="#B4BBBB"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement x="10" y="0" width="213" height="20" uuid="687f9b6d-2c9d-40c1-9fbc-357c5b5fe678"/>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{pr_desc}.toUpperCase()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="107" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="610" height="107" backcolor="#FFFFFF" uuid="1c3992ae-e034-48e0-b6fc-0cf5d464c180"/>
+				<graphicElement>
+					<pen lineColor="#C4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="2" y="2" width="105" height="105" uuid="10feeb0c-f5ca-4bb1-bd35-4ccf1b110e16">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="360" y="0" width="250" height="15" uuid="6b057660-e777-48c9-b224-390418e8eb38">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="17" width="250" height="15" uuid="0f20a5bb-8a6e-4c82-a0f8-2a1d2ac4c4ee">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_address}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="32" width="250" height="15" uuid="645cb21e-4043-4845-9dff-5d2cd0b37464">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TEL: " + $F{org_mobile} +"," +$F{org_phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="359" y="62" width="251" height="15" uuid="45cf9989-1062-457b-9ad8-189be4d5b860">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["EMAIL: "+$F{add_email_addr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="359" y="47" width="251" height="15" uuid="19364f4c-d253-4d5d-9f51-caee05c22898"/>
+				<textFieldExpression><![CDATA["WEBSITE: " + $F{org_website}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="160" y="90" width="200" height="17" uuid="3cb46ce2-ae40-49d8-8f2f-491d675adb4f"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXPIRED RISKS REPORT ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="90" width="70" height="15" forecolor="#211F1E" uuid="07401a76-5c9a-4824-8dd1-8b475a1bcb5f"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Period To:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="77" width="70" height="15" forecolor="#211F1E" uuid="fd19a9a5-a30c-4a43-88be-7319877ad953"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Period From: ]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-YYYY" isBlankWhenNull="true">
+				<reportElement x="450" y="92" width="106" height="14" forecolor="#211F1E" uuid="d2647682-d9e5-4957-bdb6-aae7c303f528"/>
+				<textElement>
+					<font size="10" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateTo}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-YYYY" isBlankWhenNull="true">
+				<reportElement x="450" y="77" width="106" height="15" forecolor="#211F1E" uuid="7733e067-df68-4720-a96e-3e7a2b4d6f40"/>
+				<textElement>
+					<font size="10" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateFrom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="610" height="20" backcolor="#FFFFFF" uuid="57fad381-9def-409e-9beb-50ec649b52e9"/>
+				<graphicElement>
+					<pen lineColor="#B4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="130" height="20" uuid="8c83a9ad-0090-44a3-9d34-b5f93273d400"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Client]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="150" height="20" uuid="41d87594-9e35-4b8a-8453-b2e09a43e50b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy Cover Dates]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="90" height="20" uuid="c14e3371-bf15-4f6b-b042-fce6caca9812"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Risk Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="0" width="70" height="20" uuid="a1cde6cc-443d-4fa8-ac0f-3c6469417bc0"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Expiry Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="0" width="170" height="20" uuid="32a1b0c5-38b0-4c8b-a8a8-4aae11b940af"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Insurer]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="610" height="20" backcolor="#FFFFFF" uuid="7b3c80b6-5a82-4344-bdaa-ad1e4011738f"/>
+				<graphicElement>
+					<pen lineColor="#B4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="130" height="20" uuid="7c9ae51e-3991-4387-8a8f-292dd6fed460"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{client_fname}+" "+$F{client_onames}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="130" y="0" width="150" height="20" uuid="84fb5325-96ca-4521-a5bc-ee4deb983c1c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{pol_wef_date} +"   to  "+$F{pol_wet_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="0" width="90" height="20" uuid="7fa62e84-e200-4ade-95f6-359801e327f3"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{risk_sht_desc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="370" y="0" width="70" height="20" uuid="f60f4305-8e4a-4321-beee-bb6a924b2e12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{risk_wet_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="0" width="170" height="20" uuid="19af2842-402d-4ffe-ba8e-539064b71242"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#B4BBBB"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{acct_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

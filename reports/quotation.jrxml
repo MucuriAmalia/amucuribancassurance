@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="quotation" pageWidth="805" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="01272ef1-ba37-431b-824f-136bb4f94d3d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ABSA ST"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="quotId" class="java.lang.Long"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<queryString>
+		<![CDATA[select quot_id,org_name,org_mobile ,org_phone,org_address,org_website,phy_address,
+add_email_addr,client_fname,client_onames,client_address,client_sht_desc,quot_no,
+quot_pr_wef,quot_pr_wet,quot_expiry_date,s10.cnt_title,
+client_phone,client_email,client_sms_number,client_pin,cur_iso_code,client_idno,s12.prs_sht_desc,
+s12.prs_fname,s12.prs_onames,s12.prs_phone,s12.prs_email,s12.prs_idno,s12.prs_pin,s12.prs_phone_prefix,
+quot_pr_basic_prem,quot_pr_sd,quot_pr_tl,quot_pr_net_prem,quot_pr_phf,quot_pr_sum_insured,quot_date ,
+ s9.user_name created_by,quot_no,quot_pr_extras,ob_name,pm_desc,quot_pr_basic_prem,quot_pr_converted,
+ s11.user_name auth_by,s.quot_auth_date,s.quot_clnt_type,	s13.prefix_name phone_prefix,s14.cou_prefix ,
+ s15.prefix_name sms_prefix,s16.prefix_name prospect_prefix,s17.cou_prefix prospect_country, acct_name,pr_desc, quot_pr_id, quot_calc_basic_prem, quot_basic_premium
+from sys_brk_organization t,sys_brk_quotations s
+ left outer join sys_brk_clients s1 on s.quot_client_id = s1.client_id
+ left outer join sys_brk_prospects s12 on s12.prs_id = s.quot_prs_id
+ inner join sys_brk_quot_products s3 on s.quot_id = s3.quot_pr_quot_id
+ inner join  sys_brk_accounts s2 on s2.acct_id = s3.quot_pr_agent_id
+ inner join  sys_brk_products s4 on s4.pr_code = s3.quot_pr_pro_id
+ inner join sys_brk_currencies s5 on s5.cur_code = s.quot_curr_id
+ inner join sys_brk_binders s6 on s6.bin_id = s3.quot_pr_bind_id
+ inner join sys_brk_branches s7 on s7.ob_id = s.quot_branch_id
+ inner join sys_brk_payment_modes s8 on s8.pm_id = s.quot_pmode_id
+ inner join sys_brk_users s9 on s9.user_id = s.quot_prep_user
+ left outer join sys_brk_client_titles s10 on s10.cnt_title_id = s1.client_title_id
+ left outer  join sys_brk_users s11 on s11.user_id = s.quot_auth_user
+ left outer  join  sys_brk_mob_prefix s13 on s1.client_phone_prefix = s13.prefix_id
+left outer join sys_brk_countries s14 on s14.cou_code = s13.prefix_cou_code
+left outer join sys_brk_mob_prefix s15 on s1.client_sms_prefix = s15.prefix_id
+ left outer join sys_brk_mob_prefix s16 on s16.prefix_id = s12.prs_sms_prefix
+ left outer join sys_brk_countries s17 on s17.cou_code = s16.prefix_cou_code
+ where quot_id =$P{quotId}]]>
+	</queryString>
+	<field name="quot_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="quot_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quotations"/>
+	</field>
+	<field name="org_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_phone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_phone"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_phone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="org_website" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org_website"/>
+		<property name="com.jaspersoft.studio.field.label" value="org_website"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="phy_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="phy_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="phy_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="add_email_addr" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="add_email_addr"/>
+		<property name="com.jaspersoft.studio.field.label" value="add_email_addr"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_organization"/>
+	</field>
+	<field name="client_fname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_onames" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_sht_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="quot_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="quot_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quotations"/>
+	</field>
+	<field name="quot_pr_wef" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_wef"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_wef"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="quot_pr_wet" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_wet"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_wet"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="quot_expiry_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="quot_expiry_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_expiry_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quotations"/>
+	</field>
+	<field name="cnt_title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cnt_title"/>
+		<property name="com.jaspersoft.studio.field.label" value="cnt_title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_client_titles"/>
+	</field>
+	<field name="client_phone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_phone"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_phone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_email"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_sms_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_sms_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_sms_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_pin" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_pin"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_pin"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="cur_iso_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cur_iso_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="cur_iso_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_currencies"/>
+	</field>
+	<field name="client_idno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_idno"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_idno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="prs_sht_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prs_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="prs_fname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prs_fname"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_fname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="prs_onames" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prs_onames"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_onames"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="prs_phone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prs_phone"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_phone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="prs_email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prs_email"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="prs_idno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prs_idno"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_idno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="prs_pin" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prs_pin"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_pin"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="prs_phone_prefix" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="prs_phone_prefix"/>
+		<property name="com.jaspersoft.studio.field.label" value="prs_phone_prefix"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_prospects"/>
+	</field>
+	<field name="quot_pr_basic_prem" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_basic_prem"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_basic_prem"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="quot_pr_sd" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_sd"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_sd"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="quot_pr_tl" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_tl"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_tl"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="quot_pr_net_prem" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_net_prem"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_net_prem"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="quot_pr_phf" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_phf"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_phf"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="quot_pr_sum_insured" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_sum_insured"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_sum_insured"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="quot_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="quot_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quotations"/>
+	</field>
+	<field name="created_by" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="created_by"/>
+		<property name="com.jaspersoft.studio.field.label" value="created_by"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_users"/>
+	</field>
+	<field name="COLUMN_40" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="quot_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quotations"/>
+	</field>
+	<field name="quot_pr_extras" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_extras"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_extras"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="ob_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ob_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="ob_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_branches"/>
+	</field>
+	<field name="pm_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pm_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="pm_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_payment_modes"/>
+	</field>
+	<field name="COLUMN_44" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_basic_prem"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_basic_prem"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="quot_pr_converted" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_converted"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_converted"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="auth_by" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="auth_by"/>
+		<property name="com.jaspersoft.studio.field.label" value="auth_by"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_users"/>
+	</field>
+	<field name="quot_auth_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="quot_auth_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_auth_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quotations"/>
+	</field>
+	<field name="quot_clnt_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="quot_clnt_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_clnt_type"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quotations"/>
+	</field>
+	<field name="phone_prefix" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="phone_prefix"/>
+		<property name="com.jaspersoft.studio.field.label" value="phone_prefix"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_mob_prefix"/>
+	</field>
+	<field name="cou_prefix" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cou_prefix"/>
+		<property name="com.jaspersoft.studio.field.label" value="cou_prefix"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_countries"/>
+	</field>
+	<field name="sms_prefix" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="sms_prefix"/>
+		<property name="com.jaspersoft.studio.field.label" value="sms_prefix"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_mob_prefix"/>
+	</field>
+	<field name="prospect_prefix" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prospect_prefix"/>
+		<property name="com.jaspersoft.studio.field.label" value="prospect_prefix"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_mob_prefix"/>
+	</field>
+	<field name="prospect_country" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prospect_country"/>
+		<property name="com.jaspersoft.studio.field.label" value="prospect_country"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_countries"/>
+	</field>
+	<field name="acct_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="pr_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pr_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="pr_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_products"/>
+	</field>
+	<field name="quot_pr_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="quot_pr_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_pr_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="quot_calc_basic_prem" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="quot_calc_basic_prem"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_calc_basic_prem"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quot_products"/>
+	</field>
+	<field name="quot_basic_premium" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="quot_basic_premium"/>
+		<property name="com.jaspersoft.studio.field.label" value="quot_basic_premium"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_quotations"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="148" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="160" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

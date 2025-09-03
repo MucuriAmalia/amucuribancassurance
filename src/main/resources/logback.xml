@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!--<property name="USER_HOME" value="/var/logs" />-->
+	<define name="USER_HOME" class="com.brokersystems.brokerapp.config.LogFolderPropertyDefiner">
+	</define>
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
+			</Pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>
+	</appender>
+ 
+  	<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${USER_HOME}/broker_%d{yyyy-MM-dd}.json</fileNamePattern>
+
+            <!-- keep 1 day worth of history capped at 3GB total size -->
+            <maxHistory>1</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+
+                    <!--<minIndex>1</minIndex>-->
+                    <!--<maxIndex>100</maxIndex>-->
+        </rollingPolicy>
+                    <!--<triggeringPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+                        <!--&lt;!&ndash;<maxHistory>30</maxHistory>&ndash;&gt;-->
+                    <!--</triggeringPolicy>-->
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/> 	    
+  	</appender>
+
+	<logger name="org.quartz" additivity="false">
+		<level value="info" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+
+	<logger name="com.brokersystems.brokerapp.jobs" additivity="false">
+		<level value="info" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+
+
+	<logger name="com.brokersystems.brokerapp.reports.config.CustomJasperReportFormatView" additivity="false">
+		<level value="info" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+
+	<logger name="java.sql" additivity="false">
+		<level value="info" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+
+	<logger name="org.springframework" additivity="false">
+	    <level value="info" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+
+	<logger name="org.hibernate" additivity="false">
+		<level value="info" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+
+	<logger name="net.sf.ehcache" additivity="false">
+		<level value="info" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+
+	<logger name="org.drools" additivity="false">
+		<level value="info" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+
+	<logger name="org.activiti.engine" additivity="false">
+		<level value="info" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+
+	<logger name="org.apache" additivity="false">
+		<level value="info" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+
+	<logger name="com.zaxxer" additivity="false">
+		<level value="info" />
+		<appender-ref ref="consoleAppender" />
+	</logger>
+    <logger name="com.brokersystems.brokerapp.nav.controllers.GlobalExceptionHandler" additivity="false">
+        <level value="ERROR" />
+        <appender-ref ref="dailyRollingFileAppender" />
+        <appender-ref ref="consoleAppender" />
+    </logger>
+
+    <logger name="com.brokersystems.brokerapp.nav.controllers.ErrorController" additivity="false">
+        <level value="ERROR" />
+        <appender-ref ref="dailyRollingFileAppender" />
+        <appender-ref ref="consoleAppender" />
+    </logger>
+
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="dailyRollingFileAppender" />
+		<appender-ref ref="consoleAppender" />
+	</root>
+</configuration>

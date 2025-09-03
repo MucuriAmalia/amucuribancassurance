@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_clm_activities" pageWidth="879" pageHeight="842" whenNoDataType="BlankPage" columnWidth="756" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="563ed06b-4e1b-4534-b819-bbf6d40a4334">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="absa"/>
+	<parameter name="clmId" class="java.lang.Long"/>
+	<queryString language="SQL">
+		<![CDATA[select clm_id, clm_act_id,  sbca.clm_act_dt, CASE WHEN sbca.clm_act_status = 'Y' THEN 'YES' ELSE 'NO' end as currentactivity, 
+       sbca.clm_act_rem_dt , sbca.clm_act_notes, sbu.user_name as actionby ,sbc.ca_desc,sbcb.clm_id
+    from sys_brk_causations sbc
+       left join sys_brk_clm_activities sbca  on clm_act_status_id = sbc.ca_id 
+       INNER JOIN sys_brk_clm_bookings sbcb ON sbcb.clm_id = sbca.clm_act_clm_id
+       left join sys_brk_users sbu on sbu.user_id = sbca.clm_act_user_id
+       WHERE sbcb.clm_id  = $P{clmId}
+       order by clm_act_id]]>
+	</queryString>
+	<field name="clm_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="clm_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<field name="clm_act_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="clm_act_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_act_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_activities"/>
+	</field>
+	<field name="clm_act_dt" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="clm_act_dt"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_act_dt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_activities"/>
+	</field>
+	<field name="currentactivity" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="currentactivity"/>
+		<property name="com.jaspersoft.studio.field.label" value="currentactivity"/>
+	</field>
+	<field name="clm_act_rem_dt" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="clm_act_rem_dt"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_act_rem_dt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_activities"/>
+	</field>
+	<field name="clm_act_notes" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="clm_act_notes"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_act_notes"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_activities"/>
+	</field>
+	<field name="actionby" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="actionby"/>
+		<property name="com.jaspersoft.studio.field.label" value="actionby"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_users"/>
+	</field>
+	<field name="ca_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ca_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="ca_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_causations"/>
+	</field>
+	<field name="COLUMN_9" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="clm_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="clm_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clm_bookings"/>
+	</field>
+	<columnHeader>
+		<band height="21">
+			<rectangle>
+				<reportElement x="0" y="0" width="879" height="20" uuid="800558ed-6c0a-4bed-b45a-d3ecdf981c21"/>
+				<graphicElement>
+					<pen lineColor="#B4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="280" height="20" uuid="daa7bca1-db8b-4da0-884d-e3a2b34c8caf"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACTIVITY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="75" height="20" uuid="bac7a0c6-a23c-4129-85c5-a6e2dd425426"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CURRENT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="0" width="120" height="20" uuid="0d0f9067-ece1-4595-8ca6-b8a6de6f7823"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACTIVITY DATE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="625" y="0" width="100" height="20" uuid="80f7ba63-fa0b-4e8a-8a74-1cadcf25869d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REVIEW DATE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="725" y="0" width="154" height="20" uuid="67f951a9-127f-42b9-ad71-8366f266cd84"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REVIEW BY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="475" y="0" width="150" height="20" uuid="c4a2251e-886d-426a-b0fe-60dace8da0dd"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLAIM ACTIVITY NOTES]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="-1" width="879" height="21" uuid="45e3b131-9116-4524-9530-9c2a4019c803"/>
+				<graphicElement>
+					<pen lineColor="#B4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="0" y="-1" width="280" height="20" uuid="93eff875-c4db-47f7-b10d-85758bb98180"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ca_desc}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="280" y="-1" width="75" height="20" uuid="49b7b736-d2c4-485d-ac4b-60bc2617a402"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{currentactivity}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement x="355" y="-1" width="120" height="20" uuid="f5f75390-416e-4414-beb4-076d552b5200"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{clm_act_dt}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement x="625" y="-1" width="100" height="20" uuid="c2bb8b38-2bd8-40fd-9d73-eb4966ffd350"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{clm_act_rem_dt}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="725" y="-1" width="154" height="20" uuid="f877f059-a2cb-469b-9683-fca30a2d8f48"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{actionby}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement x="475" y="-1" width="150" height="20" uuid="96b6da51-ad4c-4a43-bece-84ac7d9c400a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{clm_act_notes}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

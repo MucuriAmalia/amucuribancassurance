@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_client_statmnt" pageWidth="1785" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1452" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="0e77c0ed-835f-4c0d-9587-6db88c6fe371">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Latest Adapter"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="302"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="691"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="949"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="37"/>
+	<parameter name="logo" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="Client" class="java.lang.String"/>
+	<parameter name="format" class="java.lang.String"/>
+	<parameter name="asOfDate" class="java.sql.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select distinct on (client_id,cur_code,trans_date,pol_id)
+client_id,pol_id, client_cif,
+client_fname,client_onames,client_address,client_sht_desc,acct_address,
+client_phone,client_email,client_sms_number,client_pin,cur_iso_code,client_idno,cur_code,
+CASE 
+    WHEN trans_type = 'RC' THEN trans_date + INTERVAL '1 seconds'
+    ELSE trans_date
+END as trans_date,
+case 
+when trans_type ='ADJ' 
+then 'JOURNALS'
+	when trans_type ='APC'
+	then 'CANCELLATION DR NOTE'
+	when trans_type ='CNC'
+	then 'CANCELLATION CR NOTE'
+	when trans_type ='APD' and pol_trans_type = 'EX'
+	then 'EXTENSION'
+	when trans_type ='APD' and pol_trans_type = 'EN'
+	then 'ENDORSEMENT DR NOTE'
+	when trans_type ='RPC' and pol_trans_type = 'EN'
+	then 'ENDORSEMENT CR NOTE'
+	when trans_type ='BNK'
+	then 'BANK CHARGES'
+	when trans_type ='CFO' and pol_trans_type = 'JVC'
+	then 'CLAIM PAYMENT BY JOURNAL'
+	when trans_type ='CFO' and pol_trans_type = 'CF'
+	then 'CLAIM FEE'
+	WHEN trans_type = 'NBR'  THEN 'CONTRA'
+     WHEN trans_type = 'RNR'  THEN 'CONTRA'
+	when trans_type ='CO' and pol_trans_type = 'PM'
+	then 'PAYMENTS'
+	when trans_type ='COM' 
+	then 'COMMISSION POSTING'
+	when trans_type ='CPO' 
+	then 'CLAIM PAYMENT'
+	when trans_type ='CRI' 
+	then 'CLAIM RECOVERY'
+	when trans_type ='CRI' 
+	then 'CLAIM SALVAGE'
+	when trans_type ='DED' 
+	then 'DECLARATION'
+	when trans_type ='LOP' 
+	then 'CLAIM OPENING'
+	when trans_type ='LRV' and pol_trans_type = 'RP'
+	then 'CLAIM REOPENING'
+	when trans_type ='LRV' and pol_trans_type = 'LR'
+	then 'CLAIM REVISION'
+	when trans_type ='MEC' 
+	then 'MID TERM ENDORSEMENT'
+	when trans_type ='NBD'
+	then 'NEW BUSINESS'
+	when trans_type ='RC'
+	then 'RECEIPTS'
+	when pol_trans_type ='RE'
+	then 'REINSTATEMENT' 
+	when trans_type ='RED'
+	then 'REINSTATEMENT' 
+	when trans_type ='RFC'
+	then 'REFUND'
+	when trans_type ='RF'
+	then 'REFUND'
+	when trans_type ='RII'
+	then 'REINSURANCE TRANSACTION'
+	when trans_type ='NBC' and pol_trans_type = 'CO'
+	then 'Reversal'
+	when trans_type ='RND' and pol_trans_type != 'CO'
+	then 'RENEWAL'
+	when trans_type ='SPD' 
+	then 'SHORT PERIOD'
+	when trans_type ='CN'
+	then 'Receipt Cancellation' 
+	when trans_type ='APD' and pol_trans_type != 'CO'
+	then 'Additional Premium'
+	when trans_type ='APC' and pol_trans_type != 'CO'
+	then 'Refund Premium'
+	when pol_trans_type = 'CO'
+	then 'Reversal'
+		when trans_type ='BUD' 
+	then 'BULK UPLOAD'
+end  as  TRAN_DESC,
+trans_ref_no MTRAN_REF_NO,
+CASE 
+    WHEN (pol_no IS NULL OR pol_no = '') AND trans_type != 'RC' THEN pol_proposal_no
+    WHEN (pol_no IS NULL OR pol_no = '') AND trans_type = 'RC' THEN receipt_desc
+    ELSE pol_no
+END AS pol_no,
+acct_name,
+pr_desc MTRAN_NARRATIONS,
+trans_amount,
+trans_settle_amt settlements,
+trans_net_amt MTRAN_NET_AMT,
+trans_no ,client_id agn_code,trans_clnt_type,trans_clnt_code,
+client_sht_desc agn_sht_desc, client_onames||' '||client_fname agn_name,client_status,
+client_email agn_email_address, client_address agn_postal_address,trans_control_acc,trans_type ref_no,
+trans_other_ref,
+trans_balance mtran_balance, client_fname insured,pol_wef_date pol_policy_cover_from,cur_iso_code mtran_cur_symbol,
+trans_tl mtran_tl,trans_sd mtran_sd,trans_whtx mtran_whtx,trans_extras mtran_extras,trans_comm mtran_commission,
+trans_whtx MTRAN_PHFUND, trans_dc ordby, pr_remarks POL_REMARKS ,
+trans_narrations MTRAN_NARRATIONS1, receipt_desc,sblr.receipt_value_date, alloc_paid_to_date,
+CASE 
+    WHEN sbmt.trans_type = 'RC' THEN 
+        CASE 
+            WHEN sbp.pol_business_type= 'L' THEN COALESCE(sblr.receipt_value_date, sbmt.trans_date)
+            ELSE COALESCE(sbr.receipt_date, sbmt.trans_date)
+        END
+    WHEN sbp.pol_business_type = 'L' THEN 
+        CASE 
+            WHEN sbmt.trans_type = 'NBD' THEN COALESCE(sbmt.value_date, sbmt.trans_date)
+            ELSE COALESCE(att.alloc_paid_to_date, sbmt.trans_date)
+        END
+    ELSE COALESCE(sbmt.value_date, sbmt.trans_date)
+END AS value_dateee
+from sys_brk_organization,sys_brk_main_transactions sbmt
+inner  join sys_brk_clients sbc on trans_clnt_code = client_id
+inner join sys_brk_policies sbp on pol_id = trans_pol_id
+inner join  sys_brk_accounts sba on pol_agent_id = acct_id
+inner join sys_brk_currencies on cur_code = pol_curr_id
+inner join sys_brk_products on pr_code = pol_prod_id
+left join sys_brk_pol_remarks on pr_policy_id = pol_id
+left join sys_brk_receipt_dtls sbrd on sbrd.rect_pol_id = sbp.pol_id 
+left join sys_brk_receipts sbr on sbr.receipt_id = sbrd.rect_receipt_no
+LEFT JOIN sys_brk_trans sbt ON trans_tran_no = tran_no
+LEFT JOIN (
+SELECT 
+    MAX(alloc_paid_to_date) AS alloc_paid_to_date,
+    alloc_tran_no,
+    MAX(alloc_install_no) AS alloc_install_no,
+    SUM(COALESCE(alloc_life_whtx_amt,0)) AS alloc_life_whtx_amt,
+    SUM(COALESCE(alloc_comm_amt,0)) AS alloc_comm_amt,
+    SUM(COALESCE(alloc_marketer_comm_amt,0)) AS marketer_life_comm,
+    SUM(COALESCE(alloc_subagent_comm_amt,0)) AS subagent_life_comm,
+    SUM(COALESCE(alloc_admin_fee_amt,0)) AS life_admin_fee,
+    SUM(COALESCE(alloc_admin_fee_whtx_amt,0)) AS life_admin_fee_vat
+FROM sys_brk_life_rct_allocs
+GROUP BY alloc_tran_no
+) att ON tran_no = att.alloc_tran_no
+LEFT JOIN (
+    SELECT receipt_value_date, lrct_receipt_id, lrct_trans_no
+    FROM sys_brk_life_rcts
+) sblr ON sbmt.trans_no = sblr.lrct_trans_no
+where (($P{Client} IS NULL) OR (client_id::varchar = $P{Client}::varchar))
+and date_trunc('day', trans_date)  <= $P{asOfDate}
+and  trans_type != 'SAG'
+and sbp.pol_auth_status = 'A'
+order by client_id,cur_code,trans_date desc, pol_id]]>
+	</queryString>
+	<field name="client_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="client_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="pol_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="pol_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="client_cif" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_cif"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_cif"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_fname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_fname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_onames" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_onames"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_sht_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="acct_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="client_phone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_phone"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_phone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_email"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_sms_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_sms_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_sms_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="client_pin" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_pin"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_pin"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="cur_iso_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cur_iso_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="cur_iso_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_currencies"/>
+	</field>
+	<field name="client_idno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_idno"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_idno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="cur_code" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cur_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="cur_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_currencies"/>
+	</field>
+	<field name="trans_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="trans_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="trans_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="tran_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tran_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="tran_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="mtran_ref_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_ref_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_ref_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="pol_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="acct_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="mtran_narrations" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_narrations"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_narrations"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_products"/>
+	</field>
+	<field name="trans_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="trans_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="trans_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="settlements" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="settlements"/>
+		<property name="com.jaspersoft.studio.field.label" value="settlements"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="mtran_net_amt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_net_amt"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_net_amt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="trans_no" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="trans_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="trans_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="agn_code" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="agn_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="agn_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="trans_clnt_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="trans_clnt_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="trans_clnt_type"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="trans_clnt_code" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="trans_clnt_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="trans_clnt_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="agn_sht_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="agn_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="agn_sht_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="agn_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="agn_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="agn_name"/>
+	</field>
+	<field name="client_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="client_status"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="agn_email_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="agn_email_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="agn_email_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="agn_postal_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="agn_postal_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="agn_postal_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="trans_control_acc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="trans_control_acc"/>
+		<property name="com.jaspersoft.studio.field.label" value="trans_control_acc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="ref_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ref_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="ref_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="trans_other_ref" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="trans_other_ref"/>
+		<property name="com.jaspersoft.studio.field.label" value="trans_other_ref"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="mtran_balance" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_balance"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_balance"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="insured" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="insured"/>
+		<property name="com.jaspersoft.studio.field.label" value="insured"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_clients"/>
+	</field>
+	<field name="pol_policy_cover_from" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="pol_policy_cover_from"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_policy_cover_from"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_policies"/>
+	</field>
+	<field name="mtran_cur_symbol" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_cur_symbol"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_cur_symbol"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_currencies"/>
+	</field>
+	<field name="mtran_tl" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_tl"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_tl"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="mtran_sd" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_sd"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_sd"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="mtran_whtx" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_whtx"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_whtx"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="mtran_extras" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_extras"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_extras"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="mtran_commission" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_commission"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_commission"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="mtran_phfund" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_phfund"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_phfund"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="ordby" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ordby"/>
+		<property name="com.jaspersoft.studio.field.label" value="ordby"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="pol_remarks" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pol_remarks"/>
+		<property name="com.jaspersoft.studio.field.label" value="pol_remarks"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_pol_remarks"/>
+	</field>
+	<field name="mtran_narrations1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mtran_narrations1"/>
+		<property name="com.jaspersoft.studio.field.label" value="mtran_narrations1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_main_transactions"/>
+	</field>
+	<field name="receipt_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="receipt_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="receipt_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_receipts"/>
+	</field>
+	<field name="receipt_value_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="receipt_value_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="receipt_value_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_life_rcts"/>
+	</field>
+	<field name="alloc_paid_to_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="alloc_paid_to_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="alloc_paid_to_date"/>
+	</field>
+	<field name="value_dateee" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="value_dateee"/>
+		<property name="com.jaspersoft.studio.field.label" value="value_dateee"/>
+	</field>
+	<variable name="Balance" class="java.lang.Double" resetType="Group" resetGroup="client_id" calculation="Sum">
+		<variableExpression><![CDATA[$F{mtran_balance}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="TOTAL_BALANCE" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{mtran_balance}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="all_clients" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{client_id}]]></variableExpression>
+	</variable>
+	<variable name="description" class="java.lang.String">
+		<variableExpression><![CDATA[($F{tran_desc}.equals("RECEIPTS"))
+  ? ( ($F{pol_no} == null ? "" : $F{pol_no})
+      + " "
+      + ($F{receipt_desc} == null ? "" : $F{receipt_desc}) )
+  : ($F{pol_no} == null ? "" : $F{pol_no})]]></variableExpression>
+	</variable>
+	<group name="client_id" isStartNewPage="true" keepTogether="true">
+		<groupExpression><![CDATA[$F{client_id}]]></groupExpression>
+		<groupHeader>
+			<band height="104">
+				<rectangle>
+					<reportElement x="0" y="-1" width="1745" height="104" uuid="ea465061-4845-43d4-9f4e-f6a42509a5b1"/>
+					<graphicElement>
+						<pen lineColor="#C4BBBB"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="3" width="104" height="20" uuid="b6962252-334e-4f10-badd-39ee21975b47"/>
+					<textElement textAlignment="Left">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[A/C DATE :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="104" y="23" width="162" height="20" uuid="e9485111-d9c8-4891-9fca-b2526e93351b"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{client_fname}.toUpperCase() + " " +$F{client_onames}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="23" width="104" height="20" uuid="fd905f38-d840-43d4-b9dd-dcdb696b9a32"/>
+					<textElement textAlignment="Left">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[ACCOUNT NAME : ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="43" width="104" height="20" uuid="af08c928-2413-45c0-a8dc-7cfdd4251cac">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[ACCOUNT NO. :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="104" y="43" width="162" height="20" uuid="efea21de-d19a-443c-9723-65e8cf4edcfe">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{client_sht_desc}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="63" width="104" height="20" uuid="9e819647-d543-4cb7-bd1d-a14f2b568e65">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[CIF:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="104" y="63" width="162" height="20" uuid="02fbe290-c708-4e3d-8b3f-66bd510a1b98">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{client_cif}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd-MMM-YYYY" isBlankWhenNull="true">
+					<reportElement x="104" y="3" width="162" height="20" uuid="ca295b88-b1ed-4ff2-beca-d38ddc552aff">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="83" width="104" height="20" uuid="80b534cb-101d-4b3e-b962-902a77d28738">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Account Status :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="104" y="83" width="162" height="20" uuid="070d68fd-b51b-4286-bd13-19425f501a58">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[( $F{client_status}.equals("A") ? "ACTIVE" : "INACTIVE" )]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="41">
+				<rectangle>
+					<reportElement stretchType="RelativeToTallestObject" x="0" y="-1" width="1745" height="40" uuid="eef3eefb-83cf-486f-a3bb-d4d5de330945">
+						<printWhenExpression><![CDATA[$P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+					</reportElement>
+					<graphicElement>
+						<pen lineColor="#C4BBBB"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="1407" y="-1" width="112" height="20" uuid="602a4cda-9f8a-4537-93db-3f05a43098eb">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<pen lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Balance :]]></text>
+				</staticText>
+				<textField pattern="#,##0.###;(#,##0.###)" isBlankWhenNull="true">
+					<reportElement x="1519" y="-1" width="115" height="20" uuid="1f000eac-0620-45b0-9f95-4fea8326932c">
+						<printWhenExpression><![CDATA[$P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<pen lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Balance}]]></textFieldExpression>
+				</textField>
+				<subreport>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="746" y="19" width="999" height="20" uuid="e0dfe0c7-f933-4e96-9ede-421a57b950bd">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+					</reportElement>
+					<subreportParameter name="client_id">
+						<subreportParameterExpression><![CDATA[$F{client_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["reports/rpt_aging_analysis.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Currency">
+		<groupExpression><![CDATA[$F{cur_code}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<rectangle>
+					<reportElement x="0" y="-1" width="1745" height="40" uuid="d5eedb50-96f8-40fd-8cfd-121716651550"/>
+					<graphicElement>
+						<pen lineColor="#C4BBBB"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement positionType="FixRelativeToBottom" x="266" y="19" width="160" height="20" uuid="6a36787e-5597-45d1-954d-0b9bb3f15ad3"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Transaction Type]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="546" y="19" width="285" height="20" uuid="6201e57f-ee56-405b-8cbe-0c527c6ef74b"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Policy/Description]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="1519" y="19" width="115" height="20" uuid="e8eafe85-d253-46b3-947a-c9112e8ab414"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Net Amount]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="1070" y="19" width="224" height="20" uuid="97384a2c-f1e5-4a83-b338-f255a92a1c51"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Product]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="426" y="19" width="120" height="20" uuid="41ddd4e3-a87c-43c3-b838-c6d69eab0e76"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Risk Note Number]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="1407" y="19" width="112" height="20" uuid="8e7e2507-17fa-4d14-b140-1c98a262a3d7"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Settlements]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="19" width="104" height="20" uuid="91c4bdd5-adf7-4b36-808f-6ff7b6e24609"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Trans Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="1294" y="19" width="113" height="20" uuid="fdea0725-dbea-4023-8fc1-310655b94286"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Trans Amount]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="104" y="-1" width="162" height="20" uuid="0ee2aabc-41b9-40ec-a338-145233a4d8ee">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cur_iso_code}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="-1" width="104" height="20" uuid="11c50c77-f0ae-4573-b444-6c4ef2dd97b9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Currency:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="831" y="19" width="239" height="20" uuid="4c1cc9cc-ba62-45b1-99cd-a03a76092a8a"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Underwriter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="1634" y="19" width="111" height="20" uuid="82b6196b-aba7-4176-832f-2294396f2e20"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Age In Days]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="FixRelativeToBottom" x="104" y="19" width="162" height="20" uuid="3e966d0d-fb41-41a7-a82f-a64a11eb6067"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Value Date]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="116" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="1745" height="115" uuid="40b85106-fda0-4556-a824-58103407b8bf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#C4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="4" y="4" width="105" height="105" uuid="f7f4748a-0e55-46d1-b216-ad73db1ef780">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="85" width="1744" height="30" uuid="8a4fd08b-db0b-4ffb-b555-e79a842a1e22">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1 && $P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[STATEMENT OF ACCOUNT]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{client_status}.equals("A")]]></printWhenExpression>
+			<rectangle>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="-1" width="1745" height="20" uuid="35a483a3-cd76-478d-80d4-95b5e284707c"/>
+			</rectangle>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="546" y="-1" width="285" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" printWhenGroupChanges="Currency" uuid="873370e2-f46f-45cc-be20-ae4d53140a5e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{description}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="-1" width="104" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" printWhenGroupChanges="Currency" uuid="0a087186-01f7-4c48-88d1-b6ad077e56f8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{trans_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="426" y="-1" width="120" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" printWhenGroupChanges="Currency" uuid="4a2cc4f3-05cd-40af-83dc-c1793eeb8b0a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mtran_ref_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1294" y="-1" width="113" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" printWhenGroupChanges="Currency" uuid="70eb997f-896a-489d-bea5-0c27f85fe4ba"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mtran_net_amt}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1407" y="-1" width="112" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" printWhenGroupChanges="Currency" uuid="42a89ac3-039f-4a28-9113-40301917979b"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{mtran_net_amt}.doubleValue() > 0) ? 
+    ($F{settlements}.doubleValue() * -1) : 
+    ($F{settlements}.doubleValue() < 0 ? $F{settlements}.doubleValue() * -1 : $F{settlements}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1519" y="-1" width="115" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" printWhenGroupChanges="Currency" uuid="2e957440-7ff6-40dc-a957-50dee95f317a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mtran_balance}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1070" y="-1" width="224" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" printWhenGroupChanges="Currency" uuid="49f49704-a91b-4fa3-8d7f-d6d5d0ff4a2a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{mtran_narrations}.equals(null)) ? $F{mtran_narrations1}.toUpperCase(): $F{mtran_narrations}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="266" y="-1" width="160" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" printWhenGroupChanges="Currency" uuid="80e2ba5e-2f75-4087-86ab-e4d3c0957436"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tran_desc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="831" y="-1" width="239" height="20" isPrintWhenDetailOverflows="true" printWhenGroupChanges="Currency" uuid="469b3dbe-2064-49ee-b8fe-3b73f78938e6"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acct_name}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1634" y="-1" width="111" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" printWhenGroupChanges="Currency" uuid="a86c0fc3-298b-459e-a811-9cf4e41233f8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( (new java.util.Date().getTime() - $F{trans_date}.getTime()) / (1000 * 60 * 60 * 24) ) + " Days"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="104" y="-1" width="162" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" printWhenGroupChanges="Currency" uuid="d8d03499-f6ec-4255-9b44-5e764b6b3ef9"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C4BBBB"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{value_dateee}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<printWhenExpression><![CDATA[$P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+			<textField>
+				<reportElement x="1469" y="-1" width="98" height="30" uuid="cb2e4b43-84a3-4869-a986-70a0c5051c9e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="1567" y="-1" width="100" height="30" uuid="8de7a181-6d07-4acb-a5ec-9af43419d48f"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="20">
+			<printWhenExpression><![CDATA[$P{format} != null && $P{format}.equals("pdf")]]></printWhenExpression>
+			<rectangle>
+				<reportElement positionType="Float" x="0" y="-1" width="1744" height="20" isPrintWhenDetailOverflows="true" uuid="d2452011-ca98-49b6-9579-0aff33815e7e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="1407" y="-1" width="112" height="20" uuid="c279d9f5-4475-49c0-94a6-60321ca0f7e1"/>
+				<box>
+					<pen lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Balance :]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" evaluationTime="Master" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="1519" y="-1" width="114" height="20" uuid="85d28e3f-907c-41b2-a6b2-e0a25ed42d08"/>
+				<box>
+					<pen lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Serif" size="14" isBold="true" isUnderline="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_BALANCE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

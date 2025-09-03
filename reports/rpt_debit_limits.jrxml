@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-03-03T11:35:54 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_debit_limits" pageWidth="765" pageHeight="842" whenNoDataType="NoPages" columnWidth="765" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0830ed02-546e-42bc-82bf-ecf217e44331">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Brokerage DB"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="275"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="725"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="647"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="353"/>
+	<parameter name="polId" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[select pol_clau_header,convert_from(loread(lo_open(pol_clau_wording::int, x'40000'::int), x'40000'::int),  'UTF8') 
+from  sys_brk_pol_clauses s
+inner join sys_brk_sub_clauses s1 on s1.subcl_cl_id = s.pol_clau_sub_code 
+inner join sys_brk_clauses s2 on s2.clau_id = s1.subcl_cl_code
+where clau_type = 'L'
+and pol_clau_pol_id=  $P{polId}
+order by clau_id  asc]]>
+	</queryString>
+	<field name="pol_clau_header" class="java.lang.String"/>
+	<field name="convert_from" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20">
+			<rectangle>
+				<reportElement key="" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="765" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="36ece94c-5648-4152-9d1c-95aa32bfe066">
+					<printWhenExpression><![CDATA[$F{pol_clau_header} != null]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#B4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement positionType="Float" x="9" y="0" width="301" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="f9438cae-1762-4ff2-861d-ec8a5caa507b">
+					<printWhenExpression><![CDATA[$F{pol_clau_header} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[LIMITS OF LIABILITY]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<rectangle>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="765" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="84b30dc7-11d2-4d6e-975f-33a52ab6db37">
+					<printWhenExpression><![CDATA[$F{pol_clau_header}!= null]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#B4BBBB"/>
+				</graphicElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="20" y="0" width="380" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="857dc9c9-e810-4d39-95c9-77968174f964"/>
+				<textFieldExpression><![CDATA[$F{pol_clau_header}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="400" y="0" width="365" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="2b8564ad-1e49-43b1-8a41-09550fd8d115"/>
+				<textFieldExpression><![CDATA[" - "+$F{convert_from}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="0" width="17" height="13" uuid="df8c8443-0eb4-4b46-bcbe-2159b3952d14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}+". "]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

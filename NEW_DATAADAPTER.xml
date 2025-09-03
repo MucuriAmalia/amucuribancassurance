@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jdbcDataAdapter class="net.sf.jasperreports.data.jdbc.JdbcDataAdapterImpl"><name>FAULU</name><driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver><username>bancassurance</username><password>pass</password><savePassword>true</savePassword><url>jdbc:sqlserver://172.16.4.141:1433;databaseName=banc_db</url><database></database><serverAddress></serverAddress></jdbcDataAdapter>

@@ -1,0 +1,1014 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+<tiles-definitions>  
+    <!-- Base Define -->
+   
+    
+    
+    <definition name="base.definition"
+                template="/WEB-INF/pages/layouts/layout.jsp">
+        <put-attribute name="title" value="" />  
+        <put-attribute name="header" value="/WEB-INF/pages/head.jsp" />  
+        <put-attribute name="head" value="/WEB-INF/pages/header.jsp"></put-attribute>
+        <put-attribute name="menu" value="/WEB-INF/pages/navbar.jsp" />  
+        <put-attribute name="body" value="" />  
+    </definition>  
+ 
+    <!-- Home Page -->
+    <definition name="home" extends="base.definition">  
+        <put-attribute name="title" value="Home Page" />  
+        <put-attribute name="body" value="/WEB-INF/pages/home.jsp" />  
+    </definition>
+
+    <definition name="reset-password"
+                template="/WEB-INF/pages/reset-password.jsp">
+    </definition>
+
+    <definition name="changepassword"
+                template="/WEB-INF/pages/useradmin/change-password.jsp">
+    </definition>
+
+    <!-- Organization definition screen -->
+    
+     <definition name="orgdefinition" extends="base.definition">  
+        <put-attribute name="title" value="Company Details" />  
+        <put-attribute name="body" value="/WEB-INF/pages/organization/orgdefinition.jsp" />  
+    </definition>
+    
+    <definition name="orgSetupScreen" extends="base.definition">  
+        <put-attribute name="title" value="Company Set Up" />  
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/orgSetupScreen.jsp" />  
+    </definition>
+    <definition name="newquote" extends="base.definition">
+        <put-attribute name="title" value="Company Set Up" />
+        <put-attribute name="body" value="/WEB-INF/pages/quots/newquot.jsp" />
+    </definition>
+
+    <definition name="customscreen" extends="base.definition">
+        <put-attribute name="title" value="Custom Schedule Set Up" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/customschedule.jsp" />
+    </definition>
+
+    <definition name="productCodehome" extends="base.definition">
+        <put-attribute name="title" value="Product Codes" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/productCodehome.jsp" />
+    </definition>
+    
+    <definition name="uwsetupScreen" extends="base.definition">  
+        <put-attribute name="title" value="Underwriting Set Up" />  
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/uwSetupScreen.jsp" />  
+    </definition>
+    
+    <definition name="currency" extends="base.definition">  
+        <put-attribute name="title" value="Currency Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/currencies.jsp" />  
+    </definition> 
+    
+     <definition name="paramlist" extends="base.definition">  
+        <put-attribute name="title" value="Parameters Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/parameters.jsp" />  
+    </definition>
+
+    <definition name="finreportformats" extends="base.definition">
+        <put-attribute name="title" value="Final Report Formats" />
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/finalreportformats.jsp" />
+    </definition>
+
+    <definition name="paymodesList" extends="base.definition">  
+        <put-attribute name="title" value="Payment Modes List" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/paymentmodes.jsp" />  
+    </definition>
+    
+    <definition name="countries" extends="base.definition">  
+        <put-attribute name="title" value="Countries/Counties/Towns Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/countries.jsp" />  
+    </definition>
+
+    <definition name="acctperiods" extends="base.definition">
+        <put-attribute name="title" value="Accounting Periods" />
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/acctperiods.jsp" />
+    </definition>
+
+
+    <definition name="gltransactions" extends="base.definition">
+        <put-attribute name="title" value="GL Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/gltransactions.jsp" />
+    </definition>
+
+    <definition name="businesssources" extends="base.definition">
+        <put-attribute name="title" value="Business Sources Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/businessSources.jsp" />
+    </definition>
+
+    <definition name="escalation" extends="base.definition">
+        <put-attribute name="title" value="Business Sources Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/escalation.jsp" />
+    </definition>
+
+    <definition name="rejectedReasons" extends="base.definition">
+        <put-attribute name="title" value="Rejected Reasons Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/rejectedReasons.jsp" />
+    </definition>
+    <definition name="publicHolidays" extends="base.definition">
+        <put-attribute name="title" value="Public Holidays Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/publicHolidays.jsp" />
+    </definition>
+
+    <definition name="syssequences" extends="base.definition">  
+        <put-attribute name="title" value="Sequences Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/sequences.jsp" />  
+    </definition>
+    
+    <definition name="mobprefix" extends="base.definition">  
+        <put-attribute name="title" value="Mobile Prefixes Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/mobprefixes.jsp" />  
+    </definition>
+    
+    <definition name="clienttypes" extends="base.definition">  
+        <put-attribute name="title" value="Client Types Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/clienttype.jsp" />  
+    </definition>
+    
+    <definition name="clienttitles" extends="base.definition">  
+        <put-attribute name="title" value="Client Titles Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/clienttitles.jsp" />  
+    </definition>
+    
+    <definition name="occupations" extends="base.definition">  
+        <put-attribute name="title" value="Sectors/Occupations Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/sectorsoccup.jsp" />  
+    </definition>
+
+    <definition name="segments" extends="base.definition">
+        <put-attribute name="title" value="Segments Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/segments.jsp" />
+    </definition>
+
+    <definition name="mainBankSegments" extends="base.definition">
+        <put-attribute name="title" value="Main Bank Segments Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/mainBankSegments.jsp" />
+    </definition>
+    
+     <definition name="accounttypes" extends="base.definition">  
+        <put-attribute name="title" value="Account Types Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/acctypes.jsp" />  
+    </definition>
+    
+    <definition name="accounts" extends="base.definition">  
+        <put-attribute name="title" value="Account List" />  
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/accounts.jsp" />  
+    </definition>
+     <definition name="acctsform" extends="base.definition">  
+        <put-attribute name="title" value="Account Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/accountsform.jsp" />  
+    </definition>
+    <definition name="accountCheckerForm" extends="base.definition">
+        <put-attribute name="title" value="Account Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/accountCheckerForm.jsp" />
+    </definition>
+    <definition name="viewAccountForm" extends="base.definition">
+        <put-attribute name="title" value="Account Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/viewAccount.jsp" />
+    </definition>
+    <definition name="clients" extends="base.definition">  
+        <put-attribute name="title" value="Clients List" />  
+        <put-attribute name="body" value="/WEB-INF/pages/clients/clientList.jsp" />  
+    </definition>
+    <definition name="openingbal" extends="base.definition">
+        <put-attribute name="title" value="Opening Balances" />
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/openingbalances.jsp" />
+    </definition>
+    <definition name="sap" extends="base.definition">
+        <put-attribute name="title" value="SAP File" />
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/sap.jsp" />
+    </definition>
+    
+    <definition name="clientsform" extends="base.definition">  
+        <put-attribute name="title" value="Client Details" />  
+        <put-attribute name="body" value="/WEB-INF/pages/clients/clientform.jsp" />  
+    </definition>
+    <definition name="viewclientsform" extends="base.definition">
+        <put-attribute name="title" value="Client Details" />
+        <put-attribute name="body" value="/WEB-INF/pages/clients/viewclientform.jsp" />
+    </definition>
+
+    <definition name="checkerClient" extends="base.definition">
+        <put-attribute name="title" value="Client Details" />
+        <put-attribute name="body" value="/WEB-INF/pages/clients/checkerClient.jsp" />
+    </definition>
+
+    <definition name="makerClient" extends="base.definition">
+        <put-attribute name="title" value="Client Details" />
+        <put-attribute name="body" value="/WEB-INF/pages/clients/makerClient.jsp" />
+    </definition>
+    <definition name="makerReceipt" extends="base.definition">
+        <put-attribute name="title" value="Receipt Details" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/makerReceipt.jsp" />
+    </definition>
+
+    <definition name="checkerviewquote" extends="base.definition">
+        <put-attribute name="title" value="Quote Details" />
+        <put-attribute name="body" value="/WEB-INF/pages/quots/checkerviewquote.jsp" />
+    </definition>
+    <definition name="checkerRefund" extends="base.definition">
+        <put-attribute name="title" value="Refund Details" />
+        <put-attribute name="body" value="/WEB-INF/pages/refunds/checkerRefund.jsp" />
+    </definition>
+
+    <definition name="checkerReceipt" extends="base.definition">
+        <put-attribute name="title" value="Receipt Details" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/checkerReceipt.jsp" />
+    </definition>
+
+    <definition name="treatiesdef" extends="base.definition">
+        <put-attribute name="title" value="Treaty Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/treatydefinition.jsp" />
+    </definition>
+
+     <definition name="classes" extends="base.definition">  
+        <put-attribute name="title" value="Classes Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/classes/classes.jsp" />  
+    </definition> 
+    
+    <definition name="shtprdrates" extends="base.definition">  
+        <put-attribute name="title" value="Short Period Rates Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/shtperiodrates.jsp" />  
+    </definition> 
+    
+    <definition name="productsform" extends="base.definition">  
+        <put-attribute name="title" value="Product Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/products/productdef.jsp" />  
+    </definition>
+
+    <definition name="serviceproviderform" extends="base.definition">
+        <put-attribute name="title" value="Service Providers" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/serviceproviders.jsp" />
+    </definition>
+
+    <definition name="bindershome" extends="base.definition">  
+        <put-attribute name="title" value="Binder Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/binders/binderdef.jsp" />  
+    </definition> 
+    
+    <definition name="clausesHome" extends="base.definition">  
+        <put-attribute name="title" value="Clauses and Sub Class Clauses Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/clauses/clausesdef.jsp" />  
+    </definition> 
+    
+    <definition name="taxratesdef" extends="base.definition">  
+        <put-attribute name="title" value="Taxes Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/taxes/taxratesdef.jsp" />  
+    </definition> 
+    
+    <definition name="perilsdef" extends="base.definition">  
+        <put-attribute name="title" value="Perils Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/perils/perilsdef.jsp" />  
+    </definition> 
+    
+     <definition name="revitemsdef" extends="base.definition">  
+        <put-attribute name="title" value="Revenue Items Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/revitems/revenueitems.jsp" />  
+    </definition>
+    <definition name="uwrevitemsdef" extends="base.definition">
+        <put-attribute name="title" value="Undewriter Revenue Items Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/revitems/uwrevenueitems.jsp" />
+    </definition>
+    <definition name="bankAcctsDef" extends="base.definition">
+        <put-attribute name="title" value="Bank Accounts Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/revitems/bankaccounts.jsp" />
+    </definition>
+    <definition name="policyuwform" extends="base.definition">  
+        <put-attribute name="title" value="Underwriting Transactions" />  
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/poluwform.jsp" />  
+    </definition>
+    <definition name="lapsepolicies" extends="base.definition">
+        <put-attribute name="title" value="Underwriting Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/lapsepolicies.jsp" />
+    </definition>
+
+    <definition name="lifeuwform" extends="base.definition">
+        <put-attribute name="title" value="Underwriting Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/lifeuwform.jsp" />
+    </definition>
+
+    <definition name="checkerviewpolicy" extends="base.definition">
+        <put-attribute name="title" value="Underwriting Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/checkerviewpolicy.jsp" />
+    </definition>
+
+    <definition name="investmentuwform" extends="base.definition">
+        <put-attribute name="title" value="Underwriting Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/investmentuwform.jsp" />
+    </definition>
+
+    <definition name="refunds" extends="base.definition">
+        <put-attribute name="title" value="Underwriting Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/refunds.jsp" />
+    </definition>
+
+    <definition name="receiptslist" extends="base.definition">
+        <put-attribute name="title" value="Receipts" />  
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/receiptlist.jsp" />  
+    </definition>
+     <definition name="receiptsform" extends="base.definition">  
+        <put-attribute name="title" value="Receipts Entry" />  
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/receiptform.jsp" />  
+    </definition>
+     <definition name="endorstrans" extends="base.definition">  
+        <put-attribute name="title" value="Endorsement Transactions" />  
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/endorsetrans.jsp" />  
+    </definition>
+    <definition name="reinstatetrans" extends="base.definition">
+        <put-attribute name="title" value="Endorsement Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/reinstatetrans.jsp" />
+    </definition>
+    <definition name="endorsbulktrans" extends="base.definition">
+        <put-attribute name="title" value="Endorsement Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/endorsbulktrans.jsp" />
+    </definition>
+
+    <definition name="lifeendors" extends="base.definition">
+        <put-attribute name="title" value="Endorsement Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/lifeendors.jsp" />
+    </definition>
+
+    <definition name="medendors" extends="base.definition">
+        <put-attribute name="title" value="Endorsement Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/medendors.jsp" />
+    </definition>
+    
+    
+    <definition name="contratrans" extends="base.definition">  
+        <put-attribute name="title" value="Contra Transactions" />  
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/contratrans.jsp" />  
+    </definition>
+
+    <definition name="transReconciliation" extends="base.definition">
+        <put-attribute name="title" value="Reconciliation Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/reconciliation/transReconciliation.jsp" />
+    </definition>
+
+     <definition name="renewals" extends="base.definition">  
+        <put-attribute name="title" value="Contra Transactions" />  
+        <put-attribute name="body" value="/WEB-INF/pages/renewals/renprocess.jsp" />  
+    </definition>
+    
+    <definition name="singlerenewals" extends="base.definition">  
+        <put-attribute name="title" value="Renewals Transactions" />  
+        <put-attribute name="body" value="/WEB-INF/pages/renewals/singlerenewal.jsp" />  
+    </definition>
+          
+      <definition name="batchrens" extends="base.definition">  
+        <put-attribute name="title" value="Batch Renewal Transactions" />  
+        <put-attribute name="body" value="/WEB-INF/pages/renewals/batchrenewals.jsp" />  
+    </definition>
+    
+     <definition name="renprogress" extends="base.definition">  
+        <put-attribute name="title" value="Renewal in Progress Transactions" />  
+        <put-attribute name="body" value="/WEB-INF/pages/renewals/renewalprogress.jsp" />  
+    </definition>
+          
+    <definition name="endorseremarks" extends="base.definition">  
+        <put-attribute name="title" value="Endorsement Remarks" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/endremarks.jsp" />  
+    </definition>
+    
+      <definition name="polenquiry" extends="base.definition">  
+        <put-attribute name="title" value="Policy Enquiry" />  
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/polenquiry.jsp" />  
+    </definition>
+    
+    <definition name="accountreports" extends="base.definition">  
+        <put-attribute name="title" value="Accounts Reports" />  
+        <put-attribute name="body" value="/WEB-INF/pages/reports/accountsreports.jsp" />  
+    </definition>
+    <definition name="binderList" extends="base.definition">
+        <put-attribute name="title" value="Accounts Reports" />
+        <put-attribute name="body" value="/WEB-INF/pages/binders/binderList.jsp" />
+    </definition>
+    
+    <definition name="claimreports" extends="base.definition">  
+        <put-attribute name="title" value="Claims Reports" />  
+        <put-attribute name="body" value="/WEB-INF/pages/reports/claimsreports.jsp" />  
+    </definition>
+    
+    <definition name="uwreports" extends="base.definition">  
+        <put-attribute name="title" value="Underwriting Reports" />  
+        <put-attribute name="body" value="/WEB-INF/pages/reports/uwreports.jsp" />  
+    </definition>
+
+    <definition name="reports" extends="base.definition">
+        <put-attribute name="title" value="Reports" />
+        <put-attribute name="body" value="/WEB-INF/pages/reports/reports.jsp" />
+    </definition>
+
+    <definition name="auditlogs" extends="base.definition">
+        <put-attribute name="title" value="Audit Trail Logs" />
+        <put-attribute name="body" value="/WEB-INF/pages/reports/auditlogs.jsp" />
+    </definition>
+    
+    <definition name="certtypes" extends="base.definition">  
+        <put-attribute name="title" value="Certificate Types" />  
+        <put-attribute name="body" value="/WEB-INF/pages/certs/certtype.jsp" />  
+    </definition>
+    
+    <definition name="certlotsreg" extends="base.definition">  
+        <put-attribute name="title" value="Certificate Lots" />  
+        <put-attribute name="body" value="/WEB-INF/pages/certs/certlots.jsp" />  
+    </definition>
+
+    <definition name="brncerts" extends="base.definition">
+        <put-attribute name="title" value="Branch and User Certificates" />
+        <put-attribute name="body" value="/WEB-INF/pages/certs/branchcerts.jsp" />
+    </definition>
+
+    <definition name="printcerts" extends="base.definition">
+        <put-attribute name="title" value="Print UW Certificates" />
+        <put-attribute name="body" value="/WEB-INF/pages/certs/printcert.jsp" />
+    </definition>
+
+    <definition name="rptsetups" extends="base.definition">
+        <put-attribute name="title" value="Report Setups" />
+        <put-attribute name="body" value="/WEB-INF/pages/reports/reportsetups.jsp" />
+    </definition>
+
+    <definition name="scheduledef" extends="base.definition">
+        <put-attribute name="title" value="Schedule Mapping Setups" />
+        <put-attribute name="body" value="/WEB-INF/pages/schedules/scheduledef.jsp" />
+    </definition>
+
+    <definition name="requireddocs" extends="base.definition">
+        <put-attribute name="title" value="Required Documents" />
+        <put-attribute name="body" value="/WEB-INF/pages/reqdocs/requireddocs.jsp" />
+    </definition>
+
+    <definition name="clmactivities" extends="base.definition">
+        <put-attribute name="title" value="Claim Activities" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/clmactivity.jsp" />
+    </definition>
+
+    <definition name="newclaim" extends="base.definition">
+        <put-attribute name="title" value="Create New Claim" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/newclaim.jsp" />
+    </definition>
+    <definition name="newclaim2" extends="base.definition">
+        <put-attribute name="title" value="Create New Claim" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/newclaim2.jsp" />
+    </definition>
+
+    <definition name="claimants" extends="base.definition">
+        <put-attribute name="title" value="Create Claimants" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/claimantsdef.jsp" />
+    </definition>
+
+    <definition name="claimdetails" extends="base.definition">
+        <put-attribute name="title" value="Claim Required Documents" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/claimtrans.jsp" />
+    </definition>
+
+    <definition name="clmEnquiry" extends="base.definition">
+        <put-attribute name="title" value="Claims Enquiry" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/claimenquiry.jsp" />
+    </definition>
+
+    <definition name="quotform" extends="base.definition">
+    <put-attribute name="title" value="New Quotation" />
+    <put-attribute name="body" value="/WEB-INF/pages/quots/quotform.jsp" />
+    </definition>
+    <definition name="medquotform" extends="base.definition">
+        <put-attribute name="title" value="New Quotation" />
+        <put-attribute name="body" value="/WEB-INF/pages/quots/medquotform.jsp" />
+    </definition>
+    <definition name="quoteenquiry" extends="base.definition">
+        <put-attribute name="title" value="Quotes Enquiry" />
+        <put-attribute name="body" value="/WEB-INF/pages/quots/quotenquiry.jsp" />
+    </definition>
+    <definition name="convertqt" extends="base.definition">
+        <put-attribute name="title" value="Convert Quotes" />
+        <put-attribute name="body" value="/WEB-INF/pages/quots/convertquote.jsp" />
+    </definition>
+    <definition name="pendingquotes" extends="base.definition">
+        <put-attribute name="title" value="Pending Quotes" />
+        <put-attribute name="body" value="/WEB-INF/pages/quots/pendingQuotes.jsp" />
+    </definition>
+    <definition name="expiredpolicies" extends="base.definition">
+        <put-attribute name="title" value="Expired Policies" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/expiredPolicies.jsp" />
+    </definition>
+    <definition name="pendingendorsements" extends="base.definition">
+        <put-attribute name="title" value="Expired Policies" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/pendingEndorsements.jsp" />
+    </definition>
+    <definition name="pendingrenewals" extends="base.definition">
+        <put-attribute name="title" value="Expired Policies" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/pendingRenewals.jsp" />
+    </definition>
+
+    <definition name="creditpayment" extends="base.definition">
+        <put-attribute name="title" value="Creditor Payment" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/creditorpymt.jsp" />
+    </definition>
+    <definition name="accountAuth" extends="base.definition">
+        <put-attribute name="title" value="Accounts Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/authorizeTrans.jsp" />
+    </definition>
+    <definition name="accountsetups" extends="base.definition">
+        <put-attribute name="title" value="Accounts Setups" />
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/accountsetups.jsp" />
+    </definition>
+    <definition name="financesetups" extends="base.definition">
+        <put-attribute name="title" value="Finance Setups" />
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/financesetups.jsp" />
+    </definition>
+    <definition name="allocations" extends="base.definition">
+        <put-attribute name="title" value="Finance Setups" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/alloctrans.jsp" />
+    </definition>
+    <definition name="coa" extends="base.definition">
+        <put-attribute name="title" value="Chart of Accounts" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/coa.jsp" />
+    </definition>
+    <definition name="budgets" extends="base.definition">
+        <put-attribute name="title" value="Budgets" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/budgets.jsp" />
+    </definition>
+    <definition name="prospects" extends="base.definition">
+        <put-attribute name="title" value="Prospects Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/clients/prospects.jsp" />
+    </definition>
+    <definition name="banks" extends="base.definition">
+        <put-attribute name="title" value="Banks Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/banks.jsp" />
+    </definition>
+    <definition name="users" extends="base.definition">
+        <put-attribute name="title" value="Users Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/useradmin/users.jsp" />
+    </definition>
+    <definition name="roles" extends="base.definition">
+        <put-attribute name="title" value="Roles Permissions Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/useradmin/userroles.jsp" />
+    </definition>
+    <definition name="permissions" extends="base.definition">
+        <put-attribute name="title" value="Permissions Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/useradmin/permissions.jsp" />
+    </definition>
+    <definition name="medsetups" extends="base.definition">
+        <put-attribute name="title" value="Medical Setups" />
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/medicalsetups.jsp" />
+    </definition>
+    <definition name="bedtypes" extends="base.definition">
+        <put-attribute name="title" value="Bed Types Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/bedTypes.jsp" />
+    </definition>
+
+    <definition name="cardtypes" extends="base.definition">
+        <put-attribute name="title" value="Card Types Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/cardTypes.jsp" />
+    </definition>
+    <definition name="labtests" extends="base.definition">
+        <put-attribute name="title" value="Lab Tests Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/labtests.jsp" />
+    </definition>
+    <definition name="dependtypes" extends="base.definition">
+        <put-attribute name="title" value="Dependent Types Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/dependtypes.jsp" />
+    </definition>
+    <definition name="benefits" extends="base.definition">
+        <put-attribute name="title" value="Benefits Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/benefits.jsp" />
+    </definition>
+    <definition name="bensections" extends="base.definition">
+        <put-attribute name="title" value="Benefits Sections" />
+        <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/bensections.jsp" />
+    </definition>
+    <definition name="specfees" extends="base.definition">
+        <put-attribute name="title" value="Specialist Fees" />
+        <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/specialistfee.jsp" />
+    </definition>
+    <definition name="transmapping" extends="base.definition">
+        <put-attribute name="title" value="Specialist Fees" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/transmapping.jsp" />
+    </definition>
+    <definition name="familysize" extends="base.definition">
+    <put-attribute name="title" value="Family Size" />
+    <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/familysize.jsp" />
+    </definition>
+    <definition name="medicaluw" extends="base.definition">
+        <put-attribute name="title" value="Family Size" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/medicaluwform.jsp" />
+    </definition>
+    <definition name="schcategories" extends="base.definition">
+        <put-attribute name="title" value="Scheme Categories" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/schemecategories.jsp" />
+    </definition>
+    <definition name="ailment" extends="base.definition">
+        <put-attribute name="title" value="Ailments" />
+        <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/ailments.jsp" />
+    </definition>
+    <definition name="providers" extends="base.definition">
+    <put-attribute name="title" value="Service Providers" />
+    <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/servproviders.jsp" />
+</definition>
+    <definition name="medclaims" extends="base.definition">
+        <put-attribute name="title" value="Medical Claims" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/newmedclaims.jsp" />
+    </definition>
+    <definition name="event" extends="base.definition">
+        <put-attribute name="title" value="Event Types" />
+        <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/events.jsp" />
+    </definition>
+    <definition name="preauth" extends="base.definition">
+    <put-attribute name="title" value="Pre-Auth Medical Transactions" />
+    <put-attribute name="body" value="/WEB-INF/pages/claims/preauthtrans.jsp" />
+</definition>
+    <definition name="medclaimstrans" extends="base.definition">
+        <put-attribute name="title" value="Medical Claims" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/medclaimstrans.jsp" />
+    </definition>
+    <definition name="sproviderscontract" extends="base.definition">
+        <put-attribute name="title" value="Service Provider Contracts" />
+        <put-attribute name="body" value="/WEB-INF/pages/medicalsetups/serviceprvdcontracts.jsp" />
+    </definition>
+    <definition name="preauthenquiry" extends="base.definition">
+        <put-attribute name="title" value="Pre-Authorization Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/preauthenquiry.jsp" />
+    </definition>
+    <definition name="medtrans" extends="base.definition">
+        <put-attribute name="title" value="Medical Transactions" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/medclaims.jsp" />
+    </definition>
+    <definition name="medcards" extends="base.definition">
+        <put-attribute name="title" value="Medical Cards" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/medicalcards.jsp" />
+    </definition>
+    <definition name="smartcards" extends="base.definition">
+        <put-attribute name="title" value="Smart Transactions Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/smartclaims.jsp" />
+    </definition>
+    <definition name="admintrans" extends="base.definition">
+        <put-attribute name="title" value="Admin Fee Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/adminfee.jsp" />
+    </definition>
+    <definition name="newadminfee" extends="base.definition">
+        <put-attribute name="title" value="New Admin Fee Transaction" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/newadmintrans.jsp" />
+    </definition>
+    <definition name="adminfeeuwform" extends="base.definition">
+        <put-attribute name="title" value="Admin Fee Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/adminfeeform.jsp" />
+    </definition>
+    <definition name="batchparTrans" extends="base.definition">
+        <put-attribute name="title" value="Batch Claims Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/claims/batchmedclaims.jsp" />
+    </definition>
+
+    <definition name="deployhome" extends="base.definition">
+        <put-attribute name="title" value="Process Flow Deployments" />
+        <put-attribute name="body" value="/WEB-INF/pages/workflow/deployscreen.jsp" />
+    </definition>
+
+    <definition name="collaccts" extends="base.definition">
+        <put-attribute name="title" value="Collection Accounts" />
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/collectAccts.jsp" />
+    </definition>
+
+    <definition name="payeesvw" extends="base.definition">
+        <put-attribute name="title" value="Payees Listing" />
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/payees.jsp" />
+    </definition>
+
+    <definition name="newrequistion" extends="base.definition">
+        <put-attribute name="title" value="New Requistion" />
+        <put-attribute name="body" value="/WEB-INF/pages/payments/createrequistion.jsp" />
+    </definition>
+
+    <definition name="requistion" extends="base.definition">
+        <put-attribute name="title" value="Requistions" />
+        <put-attribute name="body" value="/WEB-INF/pages/payments/requistions.jsp" />
+    </definition>
+
+    <definition name="createrequistion" extends="base.definition">
+        <put-attribute name="title" value="New Requistion" />
+        <put-attribute name="body" value="/WEB-INF/pages/payments/newrequistion.jsp" />
+    </definition>
+
+    <definition name="pendingUwTrans" extends="base.definition">
+        <put-attribute name="title" value="Pending UW Trans" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/uwpendingtrans.jsp" />
+    </definition>
+
+    <definition name="intparties" extends="base.definition">
+    <put-attribute name="title" value="Interested Parties" />
+    <put-attribute name="body" value="/WEB-INF/pages/setups/intparties.jsp" />
+</definition>
+
+    <definition name="checks" extends="base.definition">
+        <put-attribute name="title" value="System Checks" />
+        <put-attribute name="body" value="/WEB-INF/pages/setups/checks.jsp" />
+    </definition>
+
+    <definition name="reprintrcts" extends="base.definition">
+        <put-attribute name="title" value="System Checks" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/reprintreceipts.jsp" />
+    </definition>
+
+    <definition name="unprintedrcts" extends="base.definition">
+        <put-attribute name="title" value="System Checks" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/unprintedreceipts.jsp" />
+    </definition>
+
+
+    <definition name="cancelrcts" extends="base.definition">
+        <put-attribute name="title" value="System Checks" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/cancelReceipts.jsp" />
+    </definition>
+
+    <definition name="mobmoney" extends="base.definition">
+        <put-attribute name="title" value="Mobile Money Trans" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/mob_money_trans.jsp" />
+    </definition>
+
+    <definition name="quickw" extends="base.definition">
+        <put-attribute name="title" value="Quick Underwriting" />
+        <put-attribute name="body" value="/WEB-INF/pages/uwtrans/quickUw.jsp" />
+    </definition>
+
+    <definition name="stretchyreports" extends="base.definition">
+        <put-attribute name="title" value="Report List" />
+        <put-attribute name="body" value="/WEB-INF/pages/developermodule/stretchyreports.jsp" />
+    </definition>
+
+    <definition name="stretchyreportsform" extends="base.definition">
+        <put-attribute name="title" value="Report Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/developermodule/stretchyreportsform.jsp" />
+    </definition>
+
+    <definition name="stretchyparams" extends="base.definition">
+        <put-attribute name="title" value="Parameter List" />
+        <put-attribute name="body" value="/WEB-INF/pages/developermodule/stretchyparameters.jsp" />
+    </definition>
+
+    <definition name="stretchyparametersform" extends="base.definition">
+        <put-attribute name="title" value="Report Parameters Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/developermodule/stretchyparametersform.jsp" />
+    </definition>
+
+    <definition name="viewstretchyparameterform" extends="base.definition">
+        <put-attribute name="title" value="View Stretchy Report" />
+        <put-attribute name="body" value="/WEB-INF/pages/developermodule/viewstretchyparameterform.jsp" />
+    </definition>
+
+    <definition name="viewstretchyreport" extends="base.definition">
+        <put-attribute name="title" value="Report Parameters Definition" />
+        <put-attribute name="body" value="/WEB-INF/pages/developermodule/viewstretchyreport.jsp" />
+    </definition>
+
+    <definition name="editstretchyreport" extends="base.definition">
+        <put-attribute name="title" value="Edit Stretchy Report" />
+        <put-attribute name="body" value="/WEB-INF/pages/developermodule/editstretchyreport.jsp" />
+    </definition>
+
+    <definition name="contractsform" extends="base.definition">
+        <put-attribute name="title" value="Contract Details" />
+        <put-attribute name="body" value="/WEB-INF/pages/binders/contractform.jsp" />
+    </definition>
+
+    <definition name="contractdetailsform" extends="base.definition">
+        <put-attribute name="title" value="Contract Details" />
+        <put-attribute name="body" value="/WEB-INF/pages/binders/contractdetails.jsp" />
+    </definition>
+    <definition name="creditorcommpaymt" extends="base.definition">
+        <put-attribute name="title" value="Creditor Commissions" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/creditorCommissions.jsp" />
+    </definition>
+
+    <definition name="bulkCreditcommpaymt" extends="base.definition">
+        <put-attribute name="title" value="Bulk Creditor Commissions" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/bulkCreditorCommissions.jsp" />
+    </definition>
+
+    <definition name="subAgentcommpaymt" extends="base.definition">
+        <put-attribute name="title" value="SubAgent Commissions" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/subAgentCommissions.jsp" />
+    </definition>
+    <definition name="adminFeecommpaymt" extends="base.definition">
+        <put-attribute name="title" value="AdminFee Commissions" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/adminFeeCommissions.jsp" />
+    </definition>
+    <definition name="reconciliation" extends="base.definition">
+        <put-attribute name="title" value="Reconciliation" />
+        <put-attribute name="body" value="/WEB-INF/pages/reconciliation/reconciliation.jsp" />
+    </definition>
+    <definition name="sfiscreens" extends="base.definition">
+        <put-attribute name="title" value="Sfi" />
+        <put-attribute name="body" value="/WEB-INF/pages/reconciliation/sfi/sfi.jsp" />
+    </definition>
+    <definition name="overpaidpolicies" extends="base.definition">
+        <put-attribute name="title" value="Overpaid Policies" />
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/overpaidPolicies.jsp" />
+    </definition>
+
+    <definition name="bulkuploadscreen" extends="base.definition">
+        <put-attribute name="title" value="Company Set Up" />
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/bulkuploadscreen.jsp" />
+    </definition>
+
+    <definition name="bulkrecuploadscreen" extends="base.definition">
+        <put-attribute name="title" value="Company Set Up" />
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/bulkrecuploadscreen.jsp" />
+    </definition>
+    <definition name="approvedbulkreport" extends="base.definition">
+        <put-attribute name="title" value="Company Set Up" />
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/approvedbulkreport.jsp" />
+    </definition>
+
+    <definition name="datamigrationscreen" extends="base.definition">
+        <put-attribute name="title" value="Company Set Up" />
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/datamigrationscreen.jsp" />
+    </definition>
+
+    <definition name="bulkClientMigration" extends="base.definition">
+        <put-attribute name="title" value="Client Migration" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/bulkClientMigration.jsp" />
+    </definition>
+
+    <definition name="updatepolnoscreen" extends="base.definition">
+        <put-attribute name="title" value="Company Set Up" />
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/updatepolnoscreen.jsp" />
+    </definition>
+
+    <definition name="transProcessing" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/transprocessing.jsp" />
+    </definition>
+
+    <definition name="authorizedPolicy" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/transprocessingauth.jsp" />
+    </definition>
+
+    <definition name="bulkPolCreation" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/bulkPolCreation.jsp" />
+    </definition>
+
+    <definition name="viewbulkpolicy" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/bulkpolprocessing.jsp" />
+    </definition>
+
+    <definition name="wezeshaCreation" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/wezeshastock.jsp" />
+    </definition>
+
+    <definition name="viewWezesha" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/wezeshastockauth.jsp" />
+    </definition>
+
+    <definition name="creatembedpackageInsur" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/embedpackageinsurcreat.jsp" />
+    </definition>
+
+    <definition name="viewembedpackageInsur" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/embedpackageinsurauth.jsp" />
+    </definition>
+
+    <definition name="creatembedretrench" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/embedretrenchcreat.jsp" />
+    </definition>
+
+    <definition name="viewembedretrench" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/embedretrenchauth.jsp" />
+    </definition>
+
+    <definition name="createcreditlife" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/creditlifecreat.jsp" />
+    </definition>
+
+    <definition name="viewcreditlife" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/creditlifeauth.jsp" />
+    </definition>
+
+    <definition name="creategrouplife" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/grouplifecreat.jsp" />
+    </definition>
+
+    <definition name="viewgrouplife" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/grouplifeauth.jsp" />
+    </definition>
+
+    <definition name="createtimiza" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/timizacreat.jsp" />
+    </definition>
+
+    <definition name="viewtimiza" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/timizaauth.jsp" />
+    </definition>
+
+    <definition name="createcreditcard" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/creditcardcreat.jsp" />
+    </definition>
+
+    <definition name="viewcreditcard" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/creditcardauth.jsp" />
+    </definition>
+
+    <definition name="bulkstaffmotor" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/bulkstaffmotor.jsp" />
+    </definition>
+
+    <definition name="viewbulkstaffmotor" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/viewbulkstaffmotor.jsp" />
+    </definition>
+
+    <definition name="createcreditshield" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/createcreditshield.jsp" />
+    </definition>
+
+    <definition name="viewcreditshield" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/viewcreditshield.jsp" />
+    </definition>
+
+    <definition name="createmortgagelife" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/mortgagelifecreat.jsp" />
+    </definition>
+
+    <definition name="viewmortgagelife" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/mortgagelifeauth.jsp" />
+    </definition>
+    <definition name="endorsementcreation" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/endorsementcreation.jsp" />
+    </definition>
+    <definition name="endorsementauthorization" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/endorsementauthorization.jsp" />
+    </definition>
+    <definition name="createrenewals" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/createrenewals.jsp" />
+    </definition>
+    <definition name="authorizerenewals" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/authorizerenewals.jsp" />
+    </definition>
+    <definition name="cancellationscreation" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/cancellationscreation.jsp" />
+    </definition>
+    <definition name="cancellationsauthorization" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/cancellationsauthorization.jsp" />
+    </definition>
+    <definition name="refundscreations" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/refundscreations.jsp" />
+    </definition>
+    <definition name="refundsauthorization" extends="base.definition">
+        <put-attribute name="title" value="Transaction Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/refundsauthorization.jsp" />
+    </definition>
+
+    <definition name="updatecreation" extends="base.definition">
+        <put-attribute name="title" value="Update Policy Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/updatepolno/updatepolnocreat.jsp" />
+    </definition>
+
+    <definition name="viewupdates" extends="base.definition">
+        <put-attribute name="title" value="Update Policy Processing" />
+        <put-attribute name="body" value="/WEB-INF/pages/updatepolno/updatepolnoview.jsp" />
+    </definition>
+
+    <definition name="createbulkreceipt" extends="base.definition">
+        <put-attribute name="title" value="Bulk Receipting" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/bulkreceiptcreat.jsp" />
+    </definition>
+
+    <definition name="viewbulkreceipt" extends="base.definition">
+        <put-attribute name="title" value="Bulk Receipting" />
+        <put-attribute name="body" value="/WEB-INF/pages/bulktransactions/bulkreceiptview.jsp" />
+    </definition>
+
+</tiles-definitions> 

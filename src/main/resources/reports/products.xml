@@ -1,0 +1,99 @@
+<!-- <?xml version="1.0" encoding="UTF-8" ?>
+<dataTemplate dataSourceRef="eaglelive" name="clauses" defaultPackage="GIN_SETUP_RPT">
+<properties>
+<property name="xml_tag_case" value="upper"/>
+</properties>
+<parameters>
+    <parameter name="P_HEADING" dataType="character"/>
+</parameters>
+<lexicals>
+</lexicals>
+<dataQuery>
+<sqlStatement name="Q_1">
+
+select cls_heading, CLS_SHT_DESC,cls_wording,
+upper(DECODE(CLS_TYPE,'CL','Clause','WR','Warranty','SC','Special Conditions',
+'EX','Excess','PL','Peril','EC','Exclusion','ET','Extension','ME','Memo')) CLAUSE_TYPE
+from gin_clause
+where CLS_CODE = decode(NVL(:P_HEADING,'-2000'),'-2000',CLS_CODE ,:P_HEADING)
+order by CLS_TYPE
+
+</sqlStatement>
+<sqlStatement name="Q_2">
+
+select ORG_PHY_ADDRS,
+ORG_ADDRS||' , '||ORG_ZIP||' - '||TWN_NAME||' , '||COU_NAME Organization, 
+'Telephone'||':'||ORG_TEL1||' /'||ORG_TEL2 Telephone, 
+'Fax'||':'||ORG_FAX Fax, 
+'E-mail'||':'||ORG_EMAIL_ADDRS email,ORG_LOGO_B64 logo
+from TQC_ORGANIZATIONS, TQC_COUNTRIES, TQC_TOWNS
+where ORG_TWN_CODE = TWN_CODE
+and ORG_COU_CODE = COU_CODE
+and ORG_CODE = 2
+
+</sqlStatement>
+</dataQuery>
+<dataStructure>
+<group name="G_CLAUSE_TYPE" dataType="varchar2" source="Q_1">
+    <element name="clause_type" dataType="varchar2" value="CLAUSE_TYPE"/>
+    <group name="G_1" dataType="varchar2" source="Q_1">
+        <element name="cls_heading" dataType="varchar2" value="CLS_HEADING"/>
+        <group name="G_cls_heading" dataType="varchar2" source="Q_1">
+            <element name="cls_wording" dataType="long" value="CLS_WORDING"/>
+        </group>
+    </group>
+</group>
+<group name="G_COM_NAME" dataType="varchar2" source="Q_2">
+    <element name="ORG_PHY_ADDRS" dataType="varchar2" value="ORG_PHY_ADDRS"/>
+    <element name="Organization" dataType="varchar2" value="ORGANIZATION"/>
+    <element name="Telephone" dataType="varchar2" value="TELEPHONE"/>
+    <element name="Fax" dataType="varchar2" value="FAX"/>
+    <element name="email" dataType="varchar2" value="EMAIL"/>
+    <element name="logo" dataType="longRaw" value="LOGO"/>
+</group>
+</dataStructure>
+</dataTemplate> -->
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataTemplate name="products" defaultPackage="">
+<properties>
+    <property name="xml_tag_case" value="upper"/>
+</properties>
+<parameters>
+    <parameter name="P_PR_CODE" dataType="integer"/>
+    <parameter name="P_ORG_CODE" dataType="integer"/>
+</parameters>
+<lexicals>
+</lexicals>
+<dataQuery>
+<sqlStatement name="Q_1">
+select pr_code, pr_desc
+from sys_brk_products
+where pr_code = :P_PR_CODE
+order by pr_desc
+</sqlStatement>
+<sqlStatement name="Q_2">
+
+select ORG_PHY_ADDRS,
+ORG_ADDRESS, ||COU_NAME Organization, 
+'Telephone'||':'||ORG_MOBILE||' /'||org_phone Telephone, 
+'E-mail'||':'||ADD_EMAIL_ADDR email
+from SYS_BRK_ORGANIZATIONS, SYS_BRK_COUNTRIES
+where ORG_COU_CODE = COU_CODE
+and ORG_CODE = 1
+
+</sqlStatement>
+</dataQuery>
+<dataStructure>
+<group name="G_PRODUCTS" dataType="varchar" source="Q_1">
+    <element name="pr_code" dataType="integer" value="PR_CODE"/>
+    <element name="pr_desc" dataType="varchar" value="PR_DESC"/>
+</group>
+<group name="G_COM_NAME" dataType="varchar2" source="Q_2">
+    <element name="ORG_PHY_ADDRS" dataType="varchar2" value="ORG_PHY_ADDRS"/>
+    <element name="Organization" dataType="varchar2" value="ORGANIZATION"/>
+    <element name="Telephone" dataType="varchar2" value="TELEPHONE"/>
+    <element name="email" dataType="varchar2" value="EMAIL"/>
+</group>
+
+</dataStructure>
+</dataTemplate>

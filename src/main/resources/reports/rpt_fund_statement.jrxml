@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_fund_statement" pageWidth="615" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" isIgnorePagination="true" uuid="d28039a8-3e1c-4e4d-a7f3-03b6bfa7c793">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Broker DB"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="policyCode" class="java.lang.String">
+		<parameterDescription><![CDATA[Policy Code]]></parameterDescription>
+		<defaultValueExpression><![CDATA[19736]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AsAtdate" class="java.util.Date">
+		<parameterDescription><![CDATA[As at Date]]></parameterDescription>
+	</parameter>
+	<parameter name="logo" class="java.lang.Object"/>
+	<queryString>
+		<![CDATA[select org_name,org_mobile ,org_phone,org_address,org_website,phy_address,add_email_addr,
+pol_client_pol_no,client_fname || ' '||client_onames client,BIN_NAME BINDER,(SELECT ACCT_NAME FROM SYS_BRK_ACCOUNTS WHERE ACCT_ID =POL_AGENT_ID )AGENT,
+pr_desc product, pol_cover_from wef, pol_cover_to wet, pol_id,af_pr_date transactiondate,af_remarks remarks,0 claimsincurred, 0 claimspaid,
+af_admin_fee_amt ,'' receiptno, 0 funddeposit,(select count(principal)principal from (
+select 
+case when s2.cm_dep_type = 'P'
+then (select count(1) FROM sys_brk_med_category s
+inner join sys_brk_policies s1 ON s1.pol_id = s.mc_policy_id
+inner join sys_brk_cat_members s2 ON s.mc_id = s2.cm_cat_id
+where   (s1.pol_id ::varchar) =  $P{policyCode}
+and s2.cm_dep_type = 'P')
+end  as principal
+FROM sys_brk_med_category s
+inner join sys_brk_policies s1 ON s1.pol_id = s.mc_policy_id
+inner join sys_brk_cat_members s2 ON s.mc_id = s2.cm_cat_id
+where ( s1.pol_id ::varchar) =  $P{policyCode}) s6),
+(select count(dependant)dependant from (
+select 
+case when s2.cm_dep_type != 'P'
+then (select count(1) FROM sys_brk_med_category s
+inner join sys_brk_policies s1 ON s1.pol_id = s.mc_policy_id
+inner join sys_brk_cat_members s2 ON s.mc_id = s2.cm_cat_id
+where   (s1.pol_id ::varchar) =  $P{policyCode}
+and s2.cm_dep_type != 'P')
+end  as dependant
+FROM sys_brk_med_category s
+inner join sys_brk_policies s1 ON s1.pol_id = s.mc_policy_id
+inner join sys_brk_cat_members s2 ON s.mc_id = s2.cm_cat_id
+where   (s1.pol_id ::varchar) =  $P{policyCode}) s6), 
+sfp_app_value,
+case when sfp_app_level = 'FFP'
+then 'Fixed Fee Per Person'
+when sfp_app_level = 'FFS'
+then 'Fixed Fee Per Scheme'
+when sfp_app_level = 'FFF'
+then 'Fixed Fee Per Famiy'
+when sfp_app_level = 'FFC'
+then 'Fixed Fee Per Claim'
+when sfp_app_level = 'PPC'
+then 'Percentage Per Claim' 
+end as sfp_app_level,
+case when sfp_billing_freq ='M'
+then 'Monthly'
+when sfp_billing_freq ='A'
+then 'Annual'
+when sfp_billing_freq ='Q'
+then 'Quarterly'
+when sfp_billing_freq ='S'
+then 'Semi-Annual'
+end as sfp_billing_freq,
+cur_iso_code
+from sys_brk_organization,sys_brk_binders,sys_brk_policies,sys_brk_clients,sys_brk_products,sys_brk_admin_fees,
+sys_brk_admin_policies,sys_brk_fund_params,sys_brk_currencies
+where bin_fund_binder ='Y'
+AND BIN_ID = POL_BINDER_ID
+AND POL_client_id=client_id
+and pol_prod_id= pr_code
+and af_id =afp_af_id
+and afp_pol_id = pol_id
+and  sfp_policy_id = pol_id
+and  (pol_id ::varchar) = $P{policyCode}]]>
+	</queryString>
+	<field name="org_name" class="java.lang.String"/>
+	<field name="org_mobile" class="java.lang.String"/>
+	<field name="org_phone" class="java.lang.String"/>
+	<field name="org_address" class="java.lang.String"/>
+	<field name="org_website" class="java.lang.String"/>
+	<field name="phy_address" class="java.lang.String"/>
+	<field name="add_email_addr" class="java.lang.String"/>
+	<field name="pol_client_pol_no" class="java.lang.String"/>
+	<field name="client" class="java.lang.String"/>
+	<field name="binder" class="java.lang.String"/>
+	<field name="agent" class="java.lang.String"/>
+	<field name="product" class="java.lang.String"/>
+	<field name="wef" class="java.sql.Date"/>
+	<field name="wet" class="java.sql.Date"/>
+	<field name="pol_id" class="java.lang.Long"/>
+	<field name="transactiondate" class="java.sql.Timestamp"/>
+	<field name="remarks" class="java.lang.String"/>
+	<field name="claimsincurred" class="java.lang.Integer"/>
+	<field name="claimspaid" class="java.lang.Integer"/>
+	<field name="af_admin_fee_amt" class="java.math.BigDecimal"/>
+	<field name="receiptno" class="java.lang.String"/>
+	<field name="funddeposit" class="java.lang.Integer"/>
+	<field name="principal" class="java.lang.Long"/>
+	<field name="dependant" class="java.lang.Long"/>
+	<field name="sfp_app_value" class="java.math.BigDecimal"/>
+	<field name="sfp_app_level" class="java.lang.String"/>
+	<field name="sfp_billing_freq" class="java.lang.String"/>
+	<field name="cur_iso_code" class="java.lang.String"/>
+	<variable name="running_balance" class="java.lang.Double" resetType="Group" resetGroup="policy" calculation="Sum">
+		<variableExpression><![CDATA[SUM($F{funddeposit},-DOUBLE_VALUE($F{af_admin_fee_amt}.toString()),-DOUBLE_VALUE($F{claimspaid}.toString()))]]></variableExpression>
+	</variable>
+	<variable name="Var_sum_claimsIncurred" class="java.lang.Double" resetType="Group" resetGroup="policy" calculation="Sum">
+		<variableExpression><![CDATA[$F{claimsincurred}]]></variableExpression>
+	</variable>
+	<variable name="Var_sum_claimsPaid" class="java.lang.Double" resetType="Group" resetGroup="policy" calculation="Sum">
+		<variableExpression><![CDATA[$F{claimspaid}]]></variableExpression>
+	</variable>
+	<variable name="Var_sum_admin_fee" class="java.lang.Double" resetType="Group" resetGroup="policy" calculation="Sum">
+		<variableExpression><![CDATA[$F{af_admin_fee_amt}]]></variableExpression>
+	</variable>
+	<variable name="Var_sum_funddeposit" class="java.lang.Double" resetType="Group" resetGroup="policy" calculation="Sum">
+		<variableExpression><![CDATA[$F{funddeposit}]]></variableExpression>
+	</variable>
+	<group name="policy">
+		<groupExpression><![CDATA[$F{pol_id}]]></groupExpression>
+		<groupHeader>
+			<band height="160">
+				<rectangle>
+					<reportElement x="-10" y="-2" width="596" height="162" uuid="5b8384a9-f958-4b95-8863-7f18658d528b"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="0" width="100" height="20" uuid="10ff147b-d61b-413a-a7fc-9c2290564bf1"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Name of Insured:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="20" width="100" height="20" uuid="4e9ca910-9f56-48c3-b4bf-5a706396b62f"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Underwriter :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="40" width="100" height="20" uuid="d9f20751-d27a-4d37-afe1-53a9000361e2"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Intermediary :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="60" width="100" height="20" uuid="3c4ddea3-5952-40a3-b21e-1b14ec3e3b1d"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Policy No.:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="80" width="100" height="20" uuid="9cef8a57-359b-48d9-b2ba-7de8078c330f"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Policy Type :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="100" width="100" height="20" uuid="602206c6-64e0-4a18-83df-4f31005b135d"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Policy Period :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="120" width="100" height="20" uuid="7d65bf22-f360-4269-9f8c-2598b960d43b"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Statement As at:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="140" width="100" height="20" uuid="e2b26f4c-1f8f-49be-9bce-f8f8fe43860b"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Date Prepared :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="100" y="60" width="180" height="20" uuid="2d3d81da-2b91-4864-a8bb-0fc8deb4cba2"/>
+					<textFieldExpression><![CDATA[$F{pol_client_pol_no}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="40" width="180" height="20" uuid="81a8526b-3779-43cb-bc4b-972e0208488d"/>
+					<textFieldExpression><![CDATA[$F{agent}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="20" width="180" height="20" uuid="8fc72492-ff25-475e-b36f-c5e190e2f1e9"/>
+					<textFieldExpression><![CDATA[$F{binder}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="0" width="180" height="20" uuid="b3655ea8-958f-4e3f-84c7-8f0f67f24eae"/>
+					<textFieldExpression><![CDATA[$F{client}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="80" width="180" height="20" uuid="9d227e84-5ca8-4e1a-ad42-f7a0e52b8200"/>
+					<textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="100" width="180" height="20" uuid="f3560825-71c4-4108-8d8b-e3cfb3a62dec"/>
+					<textFieldExpression><![CDATA[DATEFORMAT($F{wef},"dd-MMM-yyyy") +" to "+ DATEFORMAT($F{wet},"dd-MMM-yyyy")]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="120" width="180" height="20" uuid="a8657517-a572-4f1a-814c-4ece7739d4f1"/>
+					<textFieldExpression><![CDATA[DATEFORMAT($P{AsAtdate},"dd-MMM-yyyy")]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="140" width="180" height="20" uuid="04cac11a-b42f-4ad4-993d-1cabacc78808"/>
+					<textFieldExpression><![CDATA[DATEFORMAT($P{AsAtdate},"dd-MMM-yyyy")]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="60">
+				<rectangle>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="-10" y="0" width="596" height="60" uuid="87a3343b-aef0-4c07-9cc0-ebe7ba2d88cc"/>
+				</rectangle>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="10" width="586" height="50" uuid="133564c3-6dd2-494e-acc6-b8cb0d763185"/>
+					<textElement markup="styled"/>
+					<textFieldExpression><![CDATA["<style isBold=\"true\" isUnderline=\"true\">"+"IMPORTANT NOTES"+"</style>"+"\n\n1). The "+$F{sfp_billing_freq}+" Management fee is "+$F{cur_iso_code}+". "+$F{sfp_app_value}+" "+  $F{sfp_app_level} +" , and is charged on the fund " +$F{sfp_billing_freq}+".\n2). Claims incurred  refers to invoices posted as at the statement date, whether paid or not. A detailed schedule of claims in per month is attached.\n3). The required fund replenishment is the amount that should be paid into the fund account urgently to normalize it.\n"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="112" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-10" y="0" width="596" height="112" uuid="c3b7d10c-c102-442d-8546-2ab434c16d69"/>
+				<graphicElement>
+					<pen lineColor="#000000"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="FillFrame" evaluationTime="Master">
+				<reportElement x="4" y="3" width="145" height="90" uuid="a9a86375-13f6-4622-8f76-c7d3f43764f8"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="380" y="3" width="206" height="15" uuid="b9bb84fb-d8b5-47ce-a740-765871e01ac3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_name}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="20" width="206" height="15" uuid="6a691693-d9f4-4370-9674-eb12b6da79ed">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_address}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="35" width="206" height="15" uuid="956f33d5-ad5b-4ed8-829e-e0401636e75d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TEL: " + $F{org_mobile} +"," +$F{org_phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="379" y="65" width="206" height="15" uuid="8e6109a7-9fc8-455f-a34a-e56ad79e638e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["EMAIL: "+$F{add_email_addr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="379" y="50" width="206" height="15" uuid="a8ef0863-5238-4b6d-9153-e3d0ff0e7707"/>
+				<textFieldExpression><![CDATA["WEBSITE: " + $F{org_website}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-10" y="80" width="596" height="22" uuid="5b01cd56-e0cf-4199-bda5-b9c530cc7b4b"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[CLIENT FUND STATEMENT]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="-10" y="0" width="596" height="20" uuid="d48b3c74-86ac-473b-9ab1-8239e27f3b37"/>
+				<subreportParameter name="dependants">
+					<subreportParameterExpression><![CDATA[$F{dependant}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="principals">
+					<subreportParameterExpression><![CDATA[$F{principal}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="policyCode">
+					<subreportParameterExpression><![CDATA[$P{policyCode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="AsAtdate">
+					<subreportParameterExpression><![CDATA[$P{AsAtdate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["reports/rpt_fund_tabular.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,184 @@
+<!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
+<jasperReport name="SubAgentsReport" language="java" pageWidth="650" pageHeight="842" columnWidth="580" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eb84e915-4aa6-4eb9-92b3-e6b12c6e140a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="ACCOUNT_TYPE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Sub Agents"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ACCOUNT_TYPE_CODE" evaluationTime="Early" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{ACCOUNT_TYPE} == null ? "SUB" : ($P{ACCOUNT_TYPE}.equals("Introducer") ? "INT" : ($P{ACCOUNT_TYPE}.equals("Marketer") ? "MKT" : ($P{ACCOUNT_TYPE}.equals("Sub Agents") ? "SUB" : "SUB")))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REPORT_DATE" forPrompting="false" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new java.util.Date()]]></defaultValueExpression>
+	</parameter>
+	<query language="SQL"><![CDATA[SELECT
+    a.acct_name AS name,
+    a.acct_absa_no AS ab_no,
+    a.acct_pin AS pin_no,
+    a.acct_phone AS phone_no,
+    b.ob_name AS branch, -- Changed from bb_name to ob_name
+    a.acct_brn_code AS branch_code,
+    t.acc_type AS account_type,
+    a.acct_status AS status,
+    a.acct_comm_earning AS acct_comm_earning
+FROM sys_brk_accounts a
+JOIN sys_brk_account_types t ON a.acct_acc_code = t.acc_id
+LEFT JOIN sys_brk_branches b ON a.acct_brn_code = b.ob_id
+WHERE t.acc_type = $P{ACCOUNT_TYPE_CODE}
+ORDER BY a.acct_name]]></query>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="ab_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ab_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="ab_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="pin_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pin_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="pin_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="phone_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="phone_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="phone_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="branch" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_branches"/>
+	</field>
+	<field name="branch_code" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="branch_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="account_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="account_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="account_type"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_account_types"/>
+	</field>
+	<field name="status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="status"/>
+		<property name="com.jaspersoft.studio.field.label" value="status"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<field name="acct_comm_earning" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acct_comm_earning"/>
+		<property name="com.jaspersoft.studio.field.label" value="acct_comm_earning"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sys_brk_accounts"/>
+	</field>
+	<pageHeader height="130" splitType="Stretch">
+		<element kind="rectangle" uuid="a94e3f95-685e-4a23-82c3-706d04ea2baa" mode="Opaque" x="0" y="0" width="610" height="130" backcolor="#FFFFFF"/>
+		<element kind="image" uuid="18741079-22b9-4401-b8fc-8cd2be4c3dcf" x="5" y="2" width="105" height="105" scaleImage="FillFrame">
+			<expression><![CDATA[$P{logo}]]></expression>
+		</element>
+		<element kind="textField" uuid="2a3b4c5d-6e7f-8091-a2b3-c4d5e6f7890a" x="0" y="110" width="610" height="20" fontSize="14.0" bold="true" hTextAlign="Center" vTextAlign="Bottom">
+			<expression><![CDATA[$P{ACCOUNT_TYPE} == null ? "REPORT" : $P{ACCOUNT_TYPE}.toUpperCase() + " REPORT"]]></expression>
+		</element>
+	</pageHeader>
+	<columnHeader height="20" splitType="Stretch">
+		<element kind="staticText" uuid="acd3706c-937f-48e2-9c68-6dda6c16ae3c" mode="Opaque" x="0" y="0" width="150" height="20" backcolor="#EEEEEE" fontSize="11.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[NAME]]></text>
+			<box>
+				<pen lineWidth="1.0" lineStyle="Solid"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="23fbe2b3-792f-4d0f-b920-7a02d9868f88" mode="Opaque" x="150" y="0" width="60" height="20" backcolor="#EEEEEE" fontSize="11.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[AB NO]]></text>
+			<box>
+				<pen lineWidth="1.0" lineStyle="Solid"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="0cf53c97-4964-40b5-bdfb-745cad08fa06" mode="Opaque" x="210" y="0" width="60" height="20" backcolor="#EEEEEE" fontSize="11.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[PIN NO]]></text>
+			<box>
+				<pen lineWidth="1.0" lineStyle="Solid"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="ded19109-6311-4061-b443-9351f5f73655" mode="Opaque" x="270" y="0" width="80" height="20" backcolor="#EEEEEE" fontSize="11.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[PHONE NO]]></text>
+			<box>
+				<pen lineWidth="1.0" lineStyle="Solid"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="3b34c51d-c172-4dd4-8c58-d6dcbd5737ff" mode="Opaque" x="350" y="0" width="80" height="20" backcolor="#EEEEEE" fontSize="11.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[BRANCH]]></text>
+			<box>
+				<pen lineWidth="1.0" lineStyle="Solid"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="5414bee8-faa6-4320-a06c-c203ca0e36ef" mode="Opaque" x="430" y="0" width="80" height="20" backcolor="#EEEEEE" fontSize="11.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[STATUS]]></text>
+			<box>
+				<pen lineWidth="1.0" lineStyle="Solid"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="c371731d-dccd-4a06-b06c-55208497ea7c" mode="Opaque" x="510" y="0" width="100" height="20" backcolor="#EEEEEE" fontSize="11.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[COMMISSION EARNED]]></text>
+			<box>
+				<pen lineWidth="1.0" lineStyle="Solid"/>
+			</box>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<element kind="textField" uuid="e8a953cd-8891-478e-944a-244b6efe0bf2" x="0" y="0" width="150" height="20" fontSize="11.0">
+				<expression><![CDATA[$F{name} == null ? "" : $F{name}]]></expression>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="cb994205-9fdd-4841-b6fb-2dcb712086be" x="150" y="0" width="60" height="20" fontSize="11.0" hTextAlign="Center">
+				<expression><![CDATA[$F{ab_no} == null ? "" : $F{ab_no}]]></expression>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="1c39e18c-1f60-4550-b800-8fb8db7ef593" x="210" y="0" width="60" height="20" fontSize="11.0" hTextAlign="Center">
+				<expression><![CDATA[$F{pin_no} == null 
+            ? "" 
+            : $F{pin_no}.replaceAll("\\D+","")]]></expression>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="b66979da-a42e-4293-9503-31dcc4274812" x="270" y="0" width="80" height="20" fontSize="11.0" hTextAlign="Center">
+				<expression><![CDATA[$F{phone_no} == null ? "" : $F{phone_no}]]></expression>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="57a5b84d-e3e9-44cd-a47e-43bbce041b0c" x="350" y="0" width="80" height="20" fontSize="11.0" hTextAlign="Center">
+				<expression><![CDATA[$F{branch} == null ? "" : $F{branch}]]></expression>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="3930779f-a0fb-4c6d-96c3-787744c13174" x="430" y="0" width="80" height="20" fontSize="11.0" hTextAlign="Center">
+				<expression><![CDATA[$F{status} == null ? "" : ($F{status}.equals("A") ? "Active" : ($F{status}.equals("D") ? "Draft" : ($F{status}.equals("DA") ? "Deactivated" : ($F{status}.equals("I") ? "Inactive" : $F{status}))))]]></expression>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="6bde69ed-c61e-42ec-8385-35e1b93f88aa" x="510" y="0" width="100" height="20" fontSize="11.0" hTextAlign="Center">
+				<expression><![CDATA["Yes".equals($F{acct_comm_earning}) ? "Yes" : "No"]]></expression>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+		</band>
+	</detail>
+	<pageFooter height="32">
+		<element kind="textField" uuid="d4f4b01a-9790-4c64-b08a-382e61383027" x="0" y="10" width="70" height="20" fontSize="11.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["Page " + $V{PAGE_NUMBER} + " of"]]></expression>
+		</element>
+		<element kind="textField" uuid="a75b6db1-4115-4091-b929-d3ce1311f33a" x="70" y="10" width="80" height="20" fontSize="11.0" evaluationTime="Report" hTextAlign="Left" vTextAlign="Middle">
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageFooter>
+</jasperReport>
