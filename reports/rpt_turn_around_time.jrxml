@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_rejected_tickets" pageWidth="3200" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1152" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="1bf9c828-381b-4849-8fb8-dac124bc168d">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="emtech"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="infitech"/>
 	<parameter name="logo" class="java.lang.Object"/>
 	<parameter name="dateFrom" class="java.util.Date"/>
 	<parameter name="dateTo" class="java.util.Date"/>

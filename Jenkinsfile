@@ -3,7 +3,7 @@ pipeline {
     stages{
         stage('Clone repo') {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'tokentoken', url: 'https://github.com/EMTECH-ELP/General_NEW.git']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'tokentoken', url: 'https://github.com/MucuriAmalia/amucuribancassurance.git']])
             }
         }
 

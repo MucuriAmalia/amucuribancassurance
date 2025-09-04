@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.20.6  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_renewed_policies" pageWidth="1800" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="1002" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eb889b71-8edf-4f50-8fbe-8a9fe944a887">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="emtech"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="infitech"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="688"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="298"/>
 	<parameter name="logo" class="java.lang.Object"/>

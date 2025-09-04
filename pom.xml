@@ -4,10 +4,10 @@
 	<artifactId>brokerapp</artifactId>
 	<version>2.0.0</version>
 	<packaging>war</packaging>
-	<name>EMTECH Insurance application</name>
+	<name>Insurance Application</name>
 	<description>This is a brokerage application used to manage all operations of a bancassurance firm</description>
 	<organization>
-		<name>EMTECH Solutions Limited</name>
+		<name>InfiTech Labs Solutions Limited</name>
 	</organization>
 	<url>http://maven.apache.org</url>
 	<properties>
