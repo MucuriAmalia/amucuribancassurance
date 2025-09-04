@@ -4,8 +4,10 @@
 	<artifactId>brokerapp</artifactId>
 	<version>2.0.0</version>
 	<packaging>war</packaging>
-	<name>Insurance Application</name>
-	<description>This is a brokerage application used to manage all operations of a bancassurance firm</description>
+	<name>Insurance Management System</name>
+	<description>A modern bancassurance platform that simplifies policy management,
+		claims, and client services while ensuring compliance and delivering
+		powerful insights to drive growth and efficiency.</description>
 	<organization>
 		<name>InfiTech Labs Solutions Limited</name>
 	</organization>
